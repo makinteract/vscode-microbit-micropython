@@ -1,13 +1,13 @@
 {
-  "name": "vscode-microbit-micropython",
-  "displayName": "micropython-for-microbit",
-  "description": "Make easy to use MicroPython on micro:bit with VScode",
+  "name": "micro-bit-python",
+  "displayName": "micro:bit MicroPython",
+  "description": "Easy MicroPython for micro:bit with VScode",
   "version": "0.0.1",
   "preview": true,
   "author": {
     "url": "https://github.com/makinteract",
     "email": "andrea@kaist.id",
-    "name": "Andrea Bianchi"
+    "name": "andrea"
   },
   "publisher": "MAKinteract",
   "icon": "images/icon.png",
@@ -32,6 +32,8 @@
     "onCommand:extension.init-microbit",
     "onCommand:extension.init-sketch",
     "onCommand:extension.flash-sketch",
+    "onCommand:extension.fetch-examples",
+    "onCommand:extension.load-example",
     "onLanguage:python",
     "onDebug"
   ],
@@ -40,18 +42,28 @@
     "commands": [
       {
         "command": "extension.init-sketch",
-        "category": "uBit",
+        "category": "micro-bit-python",
         "title": "Initialize MicroPython sketch"
       },
       {
         "command": "extension.init-microbit",
-        "category": "uBit",
+        "category": "micro-bit-python",
         "title": "Install MicroPython on micro:bit"
       },
       {
         "command": "extension.flash-sketch",
-        "category": "uBit",
+        "category": "micro-bit-python",
         "title": "Flash sketch on micro:bit"
+      },
+      {
+        "command": "extension.fetch-examples",
+        "category": "micro-bit-python",
+        "title": "Fetch examples from online"
+      },
+      {
+        "command": "extension.load-example",
+        "category": "micro-bit-python",
+        "title": "Load an example"
       }
     ],
     "keybindings": [

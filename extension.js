@@ -12,7 +12,7 @@ const clone = require('git-clone');
  */
 function activate(context) {
 
-	const extRoot = vscode.extensions.getExtension("MAKinteract.vscode-microbit-micropython").extensionPath;
+	const extRoot = vscode.extensions.getExtension("MAKinteract.micro-bit-python").extensionPath;
 	const uflash = path.join(extRoot, "tools", "uflash-master", "uflash.py")
 	const ufs = path.join(extRoot, "tools", "microfs-master", "ufs.py")
 	const output = vscode.window.createOutputChannel("micro:bit");
