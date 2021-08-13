@@ -1,30 +1,77 @@
 {
 	"name": "vscode-microbit-micropython",
-	"displayName": "vscode-microbit-micropython",
-	"description": "Make easy to use MicroPython on micro:bit",
+	"displayName": "micropython-for-microbit",
+	"description": "Make easy to use MicroPython on micro:bit with VScode",
 	"version": "0.0.1",
+	"preview": true,
+	"author": {
+		"url": "https://github.com/makinteract",
+		"email": "andrea@kaist.id",
+		"name": "Andrea Bianchi"
+	},
+	"publisher": "MAKinteract",
+	"icon": "images/icon.png",
+	"galleryBanner": {
+		"color": "#C80000",
+		"theme": "dark"
+	},
+	"repository": {
+		"type": "Git",
+		"url": "https://github.com/makinteract/vscode-microbit-micropython"
+	},
+	"extensionDependencies": [
+		"ms-python.python"
+	],
 	"engines": {
 		"vscode": "^1.46.0"
 	},
 	"categories": [
-		"Other"
+		"Programming Languages"
 	],
 	"activationEvents": [
-		"onCommand:vscode-microbit-micropython.helloWorld"
+		"onCommand:vscode-microbit-micropython.initialize",
+		"onCommand:vscode-microbit-micropython.flash-micropython",
+		"onCommand:vscode-microbit-micropython.flash-sketch",
+		"onLanguage:python",
+		"onDebug"
 	],
 	"main": "./extension.js",
 	"contributes": {
 		"commands": [
 			{
-				"command": "vscode-microbit-micropython.helloWorld",
-				"title": "Hello World"
+				"command": "extension.initialize",
+				"category": "uBit",
+				"title": "Initialize MicroPython sketch"
+			},
+			{
+				"command": "extension.flash-micropython",
+				"category": "uBit",
+				"title": "Install MicroPython on micro:bit"
+			},
+			{
+				"command": "extension.flash-sketch",
+				"category": "uBit",
+				"title": "Flash sketch on micro:bit"
+			}
+		],
+		"keybindings": [
+			{
+				"command": "extension.build",
+				"key": "ctrl+f5",
+				"mac": "cmd+f5",
+				"when": "editorTextFocus"
 			}
 		]
 	},
+	"keywords": [
+		"micro:bit",
+		"micropython",
+		"python",
+		"MicroBit"
+	],
 	"scripts": {
 		"lint": "eslint .",
-		"pretest": "npm run lint",
-		"test": "node ./test/runTest.js"
+		"deploy": "vsce package"
 	},
 	"devDependencies": {
 		"@types/vscode": "^1.46.0",
@@ -36,5 +83,8 @@
 		"mocha": "^8.2.1",
 		"typescript": "^4.1.3",
 		"vscode-test": "^1.5.0"
+	},
+	"dependencies": {
+		"path": "^0.12.7"
 	}
 }
