@@ -61,17 +61,22 @@ function activate(context) {
 
 	// Init microbit
 	let initCmd = vscode.commands.registerCommand('extension.initialize', async function () {
-		const a = await isInWorkspace('microbit/**'); // a folder called microbit with files inside
-		const b = await isInWorkspace('main.py');
-		const c = await isInWorkspace('a.py');
-		console.log(a, b, c);
+		// const a = await isInWorkspace('microbit/**'); // a folder called microbit with files inside
+		// const b = await isInWorkspace('main.py');
+		// const c = await isInWorkspace('a.py');
+		// console.log(a, b, c);
 
 		const document = vscode.window.activeTextEditor.document;
 		const workspace = vscode.workspace.getWorkspaceFolder(document.uri);
 		const loc = context.asAbsolutePath('.');
-		const f = vscode.Uri.file(path.join(loc, "README.md"));
 
-		// vscode.workspace.fs.copy(f, workspace.uri, { "overwrite": true })
+		const main = await isInWorkspace('main.py')
+		if (!main) {
+			const src = vscode.Uri.file(path.join(loc, "templates", "main.py"));
+			const dest = vscode.Uri.file(path.join(workspace.uri.path, "main.py"));
+			vscode.workspace.fs.copy(src, dest, { "overwrite": true });
+		}
+
 	});
 
 
