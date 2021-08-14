@@ -3,6 +3,7 @@ const path = require('path')
 const util = require('util');
 const exec = util.promisify(require('child_process').exec);
 const clone = require('git-clone');
+const ui = require('./ui');
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -21,16 +22,16 @@ function activate(context) {
 
 	async function runWithPython(command) {
 		// try with python 3
-		if (python3){
+		if (python3) {
 			try {
 				const { stdout, stderr } = await exec(`python3 ${command}`)
 				output.appendLine(`Command "${command}" successfully executed: ${stdout}`);
 				if (!stderr) return;
 			} catch (e) {
-				python3= false;
+				python3 = false;
 			}
-		
-		}else if (python2){
+
+		} else if (python2) {
 			// try with python 2
 			try {
 				const { stdout, stderr } = await exec(`python ${command}`)
@@ -38,10 +39,10 @@ function activate(context) {
 				if (!stderr) return;
 
 			} catch (e) {
-				python2= false;
+				python2 = false;
 			}
 		}
-		
+
 		// none found
 		throw new Error("Could not exectute command");
 	}
@@ -62,8 +63,8 @@ function activate(context) {
 
 
 	// copy files
-	async function copyFilesFromWorkspaceToDevice (srcPattern){
-	
+	async function copyFilesFromWorkspaceToDevice(srcPattern) {
+
 		const document = vscode.window.activeTextEditor.document;
 		const workspace = vscode.workspace.getWorkspaceFolder(document.uri);
 
@@ -78,11 +79,11 @@ function activate(context) {
 		}
 	}
 
-	
-	async function copyFileFromExtensionToWorkspace (srcFilename, destFilename, overwrite= false){
+
+	async function copyFileFromExtensionToWorkspace(srcFilename, destFilename, overwrite = false) {
 		const document = vscode.window.activeTextEditor.document;
 		const workspace = vscode.workspace.getWorkspaceFolder(document.uri);
-		
+
 		const main = await isInWorkspace("main.py");
 		if (main && !overwrite) return;
 
@@ -92,29 +93,33 @@ function activate(context) {
 	}
 
 
-	function getCurrentWorkspace(){
+	function getCurrentWorkspace() {
 
 		const openDocumnet = vscode.window.activeTextEditor.document;
 		if (openDocumnet)
 			return vscode.workspace.getWorkspaceFolder(openDocumnet.uri);
-		
+
 		// else
 		const workspaces = vscode.workspace.workspaceFolders;
-		if (workspaces.length==1) return workspaces[0];
+		if (workspaces.length == 1) return workspaces[0];
 		else {
 			const selection = vscode.window.showWorkspaceFolderPick()
 		}
-	
+
 	}
 
 
 	// Init microbit
 	let initCmd = vscode.commands.registerCommand('extension.init-sketch', async function () {
-		
+
 		// const extRoot = context.asAbsolutePath('.');
-		
+
 		const ws = getCurrentWorkspace()
 		console.log(ws.name);
+		const res = await ui.showQuickPick(['a', 'b', 'c'], "Choose a file")
+		console.log(res);
+		const res2 = await ui.showInputBox("a", "b", (text) => "File does not exist")
+		console.log(res2);
 		/*copyFileFromExtensionToWorkspace("main_template.py", "main.py");
 
 		const microbitFolder = await isInWorkspace('microbit/**'); // a folder called microbit with files inside
@@ -137,24 +142,23 @@ function activate(context) {
 
 	// Flash sketch
 	let flashSketchCmd = vscode.commands.registerCommand('extension.flash-sketch', async function () {
-		
+
 		// check if main.py (entry point) is present
-		if (! await isInWorkspace("main.py")){
+		if (! await isInWorkspace("main.py")) {
 			vscode.window.showErrorMessage('Could not locate main.py');
 			return;
 		}
 
-		try{
+		try {
 			copyFilesFromWorkspaceToDevice("*.{py}")
-		}catch (e)
-		{
+		} catch (e) {
 			vscode.window.showErrorMessage('Could not upload the sketch on the micro:bit');
 		}
 
 		vscode.window.showInformationMessage('Sketch succssfully uploaded');
 	});
 
-	
+
 	context.subscriptions.push(initCmd);
 	context.subscriptions.push(initMicrobit);
 	context.subscriptions.push(flashSketchCmd);
