@@ -61,27 +61,66 @@ function activate(context) {
 
 
 
+	// copy files
+	async function copyFilesFromWorkspaceToDevice (srcPattern){
+	
+		const document = vscode.window.activeTextEditor.document;
+		const workspace = vscode.workspace.getWorkspaceFolder(document.uri);
 
-	// Init microbit
-	let initCmd = vscode.commands.registerCommand('extension.init-sketch', async function () {
-		
-		const loc = context.asAbsolutePath('.');
-		
+		// get all the python files in the workspace and copy them to the microbit
+		const workspaceFiles = await vscode.workspace.findFiles(
+			new vscode.RelativePattern(workspace, `${srcPattern}`)
+		);
+
+		for (let { path } of workspaceFiles) {
+			// it might throw an error
+			await runWithPython(`${ufs} put ${path}`);
+		}
+	}
+
+	
+	async function copyFileFromExtensionToWorkspace (srcFilename, destFilename, overwrite= false){
 		const document = vscode.window.activeTextEditor.document;
 		const workspace = vscode.workspace.getWorkspaceFolder(document.uri);
 		
 		const main = await isInWorkspace("main.py");
-		if (!main){
-				const src = vscode.Uri.file(path.join(loc, "main_template.py"));
-				const dest = vscode.Uri.file(path.join(workspace.uri.path, "main.py"));
-				vscode.workspace.fs.copy(src, dest, { "overwrite": false });
+		if (main && !overwrite) return;
+
+		const src = vscode.Uri.file(path.join(extRoot, srcFilename));
+		const dest = vscode.Uri.file(path.join(workspace.uri.path, destFilename));
+		vscode.workspace.fs.copy(src, dest, { "overwrite": overwrite });
+	}
+
+
+	function getCurrentWorkspace(){
+
+		const openDocumnet = vscode.window.activeTextEditor.document;
+		if (openDocumnet)
+			return vscode.workspace.getWorkspaceFolder(openDocumnet.uri);
+		
+		// else
+		const workspaces = vscode.workspace.workspaceFolders;
+		if (workspaces.length==1) return workspaces[0];
+		else {
+			const selection = vscode.window.showWorkspaceFolderPick()
 		}
-			
+	
+	}
+
+
+	// Init microbit
+	let initCmd = vscode.commands.registerCommand('extension.init-sketch', async function () {
+		
+		// const extRoot = context.asAbsolutePath('.');
+		
+		const ws = getCurrentWorkspace()
+		console.log(ws.name);
+		/*copyFileFromExtensionToWorkspace("main_template.py", "main.py");
 
 		const microbitFolder = await isInWorkspace('microbit/**'); // a folder called microbit with files inside
 		if (!microbitFolder){
 			clone("https://github.com/makinteract/microbit.git", path.join(workspace.uri.path, "microbit"))
-		}	
+		}	*/
 	});
 
 
@@ -104,25 +143,18 @@ function activate(context) {
 			vscode.window.showErrorMessage('Could not locate main.py');
 			return;
 		}
-		const document = vscode.window.activeTextEditor.document;
-		const workspace = vscode.workspace.getWorkspaceFolder(document.uri);
 
-		// get all the python files in the workspace and copy them to the microbit
-		const workspaceFiles = await vscode.workspace.findFiles(
-			new vscode.RelativePattern(workspace, `{*.py}`)
-		);
-
-		for (let { path } of workspaceFiles) {
-			try {
-				await runWithPython(`${ufs} put ${path}`);
-			} catch (e) {
-				vscode.window.showErrorMessage('Could not upload the sketch on the micro:bit');
-				return;
-			}
+		try{
+			copyFilesFromWorkspaceToDevice("*.{py}")
+		}catch (e)
+		{
+			vscode.window.showErrorMessage('Could not upload the sketch on the micro:bit');
 		}
+
 		vscode.window.showInformationMessage('Sketch succssfully uploaded');
 	});
 
+	
 	context.subscriptions.push(initCmd);
 	context.subscriptions.push(initMicrobit);
 	context.subscriptions.push(flashSketchCmd);
