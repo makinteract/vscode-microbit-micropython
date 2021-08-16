@@ -29,31 +29,36 @@
     "Programming Languages"
   ],
   "activationEvents": [
-    "onCommand:extension.init-microbit",
-    "onCommand:extension.init-sketch",
-    "onCommand:extension.flash-sketch",
-    "onCommand:extension.fetch-examples",
+    "onCommand:extension.rmAll",
+    "onCommand:extension.rmFile",
+    "onCommand:extension.flash",
+    "onCommand:extension.flash-micropython",
     "onCommand:extension.load-example",
     "onLanguage:python",
     "onDebug"
   ],
-  "main": "./extension.js",
+  "main": "./src/main.js",
   "contributes": {
     "commands": [
       {
-        "command": "extension.init-sketch",
+        "command": "extension.rmAll",
         "category": "micro-bit-python",
-        "title": "Initialize MicroPython sketch"
+        "title": "Remove all files from micro:bit"
       },
       {
-        "command": "extension.init-microbit",
+        "command": "extension.rmFile",
         "category": "micro-bit-python",
-        "title": "Install MicroPython on micro:bit"
+        "title": "Remove a single file from micro:bit"
       },
       {
-        "command": "extension.flash-sketch",
+        "command": "extension.flash",
         "category": "micro-bit-python",
         "title": "Flash sketch on micro:bit"
+      },
+      {
+        "command": "extension.flash-micropython",
+        "category": "micro-bit-python",
+        "title": "Flash MicroPython environment on micro:bit"
       },
       {
         "command": "extension.fetch-examples",

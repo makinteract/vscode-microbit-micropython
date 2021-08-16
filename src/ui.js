@@ -26,7 +26,7 @@ function vsError(message) {
 async function showQuickPick(itemArray, placeHolder) {
   const result = await vscode.window.showQuickPick(itemArray, {
     placeHolder,
-    onDidSelectItem: (item) => item,
+    onDidSelectItem: (item) => item
   });
   return result;
 }
