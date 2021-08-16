@@ -71,17 +71,8 @@ async function getCurrentWorkspace() {
 }
 
 
-async function isFileInWorkspace(filename, workspace) {
-	// get all the python files in the workspace and copy them to the microbit
-	const file = await vscode.workspace.findFiles(
-		filename
-	);
-	return file.length > 0;
-}
 
 async function isFileInCurrentWorkspace(filename) {
-	const workspace = getCurrentWorkspace();
-
 	// get all the python files in the workspace and copy them to the microbit
 	const file = await vscode.workspace.findFiles(
 		filename
@@ -108,14 +99,16 @@ async function getFilesInCurrentWorkspace(pattern = "*") {
 
 
 
+
+
+
 module.exports = {
 	runWithPython,
 	getWorkspace,
 	getOpenWorkspace,
 	getCurrentWorkspace,
 	getFilesInCurrentWorkspace,
-	isFileInCurrentWorkspace,
-	isFileInWorkspace
+	isFileInCurrentWorkspace
 };
 
 
