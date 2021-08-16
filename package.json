@@ -29,10 +29,12 @@
     "Programming Languages"
   ],
   "activationEvents": [
+    "onCommand:extension.init",
+    "onCommand:extension.flash-micropython",
+    "onCommand:extension.flash",
     "onCommand:extension.rmAll",
     "onCommand:extension.rmFile",
-    "onCommand:extension.flash",
-    "onCommand:extension.flash-micropython",
+    "onCommand:extension.fetch-examples",
     "onCommand:extension.load-example",
     "onLanguage:python",
     "onDebug"
@@ -40,6 +42,21 @@
   "main": "./src/main.js",
   "contributes": {
     "commands": [
+      {
+        "command": "extension.init",
+        "category": "micro-bit-python",
+        "title": "Initialize the workspace"
+      },
+      {
+        "command": "extension.flash-micropython",
+        "category": "micro-bit-python",
+        "title": "Flash MicroPython environment on micro:bit"
+      },
+      {
+        "command": "extension.flash",
+        "category": "micro-bit-python",
+        "title": "Flash sketch on micro:bit"
+      },
       {
         "command": "extension.rmAll",
         "category": "micro-bit-python",
@@ -49,16 +66,6 @@
         "command": "extension.rmFile",
         "category": "micro-bit-python",
         "title": "Remove a single file from micro:bit"
-      },
-      {
-        "command": "extension.flash",
-        "category": "micro-bit-python",
-        "title": "Flash sketch on micro:bit"
-      },
-      {
-        "command": "extension.flash-micropython",
-        "category": "micro-bit-python",
-        "title": "Flash MicroPython environment on micro:bit"
       },
       {
         "command": "extension.fetch-examples",
@@ -103,6 +110,7 @@
     "vscode-test": "^1.5.0"
   },
   "dependencies": {
+    "fs": "0.0.1-security",
     "git-clone": "^0.1.0",
     "path": "^0.12.7"
   }

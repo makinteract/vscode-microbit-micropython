@@ -2,11 +2,12 @@ const vscode = require('vscode')
 const path = require('path')
 const clone = require('git-clone');
 const extension = require('./extension')
-const ui = require('./ui')
+const ui = require('./ui');
+const { readdirSync, stat } = require('fs');
 
 
 const EXAMPLES_REPO = "https://github.com/makinteract/micropython-examples";
-
+const MICROBIT_LIBS = "https://github.com/makinteract/microbit.git";
 
 
 // this method is called when your extension is activated
@@ -97,33 +98,28 @@ function activate(context) {
     // is main.py included?
     const files = workspaceFiles.map(({ path }) => pathToName(path));
     if (!files.includes("main.py")) {
-      ui.vsError("Can't find main.py");
-      outError("Can't find main.py");
-      return
+      throw new Error("Can't find main.py");
     }
 
-    // flash files
-    try {
-      // Flash them one by one
-      for (let { path } of workspaceFiles) {
-        // it might throw an error
-        await ufs(`put ${path}`);
-      }
-      const fileNames = files.join('\n');
-      ui.vsInfo("Files successfully uploaded");
-      outInfo(`Files copied on micro:bit:\n${fileNames}`);
-    } catch (e) {
-      ui.vsError("Could not upload files to micro:bit");
-      outError(e);
+    // Flash files one by one
+    for (let { path } of workspaceFiles) {
+      // it might throw an error
+      await ufs(`put ${path}`);
     }
+    const fileNames = files.join('\n');
+    ui.vsInfo("Files successfully uploaded");
+    outInfo(`Files copied on micro:bit:\n${fileNames}`);
   }
+
 
   async function getFilesOnMicrobit() {
     const { stdout: filenames, stderr: err } = await ufs("ls");
 
+    if (filenames.includes("Could not find micro:bit")) {
+      throw new Error("Could not find micro:bit");
+    }
     if (err) {
-      outError(err);
-      return;
+      throw new Error(err)
     }
 
     const files = filenames.split(" ").filter(name => name.length > 0);
@@ -133,34 +129,87 @@ function activate(context) {
   async function getFileSelectionFromUser(filesAvailable) {
     const fileToRemove = await ui.showQuickPick(filesAvailable, '')
 
-    if (!fileToRemove) throw new Error("No file selected");
+    if (!fileToRemove) throw new Error("No input specified");
     return [fileToRemove];
   }
 
   async function removeFilesFromMicrobit(removeAll = false) {
-    try {
-      const files = await getFilesOnMicrobit();
-      let filesToRemove = files;
 
-      // ask user to select which file to remove
-      if (!removeAll) filesToRemove = await getFileSelectionFromUser(files);
-      if (!filesToRemove || filesToRemove.length == 0) {
-        ui.vsError("No files to remove");
-        outInfo("No files on micro:bit or no input specified");
-        return;
-      }
-
-      // remove the files
-      for (let file of filesToRemove) {
-        await ufs(`rm ${file}`);
-      }
-      const names = filesToRemove.join(', ');
-      ui.vsInfo("Files successfully removed");
-      outInfo(`Files ${names} removed from micro:bit`);
-
-    } catch (e) {
-      outError(e)
+    // may throw an exception
+    let filesToRemove = await getFilesOnMicrobit();
+    // Check whether these files are valid (non-empty list)
+    if (!filesToRemove || filesToRemove.length == 0) {
+      throw new Error("No files on micro:bit");
     }
+
+    if (!removeAll) filesToRemove = await getFileSelectionFromUser(filesToRemove);
+
+    // remove the files
+    for (let file of filesToRemove) {
+      await ufs(`rm ${file}`);
+    }
+    const names = filesToRemove.join(', ');
+    ui.vsInfo("Files successfully removed");
+    outInfo(`Files ${names} removed from micro:bit`);
+  }
+
+  async function initWorkspace() {
+    let workspace = await extension.getCurrentWorkspace();
+
+    if (!workspace) {
+      // select a workspace
+      workspace = await vscode.commands.executeCommand("vscode.openFolder");
+      // this will refresh VScode
+    }
+
+    // clone microbit repo if not already there
+    const microbitFolder = await extension.isFileInCurrentWorkspace('microbit/**'); // a folder called microbit with files inside
+    if (!microbitFolder) {
+      clone(MICROBIT_LIBS, path.join(workspace.uri.path, "microbit"))
+    }
+
+    // pick from template
+    const example = await getExampleUri();
+    if (example) {
+      console.log(example);
+      //   const src = vscode.Uri.file(path.join(extensionRootPath(), "examples", example));
+      //  const dest = vscode.Uri.file(path.join(workspace.uri.path, ));
+
+    }
+
+    // if main not there, alert user
+    const main = await extension.isFileInCurrentWorkspace('main.py');
+    if (main) ui.vsInfo("Sketch ready");
+    else ui.vsInfo("Remember to create a main.py file");
+  }
+
+  const getDirectories = source =>
+    readdirSync(source, { withFileTypes: true })
+      .filter(dirent => dirent.isDirectory())
+      .map(dirent => dirent.name)
+      .filter(name => !name.startsWith('.'));
+
+
+  // HERE
+  async function getExampleUri() {
+    let examplesDir = "";
+    try {
+      examplesDir = path.join(extensionRootPath(), "examples");
+    } catch (e) {
+      throw new Error("Fetch the examples first");
+    }
+    // stat(examplesDir, function (err, stat) {
+    //   if (err == null) {
+    //   }
+    // });
+
+    const list = getDirectories(examplesDir);
+    const pick = await ui.showQuickPick(list, 'empty');
+    if (pick) {
+      const uri = vscode.Uri.joinPath(vscode.Uri.file(examplesDir), pick);
+      return uri;
+    }
+    return undefined;
   }
 
 
@@ -180,33 +229,65 @@ function activate(context) {
 
   // COMMANDS
 
+  const init = vscode.commands.registerCommand('extension.init', async function () {
+    try {
+      await initWorkspace();
+    } catch (e) {
+      ui.vsError(`${e}`);
+      outError(e);
+    }
+  });
+
+
   const flashMicropython = vscode.commands.registerCommand('extension.flash-micropython', async function () {
     try {
       await uFlash();
       ui.vsInfo("MicroPython successfully installed");
       outInfo("MicroPython successfully installed");
     } catch (e) {
-      ui.vsError("Error: check console for info");
+      ui.vsError(`${e}`);
       outError(e);
     }
   });
 
   const rmFile = vscode.commands.registerCommand('extension.rmFile', async function () {
-    await removeFilesFromMicrobit()
+    try {
+      await removeFilesFromMicrobit();
+    } catch (e) {
+      ui.vsError(`${e}`);
+      outError(e);
+    }
   });
 
   const rmAll = vscode.commands.registerCommand('extension.rmAll', async function () {
-    await removeFilesFromMicrobit(true)
+    try {
+      await removeFilesFromMicrobit(true);
+    } catch (e) {
+      ui.vsError(`${e}`);
+      outError(e);
+    }
   });
 
   const flash = vscode.commands.registerCommand('extension.flash', async function () {
-    await flashFilesToMicrobit();
+    try {
+      await flashFilesToMicrobit();
+    } catch (e) {
+      ui.vsError(`${e}`);
+      outError(e);
+    }
   });
 
-  const fetchExamples = vscode.commands.registerCommand('extension.fetch-examples', async function () {
+  const fetchExmls = vscode.commands.registerCommand('extension.fetch-examples', async function () {
+    const todelete = vscode.Uri.joinPath(extensionUri(), "examples");
 
+    // delete the existing folder
+    try {
+      await vscode.workspace.fs.delete(todelete, { recursive: true, useTrash: true });
+    } catch (e) {
+      console.log(`Folder ${todelete.toString()} not found`);
+    }
 
-    vscode.workspace.fs.delete(Uri.joinPath(extensionUri(), "examples");
+    // Fetch from github
     const root = extensionRootPath();
     clone(EXAMPLES_REPO, path.join(root, "examples"));
   });
@@ -215,37 +296,17 @@ function activate(context) {
 
 
 
-  // Init microbit
-  let initCmd = vscode.commands.registerCommand('extension.init-sketch', async function () {
-
-
-    // const extRoot = context.asAbsolutePath('.');
-
-    // const ws = getCurrentWorkspace()
-    // console.log(ws.name);
-    // const res = await ui.showQuickPick(['a', 'b', 'c'], "Choose a file")
-    // console.log(res);
-    // const res2 = await ui.showInputBox("a", "b", (text) => "File does not exist")
-    // console.log(res2);
-
-
-    // copyFileFromExtensionToWorkspace("main_template.py", "main.py");
-
-    // const microbitFolder = await isInWorkspace('microbit/**'); // a folder called microbit with files inside
-    // if (!microbitFolder){
-    //   clone("https://github.com/makinteract/microbit.git", path.join(workspace.uri.path, "microbit"))
-    // }
-  });
 
 
   // Setup MicroPython
 
 
+  context.subscriptions.push(init);
+  context.subscriptions.push(flashMicropython);
+  context.subscriptions.push(flash);
   context.subscriptions.push(rmAll);
   context.subscriptions.push(rmFile);
-  context.subscriptions.push(flash);
-  context.subscriptions.push(flashMicropython);
-  context.subscriptions.push(fetchExamples);
+  context.subscriptions.push(fetchExmls);
 }
 
 // this method is called when your extension is deactivated
