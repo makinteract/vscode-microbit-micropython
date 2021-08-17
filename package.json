@@ -1,6 +1,6 @@
 {
   "name": "micro-bit-python",
-  "displayName": "micro:bit MicroPython",
+  "displayName": "micro:bit Python",
   "description": "Easy MicroPython for micro:bit with VScode",
   "version": "0.0.1",
   "preview": true,
@@ -44,37 +44,37 @@
     "commands": [
       {
         "command": "extension.init",
-        "category": "micro-bit-python",
+        "category": "micro:bit-python",
         "title": "Initialize the workspace"
       },
       {
         "command": "extension.flash-micropython",
-        "category": "micro-bit-python",
+        "category": "micro:bit-python",
         "title": "Flash MicroPython environment on micro:bit"
       },
       {
         "command": "extension.flash",
-        "category": "micro-bit-python",
+        "category": "micro:bit-python",
         "title": "Flash sketch on micro:bit"
       },
       {
         "command": "extension.rmAll",
-        "category": "micro-bit-python",
+        "category": "micro:bit-python",
         "title": "Remove all files from micro:bit"
       },
       {
         "command": "extension.rmFile",
-        "category": "micro-bit-python",
+        "category": "micro:bit-python",
         "title": "Remove a single file from micro:bit"
       },
       {
         "command": "extension.fetch-examples",
-        "category": "micro-bit-python",
+        "category": "micro:bit-python",
         "title": "Fetch examples from online"
       },
       {
         "command": "extension.load-example",
-        "category": "micro-bit-python",
+        "category": "micro:bit-python",
         "title": "Load an example"
       }
     ],

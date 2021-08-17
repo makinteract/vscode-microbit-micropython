@@ -1,77 +1,158 @@
 // General utilities for the extension
 const vscode = require('vscode');
 const path = require('path')
-const util = require('util');
-const clone = require('git-clone');
-const { ListFormat } = require('typescript');
-const exec = util.promisify(require('child_process').exec);
+
+const { python, PythonException } = require('./python');
+// const util = require('util');
+// const clone = require('git-clone');
+
+// Globals
+const EXAMPLES_REPO = "https://github.com/makinteract/micropython-examples";
+const MICROBIT_LIBS_REPO = "https://github.com/makinteract/microbit.git";
+const EXTENSION_ID = "MAKinteract.micro-bit-python";
 
 
-// Globals to determine which python version is installed
-let python2 = true;
-let python3 = true;
+
 
 /**
- * 
- * @param {String} command - command to run with python
- * @returns 
+ * Get path where extension is stored in teh filesystem
+ * @returns - path of extension root folder
  */
-async function runWithPython(command) {
-	// try with python 3
-	if (python3) {
-		try {
-			const { stdout, stderr } = await exec(`python3 ${command}`)
-			return { stdout, stderr };
-		} catch (e) {
-			// python not found
-			python3 = false;
-		}
-	}
-
-	// try with python 2
-	if (python2) {
-		try {
-			const { stdout, stderr } = await exec(`python ${command}`)
-			return { stdout, stderr };
-		} catch (e) {
-			python2 = false;
-			throw e;
-		}
-	}
-
-	// none found
-	throw new Error("Could not exectute command");
+function extensionRootPath() {
+	return vscode.extensions.getExtension(EXTENSION_ID).extensionPath;
 }
 
+/**
+ * Get URI of extension folder
+ * @returns - URI of extension folder
+ */
+function extensionUri() {
+	return vscode.extensions.getExtension(EXTENSION_ID).extensionUri;
+}
 
+/**
+ * Get the path of the tools folder
+ * @returns - path of tools folder
+ */
+function toolsPath() {
+	const extRoot = extensionRootPath();
+	return path.join(extRoot, "tools");
+}
+
+/**
+ * Get workspace URI given document as input
+ * @param {*} openDocument - the selected document
+ * @returns - the workspace URI or undefined if the document parameters was invalid
+ */
 function getWorkspace(openDocument) {
 	if (!openDocument) return undefined;
 	const workspace = vscode.workspace.getWorkspaceFolder(openDocument.uri);
 	return workspace;
 }
 
+/**
+ * Get workspace URI given current open document as input
+ * @returns - the current workspace URI or undefined if no document is open
+ */
 function getOpenWorkspace() {
 	const document = vscode.window.activeTextEditor.document;
 	return getWorkspace(document);
 }
 
+/**
+ * Get current workspace
+ * @returns - return the current workspace 1) if any document is open
+ * 2) else if only one workspace is open, return that one
+ * 3) else if multiple workspaces are open ask the user to choose
+ * 4) else if no workspace is open, ask user to pick one
+ */
 async function getCurrentWorkspace() {
+	// 1) a document is open
 	const openDocumnet = vscode.window.activeTextEditor?.document;
 	if (openDocumnet)
 		return getOpenWorkspace();
 
 	// else get all workspaces
 	const workspaces = vscode.workspace.workspaceFolders;
-	// if there is only one open, return it
 
+	// 2) if there is only one open, return it
 	if (workspaces?.length == 1) return workspaces[0];
-	// else no workspaces or > 1, therfore ask the user to pick one
+
+	// 3) else multiple workspaces, therfore ask the user to pick one
 	const selection = await vscode.window.showWorkspaceFolderPick()
-	return selection;
+	if (selection) return selection;
+
+	// 4) else if no workspace is open, ask user to open one
+	await vscode.commands.executeCommand("vscode.openFolder");
+	// this will refresh VScode
+}
+
+/**
+ * Get the files in the workspace
+ * @param {String} pattern - a pattern describing the files to pick (defaul is all '*')
+ * @returns - teh files in the workspace
+ */
+async function getFilesInCurrentWorkspace(pattern = "*") {
+	const workspace = await getCurrentWorkspace();
+	// the workspace is guaranteed to exist
+
+	// get all the files matched by the pattern in the workspace and copy them to the microbit
+	const workspaceFiles = await vscode.workspace.findFiles(
+		new vscode.RelativePattern(workspace, pattern)
+	);
+	return workspaceFiles;
+}
+
+/**
+	 * Get the base name of a file, given 
+	 * @param {String} filepath - the path from which to extract the file name
+	 * @returns 
+	 */
+function pathToName(filepath) {
+	const filename = path.parse(filepath).base;
+	return filename;
+}
+
+
+function assertFileIsIncluded(filename, fileList) {
+	const files = fileList.map(({ path }) => pathToName(path));
+	if (!files.includes(filename)) {
+		throw new Error(`Can't find file ${filename}`);
+	}
 }
 
 
 
+
+
+/**
+ * Run the uflash python script (may throw an exception)
+ * @param {String} params - string with parameters passed to "python uflash.py"
+ * @returns - stdout and sterr from python command
+ */
+async function uflash(params = "") {
+	const tools = toolsPath();
+	const uflash = path.join(tools, "uflash-master", "uflash.py");
+	const { stdout, stderr } = await python.run(`${uflash} ${params}`)
+	return { stdout, stderr };
+}
+
+/**
+ * Run the ufs python script (may throw an exception)
+ * @param {String} params - string with parameters pased to "pyton ufs.py"
+ * @returns - stdout and sterr from python command
+ */
+async function ufs(params = "") {
+	const tools = toolsPath();
+	const ufs = path.join(tools, "microfs-master", "ufs.py");
+	const { stdout, stderr } = await python.run(`${ufs} ${params}`);
+	return { stdout, stderr };
+}
+
+
+
+
+/*
 async function isFileInCurrentWorkspace(filename) {
 	// get all the python files in the workspace and copy them to the microbit
 	const file = await vscode.workspace.findFiles(
@@ -80,43 +161,35 @@ async function isFileInCurrentWorkspace(filename) {
 	return file.length > 0;
 }
 
-/**
- * 
- * @param {String} pattern - pattern to find files. Default is '*' = all
- * @returns - the files in the workspace
- */
-async function getFilesInCurrentWorkspace(pattern = "*") {
-	const workspace = await getCurrentWorkspace();
 
-	if (!workspace) return []; // no files
-
-	// get all the [python] files in the workspace and copy them to the microbit
-	const workspaceFiles = await vscode.workspace.findFiles(
-		new vscode.RelativePattern(workspace, pattern)
-	);
-	return workspaceFiles;
-}
-
+*/
 
 
 
 
 
 module.exports = {
-	runWithPython,
+	uflash,
+	ufs,
+	extensionRootPath,
+	extensionUri,
+	toolsPath,
 	getWorkspace,
 	getOpenWorkspace,
 	getCurrentWorkspace,
 	getFilesInCurrentWorkspace,
-	isFileInCurrentWorkspace
+	assertFileIsIncluded
+	// runWithPython,
+	// getWorkspace,
+	// getOpenWorkspace,
+	// getCurrentWorkspace,
+	// getFilesInCurrentWorkspace,
+	// isFileInCurrentWorkspace
 };
 
 
 
 
-
-// const ui = require('./ui');
-// 
 
 // // this method is called when your extension is activated
 // // your extension is activated the very first time the command is executed

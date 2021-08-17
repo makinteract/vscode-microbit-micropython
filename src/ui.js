@@ -48,10 +48,35 @@ async function showInputBox(value, placeHolder, validationFn) {
 }
 
 
+// Output command line
+
+const output = vscode.window.createOutputChannel("micro:bit");
+
+/**
+ * Output info on console
+ * @param {String} msg - the message to output
+ */
+function outInfo(msg) {
+  const date = `[${new Date()}]`;
+  output.appendLine(`SUCCESS ${date}\n${msg}\n`);
+}
+
+/**
+ * Output error on console
+ * @param {String} msg - the message to output
+ */
+function outError(msg) {
+  const date = `[${new Date()}]`;
+  output.appendLine(`ERROR ${date}\n${msg}\n`);
+}
+
+
 
 module.exports = {
   vsInfo,
   vsError,
   showQuickPick,
-  showInputBox
+  showInputBox,
+  outInfo,
+  outError
 };
