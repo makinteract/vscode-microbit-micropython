@@ -74,17 +74,29 @@ function activate(context) {
     return { stdout, stderr };
   }
 
-
+  /**
+   * Output info on console
+   * @param {String} msg - the message to output
+   */
   function outInfo(msg) {
     const date = `[${new Date()}]`;
     output.appendLine(`SUCCESS ${date}\n${msg}\n`);
   }
 
+  /**
+   * Output error on console
+   * @param {String} msg - the message to output
+   */
   function outError(msg) {
     const date = `[${new Date()}]`;
     output.appendLine(`ERROR ${date}\n${msg}\n`);
   }
 
+  /**
+   * Get the base name of a file, given 
+   * @param {} filepath 
+   * @returns 
+   */
   function pathToName(filepath) {
     const filename = path.parse(filepath).base;
     return filename;
