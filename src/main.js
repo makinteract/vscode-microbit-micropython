@@ -4,14 +4,8 @@ const clone = require('git-clone');
 const extension = require('./extension')
 const ui = require('./ui');
 const { readdirSync, stat } = require('fs');
+const {EXAMPLES_REPO, MICROBIT_LIBS, EXTENSION_ID} = require ('./constants');
 
-
-const EXAMPLES_REPO = "https://github.com/makinteract/micropython-examples";
-const MICROBIT_LIBS = "https://github.com/makinteract/microbit.git";
-
-
-// this method is called when your extension is activated
-// your extension is activated the very first time the command is executed
 
 /**
  * @param {vscode.ExtensionContext} context
@@ -23,21 +17,24 @@ function activate(context) {
   const output = vscode.window.createOutputChannel("micro:bit");
 
   /**
-   * 
-   * @returns - path of extension root
+   * Get path where extension is stored in teh filesystem
+   * @returns - path of extension root folder
    */
   function extensionRootPath() {
     return vscode.extensions.getExtension("MAKinteract.micro-bit-python").extensionPath;
   }
 
+  /**
+   * Get URI of extension folder
+   * @returns - URI of extension folder
+   */
   function extensionUri() {
     return vscode.extensions.getExtension("MAKinteract.micro-bit-python").extensionUri;
   }
 
-
   /**
-   * 
-   * @returns - path of tools
+   * Get the path of the tools folder
+   * @returns - path of tools folder
    */
   function toolsPath() {
     const extRoot = extensionRootPath();
@@ -45,7 +42,16 @@ function activate(context) {
   }
 
   /**
-   * 
+   * Get the path of the examples folder 
+   * @returns - path of examples folder
+   */
+    function toolsPath() {
+      const extRoot = extensionRootPath();
+      return path.join(extRoot, "examples");
+  }
+
+  /**
+   * Run the uflash python script
    * @param {String} params - string with parameters passed to "python uflash.py"
    * @returns - stdout and sterr from python command
    */
@@ -57,7 +63,7 @@ function activate(context) {
   }
 
   /**
-   * 
+   * Run the ufs python script
    * @param {String} params - string with parameters pased to "pyton ufs.py"
    * @returns - stdout and sterr from python command
    */
