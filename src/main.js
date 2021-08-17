@@ -3,14 +3,19 @@ const vscode = require('vscode')
 // const clone = require('git-clone');
 const ui = require('./ui');
 // const { readdirSync, stat } = require('fs');
-// const { EXAMPLES_REPO, MICROBIT_LIBS, EXTENSION_ID } = require('./constants');
 const { uflash,
   ufs,
   getCurrentWorkspace,
   getFilesInCurrentWorkspace,
-  assertFileIsIncluded } = require('./extension')
+  assertFileIsIncluded,
+  listFilesOnMicrobit,
+  removeFilesFromMicrobit,
+  getFileFromMicrobit
+} = require('./extension')
 
 
+
+// const pipeAsync =  async (...fns) => async (x) => await fns.reduce( async (v, f) => await f(v), x);
 
 
 
@@ -51,6 +56,48 @@ function activate(context) {
     }
   });
 
+
+  const rmAll = vscode.commands.registerCommand('extension.rmAll', async function () {
+    try{
+      const files = await listFilesOnMicrobit();
+      await removeFilesFromMicrobit (files);
+    } catch (e) {
+      ui.vsError(`${e}`);
+      ui.outError(e);
+    }
+  });
+
+
+  const rmFile = vscode.commands.registerCommand('extension.rmFile', async function () {
+    try {
+      const files = await listFilesOnMicrobit();
+      const fileToRemove = await ui.showQuickPick(files, '')
+
+      if (!fileToRemove) throw new Error("No input specified");
+      await removeFilesFromMicrobit ([fileToRemove]);
+    } catch (e) {
+      ui.vsError(`${e}`);
+      ui.outError(e);
+    }
+  });
+
+
+  const getFile = vscode.commands.registerCommand('extension.getFile', async function () {
+    try {
+      const workspace = await getCurrentWorkspace();
+      const files = await listFilesOnMicrobit();
+      const fileSelected = await ui.showQuickPick(files, '')
+      if (!fileSelected) throw new Error("No input specified");
+      
+      getFileFromMicrobit(fileSelected, workspace.uri);
+
+    } catch (e) {
+      ui.vsError(`${e}`);
+      ui.outError(e);
+    }
+  });
+
+
   // COMMANDS
   /*
     const init = vscode.commands.registerCommand('extension.init', async function () {
@@ -64,23 +111,9 @@ function activate(context) {
   
   
     
-    const rmFile = vscode.commands.registerCommand('extension.rmFile', async function () {
-      try {
-        await removeFilesFromMicrobit();
-      } catch (e) {
-        ui.vsError(`${e}`);
-        outError(e);
-      }
-    });
+    
   
-    const rmAll = vscode.commands.registerCommand('extension.rmAll', async function () {
-      try {
-        await removeFilesFromMicrobit(true);
-      } catch (e) {
-        ui.vsError(`${e}`);
-        outError(e);
-      }
-    });
+    
   
   
   
@@ -110,14 +143,17 @@ function activate(context) {
   
     context.subscriptions.push(init);
     
-    context.subscriptions.push(flash);
-    context.subscriptions.push(rmAll);
-    context.subscriptions.push(rmFile);
+    
     context.subscriptions.push(fetchExmls);
-  
+    
     */
+   
+   context.subscriptions.push(flashMicropython);
+   context.subscriptions.push(flash);
+   context.subscriptions.push(rmAll);
+   context.subscriptions.push(rmFile);
+   context.subscriptions.push(getFile);
 
-  context.subscriptions.push(flashMicropython);
 }
 
 // this method is called when your extension is deactivated

@@ -34,6 +34,7 @@
     "onCommand:extension.flash",
     "onCommand:extension.rmAll",
     "onCommand:extension.rmFile",
+    "onCommand:extension.getFile",
     "onCommand:extension.fetch-examples",
     "onCommand:extension.load-example",
     "onLanguage:python",
@@ -66,6 +67,11 @@
         "command": "extension.rmFile",
         "category": "micro:bit-python",
         "title": "Remove a single file from micro:bit"
+      },
+      {
+        "command": "extension.getFile",
+        "category": "micro:bit-python",
+        "title": "Copy a file from micro:bit"
       },
       {
         "command": "extension.fetch-examples",

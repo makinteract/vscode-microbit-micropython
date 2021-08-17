@@ -28,7 +28,7 @@ async function showQuickPick(itemArray, placeHolder) {
     placeHolder,
     onDidSelectItem: (item) => item
   });
-  return result;
+  return result.trim();
 }
 
 /**

@@ -23,46 +23,28 @@
 
 
 
-  async function getListFilesOnMicrobit() {
-    const { stdout: filenames, stderr: err } = await ufs("ls");
 
-    if (filenames.includes("Could not find micro:bit")) {
-      throw new Error("Could not find micro:bit");
-    }
-    if (err) {
-      throw new Error(err)
-    }
 
-    const files = filenames.split(" ").filter(name => name.length > 0);
-    return files;
-  }
 
-  async function getFileSelectionFromUser(filesAvailable) {
-    const fileToRemove = await ui.showQuickPick(filesAvailable, '')
+  // async function removeFilesFromMicrobit(removeAll = false) {
 
-    if (!fileToRemove) throw new Error("No input specified");
-    return [fileToRemove];
-  }
+  //   // may throw an exception
+  //   let filesToRemove = await getFilesOnMicrobit();
+  //   // Check whether these files are valid (non-empty list)
+  //   if (!filesToRemove || filesToRemove.length == 0) {
+  //     throw new Error("No files on micro:bit");
+  //   }
 
-  async function removeFilesFromMicrobit(removeAll = false) {
+  //   if (!removeAll) filesToRemove = await getFileSelectionFromUser(filesToRemove);
 
-    // may throw an exception
-    let filesToRemove = await getFilesOnMicrobit();
-    // Check whether these files are valid (non-empty list)
-    if (!filesToRemove || filesToRemove.length == 0) {
-      throw new Error("No files on micro:bit");
-    }
-
-    if (!removeAll) filesToRemove = await getFileSelectionFromUser(filesToRemove);
-
-    // remove the files
-    for (let file of filesToRemove) {
-      await ufs(`rm ${file}`);
-    }
-    const names = filesToRemove.join(', ');
-    ui.vsInfo("Files successfully removed");
-    outInfo(`Files ${names} removed from micro:bit`);
-  }
+  //   // remove the files
+  //   for (let file of filesToRemove) {
+  //     await ufs(`rm ${file}`);
+  //   }
+  //   const names = filesToRemove.join(', ');
+  //   ui.vsInfo("Files successfully removed");
+  //   outInfo(`Files ${names} removed from micro:bit`);
+  // }
 
   async function initWorkspace() {
     let workspace = await extension.getCurrentWorkspace();

@@ -1,8 +1,10 @@
 // General utilities for the extension
 const vscode = require('vscode');
-const path = require('path')
+const path = require('path');
+const os = require ('os');
 
 const { python, PythonException } = require('./python');
+const { openStdin } = require('process');
 // const util = require('util');
 // const clone = require('git-clone');
 
@@ -10,7 +12,6 @@ const { python, PythonException } = require('./python');
 const EXAMPLES_REPO = "https://github.com/makinteract/micropython-examples";
 const MICROBIT_LIBS_REPO = "https://github.com/makinteract/microbit.git";
 const EXTENSION_ID = "MAKinteract.micro-bit-python";
-
 
 
 
@@ -114,6 +115,11 @@ function pathToName(filepath) {
 }
 
 
+/**
+ * Assert whether a file is included in a list of files
+ * @param {String} filename - the file name
+ * @param {vscode.Uri[]} fileList - the list of names
+ */
 function assertFileIsIncluded(filename, fileList) {
 	const files = fileList.map(({ path }) => pathToName(path));
 	if (!files.includes(filename)) {
@@ -121,6 +127,34 @@ function assertFileIsIncluded(filename, fileList) {
 	}
 }
 
+
+async function listFilesOnMicrobit() {
+    const { stdout: filenames, stderr: err } = await ufs("ls");
+
+	if (err) {
+      throw new Error(err)
+    }
+
+    const files = filenames.split(" ").filter(name => name.length > 0);
+    return files;
+  }
+
+async function removeFilesFromMicrobit(filesToRemove) {
+    if (!filesToRemove || filesToRemove.length == 0) {
+      throw new Error("No files specified for deletion");
+    }
+
+    // remove the specified files
+    for (let file of filesToRemove) {
+      await ufs(`rm ${file}`);
+    }
+  }
+
+  async function getFileFromMicrobit(filename, destinationUri){
+	  // might throw an exception if the file does not exist
+	  const dest = path.join(destinationUri.path, filename);
+	  await ufs (`get ${filename} ${dest}`);
+  }
 
 
 
@@ -146,23 +180,28 @@ async function ufs(params = "") {
 	const tools = toolsPath();
 	const ufs = path.join(tools, "microfs-master", "ufs.py");
 	const { stdout, stderr } = await python.run(`${ufs} ${params}`);
-	return { stdout, stderr };
+	// Handle errors
+	if (stdout.includes("Could not find micro:bit")) {
+		throw new Error("Could not find micro:bit");
+	}
+	else if (stdout.includes("Errno 13")){
+		if (os.platform() == "linux")
+			throw new Error(`Could not open serial port. Do you have permissions?\n
+							 Try run "sudo chmod 666 /dev/ttyACM0"`);
+
+		else	
+			throw new Error("Could not open serial port.");
+	}
+	else if (stdout.includes("Error"))
+		throw new Error (stdout);
+	else
+		return {stdout, stderr};
 }
 
 
 
 
-/*
-async function isFileInCurrentWorkspace(filename) {
-	// get all the python files in the workspace and copy them to the microbit
-	const file = await vscode.workspace.findFiles(
-		filename
-	);
-	return file.length > 0;
-}
 
-
-*/
 
 
 
@@ -178,7 +217,10 @@ module.exports = {
 	getOpenWorkspace,
 	getCurrentWorkspace,
 	getFilesInCurrentWorkspace,
-	assertFileIsIncluded
+	assertFileIsIncluded,
+	listFilesOnMicrobit,
+	removeFilesFromMicrobit,
+	getFileFromMicrobit
 	// runWithPython,
 	// getWorkspace,
 	// getOpenWorkspace,
