@@ -1,16 +1,16 @@
 // General utilities for the extension
-const vscode = require('vscode');
-const path = require('path');
-const os = require ('os');
+const vscode = require('vscode')
+const path = require('path')
+const os = require ('os')
+const fs = require ('fs')
+const clone = require('git-clone')
+const internetAvailable = require("internet-available")
 
-const { python, PythonException } = require('./python');
-const { openStdin } = require('process');
-// const util = require('util');
-// const clone = require('git-clone');
+
+const { python, PythonException } = require('./python')
+const { openStdin } = require('process')
 
 // Globals
-const EXAMPLES_REPO = "https://github.com/makinteract/micropython-examples";
-const MICROBIT_LIBS_REPO = "https://github.com/makinteract/microbit.git";
 const EXTENSION_ID = "MAKinteract.micro-bit-python";
 
 
@@ -128,6 +128,10 @@ function assertFileIsIncluded(filename, fileList) {
 }
 
 
+/**
+ * Get a list of all the files stored on the Microbit
+ * @returns list of files
+ */
 async function listFilesOnMicrobit() {
     const { stdout: filenames, stderr: err } = await ufs("ls");
 
@@ -139,6 +143,10 @@ async function listFilesOnMicrobit() {
     return files;
   }
 
+/**
+ * Remove a file from Microbit b yname
+ * @param {String[]} filesToRemove 
+ */
 async function removeFilesFromMicrobit(filesToRemove) {
     if (!filesToRemove || filesToRemove.length == 0) {
       throw new Error("No files specified for deletion");
@@ -150,14 +158,16 @@ async function removeFilesFromMicrobit(filesToRemove) {
     }
   }
 
-  async function getFileFromMicrobit(filename, destinationUri){
+  /**
+   * Get file from Microbit by name and copy it in the destinationUri (overrite)
+   * @param {String} filename - file in Microbit
+   * @param {vscode.Uri} destinationDirUri - destination folder 
+   */
+  async function getFileFromMicrobit(filename, destinationDirUri){
 	  // might throw an exception if the file does not exist
-	  const dest = path.join(destinationUri.path, filename);
+	  const dest = path.join(destinationDirUri.path, filename);
 	  await ufs (`get ${filename} ${dest}`);
   }
-
-
-
 
 /**
  * Run the uflash python script (may throw an exception)
@@ -199,11 +209,53 @@ async function ufs(params = "") {
 }
 
 
+async function deleteFileFromDir (filename, destinationDirUri){
+	const todelete = vscode.Uri.joinPath (destinationDirUri, filename);
+	try {
+		await vscode.workspace.fs.delete(todelete, { recursive: true, useTrash: true });
+	  } catch (e) {
+		console.log(`File/folder ${todelete.toString()} not found`);
+	  }
+}
+
+/**
+ * Check whether an internet connection is available
+ * @param {*} retries - retries, default 2
+ * @param {*} timeout - timeout default 500ms
+ * @returns true/false
+ */
+function isOnline (retries=2, timeout=500){
+	return new Promise ( res => 
+	internetAvailable({
+		timeout,
+		retries,
+	}).then(function(){
+		res (true)
+	}).catch(function(){
+		res(false);
+	}));
+}
+
+/**
+ * Clone repository (assume is online, silent if it fails)
+ * @param {*} reponame - the name/address of the repository
+ * @param {*} targetName - destination folder name
+ * @param {*} destinationDirUri - destination base folder URI
+ */
+async function cloneRepository (reponame, targetName, destinationDirUri){
+	// check whether connected to internet, otherwise throw exception
+	const dir = path.join(destinationDirUri.path, targetName);
+	clone(reponame, dir);
+}
 
 
 
-
-
+async function checkFileExist(filename, dirUri){
+	const check = s => new Promise(r=>fs.access(s, fs.constants.F_OK, e => r(!e)))
+    const loc = path.join (dirUri.path, filename);
+    const result = await check(loc)
+	return result;
+}
 
 
 
@@ -220,13 +272,11 @@ module.exports = {
 	assertFileIsIncluded,
 	listFilesOnMicrobit,
 	removeFilesFromMicrobit,
-	getFileFromMicrobit
-	// runWithPython,
-	// getWorkspace,
-	// getOpenWorkspace,
-	// getCurrentWorkspace,
-	// getFilesInCurrentWorkspace,
-	// isFileInCurrentWorkspace
+	getFileFromMicrobit,
+	deleteFileFromDir,
+	cloneRepository,
+	isOnline,
+	checkFileExist
 };
 
 
@@ -241,27 +291,9 @@ module.exports = {
 //  */
 // function activate(context) {
 
-// 	const extRoot = vscode.extensions.getExtension("MAKinteract.micro-bit-python").extensionPath;
-// 	const uflash = path.join(extRoot, "tools", "uflash-master", "uflash.py")
-// 	const ufs = path.join(extRoot, "tools", "microfs-master", "ufs.py")
-// 	const output = vscode.window.createOutputChannel("micro:bit");
-// 	let python2 = true;
-// 	let python3 = true;
 
 
 
-
-// 	async function isInWorkspace(filename) {
-// 		const document = vscode.window.activeTextEditor.document;
-// 		const workspace = vscode.workspace.getWorkspaceFolder(document.uri);
-
-// 		// get all the python files in the workspace and copy them to the microbit
-// 		const file = await vscode.workspace.findFiles(
-// 			filename
-// 		);
-
-// 		return file.length > 0;
-// 	}
 
 
 
@@ -296,81 +328,9 @@ module.exports = {
 // 	}
 
 
-// 	function getCurrentWorkspace() {
-
-// 		const openDocumnet = vscode.window.activeTextEditor.document;
-// 		if (openDocumnet)
-// 			return vscode.workspace.getWorkspaceFolder(openDocumnet.uri);
-
-// 		// else
-// 		const workspaces = vscode.workspace.workspaceFolders;
-// 		if (workspaces.length == 1) return workspaces[0];
-// 		else {
-// 			const selection = vscode.window.showWorkspaceFolderPick()
-// 		}
-
-// 	}
 
 
-// 	// Init microbit
-// 	let initCmd = vscode.commands.registerCommand('extension.init-sketch', async function () {
-
-// 		// const extRoot = context.asAbsolutePath('.');
-
-// 		const ws = getCurrentWorkspace()
-// 		console.log(ws.name);
-// 		const res = await ui.showQuickPick(['a', 'b', 'c'], "Choose a file")
-// 		console.log(res);
-// 		const res2 = await ui.showInputBox("a", "b", (text) => "File does not exist")
-// 		console.log(res2);
-// 		/*copyFileFromExtensionToWorkspace("main_template.py", "main.py");
-
-// 		const microbitFolder = await isInWorkspace('microbit/**'); // a folder called microbit with files inside
-// 		if (!microbitFolder){
-// 			clone("https://github.com/makinteract/microbit.git", path.join(workspace.uri.path, "microbit"))
-// 		}	*/
-// 	});
 
 
-// 	// Setup MicroPython
-// 	let initMicrobit = vscode.commands.registerCommand('extension.init-microbit', async function () {
-// 		try {
-// 			// run uflas without parameters to install MicroPython on microbit
-// 			await runWithPython(`${uflash}`);
-// 			vscode.window.showInformationMessage('MicroPython correctly installed on micro:bit');
-// 		} catch (e) {
-// 			vscode.window.showErrorMessage('MicroPython could not be installed on micro:bit');
-// 		}
-// 	});
-
-// 	// Flash sketch
-// 	let flashSketchCmd = vscode.commands.registerCommand('extension.flash-sketch', async function () {
-
-// 		// check if main.py (entry point) is present
-// 		if (! await isInWorkspace("main.py")) {
-// 			vscode.window.showErrorMessage('Could not locate main.py');
-// 			return;
-// 		}
-
-// 		try {
-// 			copyFilesFromWorkspaceToDevice("*.{py}")
-// 		} catch (e) {
-// 			vscode.window.showErrorMessage('Could not upload the sketch on the micro:bit');
-// 		}
-
-// 		vscode.window.showInformationMessage('Sketch succssfully uploaded');
-// 	});
 
 
-// 	context.subscriptions.push(initCmd);
-// 	context.subscriptions.push(initMicrobit);
-// 	context.subscriptions.push(flashSketchCmd);
-// }
-
-// // this method is called when your extension is deactivated
-// function deactivate() { }
-
-// module.exports = {
-// 	activate,
-// 	deactivate
-// }

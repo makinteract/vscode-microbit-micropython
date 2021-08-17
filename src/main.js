@@ -1,17 +1,25 @@
 const vscode = require('vscode')
-// const path = require('path')
-// const clone = require('git-clone');
 const ui = require('./ui');
-// const { readdirSync, stat } = require('fs');
-const { uflash,
+const { 
+  extensionUri,
+  uflash,
   ufs,
   getCurrentWorkspace,
   getFilesInCurrentWorkspace,
   assertFileIsIncluded,
   listFilesOnMicrobit,
   removeFilesFromMicrobit,
-  getFileFromMicrobit
+  getFileFromMicrobit,
+  deleteFileFromDir,
+  cloneRepository,
+  checkFileExist,
+  isOnline
 } = require('./extension')
+
+
+// GLOBALS
+const EXAMPLES_REPO = "https://github.com/makinteract/micropython-examples";
+const MICROBIT_LIBS_REPO = "https://github.com/makinteract/microbit.git";
 
 
 
@@ -23,6 +31,37 @@ const { uflash,
  * @param {vscode.ExtensionContext} context
  */
 function activate(context) {
+
+  const init = vscode.commands.registerCommand('extension.init', async function () {
+    try{
+    // get workspace
+    const workspace= await getCurrentWorkspace();
+    // check whether microbit folder is there
+    // clone it if not there
+    const libs = await checkFileExist("microbit", workspace.uri);
+    if (!libs){
+      cloneRepository(MICROBIT_LIBS_REPO, "microbit", workspace.uri);
+    }
+
+    // check whether examples are there
+    // download them if not
+    const examplesExist = await checkFileExist("examples", extensionUri());
+    if (!examplesExist && await isOnline()){
+      cloneRepository(EXAMPLES_REPO,"examples",extensionUri());
+      ui.vsInfo("Downloading examples");
+      ui.outInfo("Downloading examples");
+    }
+
+    // if examples exist, get list of folder examples
+    // show it to the user 
+    // copy the files of examples to workspace
+
+  } catch (e) {
+    ui.vsError(`${e}`);
+    ui.outError(e);
+  }
+  });
+
 
   const flashMicropython = vscode.commands.registerCommand('extension.flash-micropython', async function () {
     try {
@@ -98,61 +137,36 @@ function activate(context) {
   });
 
 
+  const fetchExamples = vscode.commands.registerCommand('extension.fetch-examples', async function () {
+    try{
+    	if (! await isOnline()) 
+        throw new Error ("No internet connection.")
+
+        // delete if already exists
+      const examplesExist = await checkFileExist("examples", extensionUri());
+      if (examplesExist){
+        await deleteFileFromDir ("examples", extensionUri());
+      }
+      // clone again examples
+      cloneRepository(EXAMPLES_REPO,"examples",extensionUri());
+      ui.vsInfo("Examples successfully downloaded");
+      ui.outInfo("Examples successfully downloaded");
+    }
+     catch (e) {
+      // console.log(`Folder ${todelete.toString()} not found`);
+      ui.vsError(`${e}`);
+      ui.outError(e);    }
+  });
+
+
   // COMMANDS
-  /*
-    const init = vscode.commands.registerCommand('extension.init', async function () {
-      try {
-        await initWorkspace();
-      } catch (e) {
-        ui.vsError(`${e}`);
-        outError(e);
-      }
-    });
-  
-  
-    
-    
-  
-    
-  
-  
-  
-    const fetchExmls = vscode.commands.registerCommand('extension.fetch-examples', async function () {
-      const todelete = vscode.Uri.joinPath(extensionUri(), "examples");
-  
-      // delete the existing folder
-      try {
-        await vscode.workspace.fs.delete(todelete, { recursive: true, useTrash: true });
-      } catch (e) {
-        console.log(`Folder ${todelete.toString()} not found`);
-      }
-  
-      // Fetch from github
-      const root = extensionRootPath();
-      clone(EXAMPLES_REPO, path.join(root, "examples"));
-    });
-  
-  
-  
-  
-  
-  
-  
-    // Setup MicroPython
-  
-  
-    context.subscriptions.push(init);
-    
-    
-    context.subscriptions.push(fetchExmls);
-    
-    */
-   
+   context.subscriptions.push(init);
    context.subscriptions.push(flashMicropython);
    context.subscriptions.push(flash);
    context.subscriptions.push(rmAll);
    context.subscriptions.push(rmFile);
    context.subscriptions.push(getFile);
+   context.subscriptions.push(fetchExamples);
 
 }
 
