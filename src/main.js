@@ -122,7 +122,7 @@ function activate(context) {
       assertFileIsIncluded("main.py", workspaceFiles);
 
       // Flash files one by one
-      for (let { path: filename } of workspaceFiles) {
+      for (let { fsPath: filename } of workspaceFiles) {
         // it might throw an error
         await ufs(`put ${filename}`);
         ui.outInfo(`File ${filename} copied on micro:bit`);
