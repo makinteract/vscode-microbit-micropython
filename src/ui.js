@@ -28,7 +28,7 @@ async function showQuickPick(itemArray, placeHolder) {
     placeHolder,
     onDidSelectItem: (item) => item
   });
-  return result.trim();
+  return result?.trim();
 }
 
 /**
@@ -45,6 +45,20 @@ async function showInputBox(value, placeHolder, validationFn) {
     validateInput: (text) => validationFn(text),
   });
   return result;
+}
+
+/**
+ * Ask for confirmation
+ * @param {*} msg - the question to ask
+ * @param {String[]} options - array of options
+ * @returns - return one of the options
+ */
+async function confirmationMessage(msg, options) {
+  return vscode.window
+    .showInformationMessage(
+      msg,
+      ...options
+    );
 }
 
 
@@ -77,6 +91,7 @@ module.exports = {
   vsError,
   showQuickPick,
   showInputBox,
+  confirmationMessage,
   outInfo,
   outError
 };

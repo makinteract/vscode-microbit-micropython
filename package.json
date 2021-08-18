@@ -77,11 +77,6 @@
         "command": "extension.fetch-examples",
         "category": "micro:bit-python",
         "title": "Fetch examples from online"
-      },
-      {
-        "command": "extension.load-example",
-        "category": "micro:bit-python",
-        "title": "Load an example"
       }
     ],
     "keybindings": [

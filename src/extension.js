@@ -1,8 +1,8 @@
 // General utilities for the extension
 const vscode = require('vscode')
 const path = require('path')
-const os = require ('os')
-const fs = require ('fs')
+const os = require('os')
+const fs = require('fs')
 const clone = require('git-clone')
 const internetAvailable = require("internet-available")
 
@@ -15,13 +15,6 @@ const EXTENSION_ID = "MAKinteract.micro-bit-python";
 
 
 
-/**
- * Get path where extension is stored in teh filesystem
- * @returns - path of extension root folder
- */
-function extensionRootPath() {
-	return vscode.extensions.getExtension(EXTENSION_ID).extensionPath;
-}
 
 /**
  * Get URI of extension folder
@@ -36,7 +29,7 @@ function extensionUri() {
  * @returns - path of tools folder
  */
 function toolsPath() {
-	const extRoot = extensionRootPath();
+	const extRoot = extensionUri().path;
 	return path.join(extRoot, "tools");
 }
 
@@ -89,20 +82,29 @@ async function getCurrentWorkspace() {
 }
 
 /**
- * Get the files in the workspace
- * @param {String} pattern - a pattern describing the files to pick (defaul is all '*')
- * @returns - teh files in the workspace
+ * Get a list of all the files in a specified directory
+ * @param {vscode.Uri} dirUri - the directory in which to search
+ * @param {String} pattern - the pattern representing the files (defaul all "*")
+ * @returns return a list of files
  */
-async function getFilesInCurrentWorkspace(pattern = "*") {
-	const workspace = await getCurrentWorkspace();
-	// the workspace is guaranteed to exist
-
+async function getFilesInDir(dirUri, pattern = "*") {
 	// get all the files matched by the pattern in the workspace and copy them to the microbit
 	const workspaceFiles = await vscode.workspace.findFiles(
-		new vscode.RelativePattern(workspace, pattern)
+		new vscode.RelativePattern(dirUri, pattern)
 	);
 	return workspaceFiles;
 }
+
+
+async function getVisibleFoldersInDir(dirUri) {
+	const ls = await vscode.workspace.fs.readDirectory(dirUri);
+	return ls
+		.filter(f => f[1] > 1) // it is a folder, not a file
+		.filter(f => !f[0].startsWith('.')) // not hidden
+		.map(f => f[0]) // only the name
+}
+
+
 
 /**
 	 * Get the base name of a file, given 
@@ -133,41 +135,41 @@ function assertFileIsIncluded(filename, fileList) {
  * @returns list of files
  */
 async function listFilesOnMicrobit() {
-    const { stdout: filenames, stderr: err } = await ufs("ls");
+	const { stdout: filenames, stderr: err } = await ufs("ls");
 
 	if (err) {
-      throw new Error(err)
-    }
+		throw new Error(err)
+	}
 
-    const files = filenames.split(" ").filter(name => name.length > 0);
-    return files;
-  }
+	const files = filenames.split(" ").filter(name => name.length > 0);
+	return files;
+}
 
 /**
  * Remove a file from Microbit b yname
  * @param {String[]} filesToRemove 
  */
 async function removeFilesFromMicrobit(filesToRemove) {
-    if (!filesToRemove || filesToRemove.length == 0) {
-      throw new Error("No files specified for deletion");
-    }
+	if (!filesToRemove || filesToRemove.length == 0) {
+		throw new Error("No files specified for deletion");
+	}
 
-    // remove the specified files
-    for (let file of filesToRemove) {
-      await ufs(`rm ${file}`);
-    }
-  }
+	// remove the specified files
+	for (let file of filesToRemove) {
+		await ufs(`rm ${file}`);
+	}
+}
 
-  /**
-   * Get file from Microbit by name and copy it in the destinationUri (overrite)
-   * @param {String} filename - file in Microbit
-   * @param {vscode.Uri} destinationDirUri - destination folder 
-   */
-  async function getFileFromMicrobit(filename, destinationDirUri){
-	  // might throw an exception if the file does not exist
-	  const dest = path.join(destinationDirUri.path, filename);
-	  await ufs (`get ${filename} ${dest}`);
-  }
+/**
+ * Get file from Microbit by name and copy it in the destinationUri (overrite)
+ * @param {String} filename - file in Microbit
+ * @param {vscode.Uri} destinationDirUri - destination folder 
+ */
+async function getFileFromMicrobit(filename, destinationDirUri) {
+	// might throw an exception if the file does not exist
+	const dest = path.join(destinationDirUri.path, filename);
+	await ufs(`get ${filename} ${dest}`);
+}
 
 /**
  * Run the uflash python script (may throw an exception)
@@ -194,28 +196,28 @@ async function ufs(params = "") {
 	if (stdout.includes("Could not find micro:bit")) {
 		throw new Error("Could not find micro:bit");
 	}
-	else if (stdout.includes("Errno 13")){
+	else if (stdout.includes("Errno 13")) {
 		if (os.platform() == "linux")
 			throw new Error(`Could not open serial port. Do you have permissions?\n
 							 Try run "sudo chmod 666 /dev/ttyACM0"`);
 
-		else	
+		else
 			throw new Error("Could not open serial port.");
 	}
 	else if (stdout.includes("Error"))
-		throw new Error (stdout);
+		throw new Error(stdout);
 	else
-		return {stdout, stderr};
+		return { stdout, stderr };
 }
 
 
-async function deleteFileFromDir (filename, destinationDirUri){
-	const todelete = vscode.Uri.joinPath (destinationDirUri, filename);
+async function deleteFileFromDir(filename, destinationDirUri) {
+	const todelete = vscode.Uri.joinPath(destinationDirUri, filename);
 	try {
 		await vscode.workspace.fs.delete(todelete, { recursive: true, useTrash: true });
-	  } catch (e) {
+	} catch (e) {
 		console.log(`File/folder ${todelete.toString()} not found`);
-	  }
+	}
 }
 
 /**
@@ -224,16 +226,16 @@ async function deleteFileFromDir (filename, destinationDirUri){
  * @param {*} timeout - timeout default 500ms
  * @returns true/false
  */
-function isOnline (retries=2, timeout=500){
-	return new Promise ( res => 
-	internetAvailable({
-		timeout,
-		retries,
-	}).then(function(){
-		res (true)
-	}).catch(function(){
-		res(false);
-	}));
+function isOnline(retries = 2, timeout = 500) {
+	return new Promise(res =>
+		internetAvailable({
+			timeout,
+			retries,
+		}).then(function () {
+			res(true)
+		}).catch(function () {
+			res(false);
+		}));
 }
 
 /**
@@ -242,7 +244,7 @@ function isOnline (retries=2, timeout=500){
  * @param {*} targetName - destination folder name
  * @param {*} destinationDirUri - destination base folder URI
  */
-async function cloneRepository (reponame, targetName, destinationDirUri){
+async function cloneRepository(reponame, targetName, destinationDirUri) {
 	// check whether connected to internet, otherwise throw exception
 	const dir = path.join(destinationDirUri.path, targetName);
 	clone(reponame, dir);
@@ -250,11 +252,26 @@ async function cloneRepository (reponame, targetName, destinationDirUri){
 
 
 
-async function checkFileExist(filename, dirUri){
-	const check = s => new Promise(r=>fs.access(s, fs.constants.F_OK, e => r(!e)))
-    const loc = path.join (dirUri.path, filename);
-    const result = await check(loc)
+async function checkFileExist(filename, dirUri) {
+	const check = s => new Promise(r => fs.access(s, fs.constants.F_OK, e => r(!e)))
+	const loc = path.join(dirUri.path, filename);
+	const result = await check(loc)
 	return result;
+}
+
+async function copyFiles(sourceDirUri, destDirUri) {
+	const files = await getFilesInDir(sourceDirUri);
+	files.forEach(file => {
+		const fname = pathToName(file.path);
+		copyFile(fname, sourceDirUri, destDirUri);
+	});
+}
+
+
+async function copyFile(filename, sourceDirUri, destDirUri) {
+	const src = vscode.Uri.joinPath(sourceDirUri, filename);
+	const dest = vscode.Uri.joinPath(destDirUri, filename);
+	vscode.workspace.fs.copy(src, dest, { "overwrite": true });
 }
 
 
@@ -262,13 +279,13 @@ async function checkFileExist(filename, dirUri){
 module.exports = {
 	uflash,
 	ufs,
-	extensionRootPath,
 	extensionUri,
 	toolsPath,
 	getWorkspace,
 	getOpenWorkspace,
 	getCurrentWorkspace,
-	getFilesInCurrentWorkspace,
+	getFilesInDir,
+	getVisibleFoldersInDir,
 	assertFileIsIncluded,
 	listFilesOnMicrobit,
 	removeFilesFromMicrobit,
@@ -276,7 +293,8 @@ module.exports = {
 	deleteFileFromDir,
 	cloneRepository,
 	isOnline,
-	checkFileExist
+	checkFileExist,
+	copyFiles
 };
 
 
