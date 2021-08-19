@@ -164,7 +164,7 @@ async function removeFilesFromMicrobit(filesToRemove) {
  */
 async function getFileFromMicrobit(filename, destinationDirUri) {
 	// might throw an exception if the file does not exist
-	const dest = vscode.Uri.joinPath(destinationDirUri, filename);
+	const dest = vscode.Uri.joinPath(destinationDirUri, filename).fsPath;
 	await ufs(`get ${filename} ${dest}`);
 }
 
@@ -243,7 +243,7 @@ function isOnline(retries = 2, timeout = 500) {
  */
 async function cloneRepository(reponame, targetName, destinationDirUri) {
 	// check whether connected to internet, otherwise throw exception
-	const dir = vscode.Uri.joinPath(destinationDirUri, targetName);
+	const dir = vscode.Uri.joinPath(destinationDirUri, targetName).fsPath;
 	clone(reponame, dir);
 }
 
@@ -252,7 +252,8 @@ async function cloneRepository(reponame, targetName, destinationDirUri) {
 async function checkFileExist(filename, dirUri) {
 	const check = s => new Promise(r => fs.access(s, fs.constants.F_OK, e => r(!e)))
 	const loc = vscode.Uri.joinPath(dirUri, filename);
-	const result = await check(loc)
+	
+	const result = await check(loc.path)
 	return result;
 }
 

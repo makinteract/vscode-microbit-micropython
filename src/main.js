@@ -59,7 +59,7 @@ function activate(context) {
       const list = await getVisibleFoldersInDir(examples);
       list.unshift("Empty - do not modify the current directory"); // add an empy project to start
       const pick = await ui.showQuickPick(list, "Select a template for the project");
-      if (pick.startsWith("Empty")) return; // done
+      if (!pick || pick.startsWith("Empty")) return; // done
 
 
       // 4. If the user selected one template
