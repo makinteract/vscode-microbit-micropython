@@ -1,6 +1,6 @@
 // General utilities for the extension
 const vscode = require('vscode')
-const path = require('path')
+const {parse} = require('path')
 const os = require('os')
 const fs = require('fs')
 const clone = require('git-clone')
@@ -12,8 +12,6 @@ const { openStdin } = require('process')
 
 // Globals
 const EXTENSION_ID = "MAKinteract.micro-bit-python";
-
-
 
 
 /**
@@ -29,8 +27,7 @@ function extensionUri() {
  * @returns - path of tools folder
  */
 function toolsPath() {
-	const extRoot = extensionUri().path;
-	return path.join(extRoot, "tools");
+	return vscode.Uri.joinPath(extensionUri(), "tools");
 }
 
 /**
@@ -112,7 +109,7 @@ async function getVisibleFoldersInDir(dirUri) {
 	 * @returns 
 	 */
 function pathToName(filepath) {
-	const filename = path.parse(filepath).base;
+	const filename = parse(filepath).base;
 	return filename;
 }
 
@@ -123,7 +120,7 @@ function pathToName(filepath) {
  * @param {vscode.Uri[]} fileList - the list of names
  */
 function assertFileIsIncluded(filename, fileList) {
-	const files = fileList.map(({ path }) => pathToName(path));
+	const files = fileList.map(({ fsPath: path }) => pathToName(path));
 	if (!files.includes(filename)) {
 		throw new Error(`Can't find file ${filename}`);
 	}
@@ -167,7 +164,7 @@ async function removeFilesFromMicrobit(filesToRemove) {
  */
 async function getFileFromMicrobit(filename, destinationDirUri) {
 	// might throw an exception if the file does not exist
-	const dest = path.join(destinationDirUri.path, filename);
+	const dest = vscode.Uri.joinPath(destinationDirUri, filename);
 	await ufs(`get ${filename} ${dest}`);
 }
 
@@ -178,10 +175,8 @@ async function getFileFromMicrobit(filename, destinationDirUri) {
  */
 async function uflash(params = "") {
 	const tools = toolsPath();
-	const uflash = path.join(tools, "uflash-master", "uflash.py");
-	const uf = vscode.Uri.joinPath(extensionUri(), "tools", "uflash-master", "uflash.py");
-
-	const { stdout, stderr } = await python.run(`${uf.fsPath} ${params}`)
+	const uflash = vscode.Uri.joinPath(tools, "uflash-master", "uflash.py");
+	const { stdout, stderr } = await python.run(`${uflash.fsPath} ${params}`)
 	return { stdout, stderr };
 }
 
@@ -192,9 +187,8 @@ async function uflash(params = "") {
  */
 async function ufs(params = "") {
 	const tools = toolsPath();
-	const ufs = path.join(tools, "microfs-master", "ufs.py");
-	const uf = vscode.Uri.joinPath(extensionUri(), "tools", "microfs-master", "ufs.py");
-	const { stdout, stderr } = await python.run(`${uf.fsPath} ${params}`);
+	const ufs = vscode.Uri.joinPath(tools, "microfs-master", "ufs.py");
+	const { stdout, stderr } = await python.run(`${ufs.fsPath} ${params}`);
 	// Handle errors
 	if (stdout.includes("Could not find micro:bit")) {
 		throw new Error("Could not find micro:bit");
@@ -249,7 +243,7 @@ function isOnline(retries = 2, timeout = 500) {
  */
 async function cloneRepository(reponame, targetName, destinationDirUri) {
 	// check whether connected to internet, otherwise throw exception
-	const dir = path.join(destinationDirUri.path, targetName);
+	const dir = vscode.Uri.joinPath(destinationDirUri, targetName);
 	clone(reponame, dir);
 }
 
@@ -257,7 +251,7 @@ async function cloneRepository(reponame, targetName, destinationDirUri) {
 
 async function checkFileExist(filename, dirUri) {
 	const check = s => new Promise(r => fs.access(s, fs.constants.F_OK, e => r(!e)))
-	const loc = path.join(dirUri.path, filename);
+	const loc = vscode.Uri.joinPath(dirUri, filename);
 	const result = await check(loc)
 	return result;
 }
@@ -265,7 +259,7 @@ async function checkFileExist(filename, dirUri) {
 async function copyFiles(sourceDirUri, destDirUri) {
 	const files = await getFilesInDir(sourceDirUri);
 	files.forEach(file => {
-		const fname = pathToName(file.path);
+		const fname = pathToName(file.fsPath);
 		copyFile(fname, sourceDirUri, destDirUri);
 	});
 }
@@ -299,59 +293,3 @@ module.exports = {
 	checkFileExist,
 	copyFiles
 };
-
-
-
-
-
-// // this method is called when your extension is activated
-// // your extension is activated the very first time the command is executed
-
-// /**
-//  * @param {vscode.ExtensionContext} context
-//  */
-// function activate(context) {
-
-
-
-
-
-
-
-// 	// copy files
-// 	async function copyFilesFromWorkspaceToDevice(srcPattern) {
-
-// 		const document = vscode.window.activeTextEditor.document;
-// 		const workspace = vscode.workspace.getWorkspaceFolder(document.uri);
-
-// 		// get all the python files in the workspace and copy them to the microbit
-// 		const workspaceFiles = await vscode.workspace.findFiles(
-// 			new vscode.RelativePattern(workspace, `${srcPattern}`)
-// 		);
-
-// 		for (let { path } of workspaceFiles) {
-// 			// it might throw an error
-// 			await runWithPython(`${ufs} put ${path}`);
-// 		}
-// 	}
-
-
-// 	async function copyFileFromExtensionToWorkspace(srcFilename, destFilename, overwrite = false) {
-// 		const document = vscode.window.activeTextEditor.document;
-// 		const workspace = vscode.workspace.getWorkspaceFolder(document.uri);
-
-// 		const main = await isInWorkspace("main.py");
-// 		if (main && !overwrite) return;
-
-// 		const src = vscode.Uri.file(path.join(extRoot, srcFilename));
-// 		const dest = vscode.Uri.file(path.join(workspace.uri.path, destFilename));
-// 		vscode.workspace.fs.copy(src, dest, { "overwrite": overwrite });
-// 	}
-
-
-
-
-
-
-
-
