@@ -1,4 +1,4 @@
-# VSCODE-MICROBIT-MICROPYTHON extension
+# VScode micro:bit-MicroPython Extension
 
 This extension provides a self-contained developing environment for developing with _MicroPython_ for the _micro:bit_ platform.
 
@@ -6,14 +6,32 @@ It allows to initialize a project with an optional template example, to upload a
 
 For a tutorial of how to use this extension, please take a look at this [video](link).
 
+---
+
 ## Features in details
+
+---
 
 ## Requirments
 
-## Other
+The only requirments is to have Python installed. Other dependencies ([microfs](https://github.com/ntoll/microfs) and [uflash](https://github.com/ntoll/uflash)) are taken care of automatically.
 
-This extension is also on GitHub: https://github.com/PhonicCanine/vscode-microbit, please file any issues there.
+---
 
-Thank you.
+## Known Issues
 
-## Releases
+Refer to the issues page. Please file any issues there.
+
+---
+
+## Releases Notes
+
+**0.1.0**
+
+Initial release
+
+---
+
+## License
+
+MIT
