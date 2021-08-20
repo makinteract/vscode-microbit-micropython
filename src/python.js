@@ -9,32 +9,35 @@ function PythonException(message) {
   this.name = 'PythonException';
 }
 
+let python2 = true;
+let python3 = true;
+
+
 class Python {
   constructor() {
-    this.python2 = true;
-    this.python3 = true;
+    python2 = true;
+    python3 = true;
   }
 
   async run(command) {
     // try with python 3
-    if (this.python3) {
+    if (python3) {
       try {
         const { stdout, stderr } = await exec(`python3 ${command}`)
         return { stdout, stderr };
       } catch (e) {
         // python not found
-
-        // this.python3 = false;
+        python3 = false;
       }
     }
 
     // try with python 2
-    if (this.python2) {
+    if (python2) {
       try {
         const { stdout, stderr } = await exec(`python ${command}`)
         return { stdout, stderr };
       } catch (e) {
-        // this.python2 = false;
+        python2 = false;
         throw e;
       }
     }
