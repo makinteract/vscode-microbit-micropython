@@ -1,6 +1,6 @@
 // General utilities for the extension
 const vscode = require('vscode')
-const {parse} = require('path')
+const { parse } = require('path')
 const os = require('os')
 const fs = require('fs')
 const clone = require('git-clone')
@@ -8,7 +8,7 @@ const internetAvailable = require("internet-available")
 
 
 const { python, PythonException } = require('./python')
-const { openStdin } = require('process')
+
 
 // Globals
 const EXTENSION_ID = "MAKinteract.micro-bit-python";
@@ -82,7 +82,7 @@ async function getCurrentWorkspace() {
  * Get a list of all the files in a specified directory
  * @param {vscode.Uri} dirUri - the directory in which to search
  * @param {String} pattern - the pattern representing the files (defaul all "*")
- * @returns return a list of files
+ * @returns - a list of files
  */
 async function getFilesInDir(dirUri, pattern = "*") {
 	// get all the files matched by the pattern in the workspace and copy them to the microbit
@@ -92,7 +92,11 @@ async function getFilesInDir(dirUri, pattern = "*") {
 	return workspaceFiles;
 }
 
-
+/**
+ * Get a list of visible folders in a directory
+ * @param {vscode.Uri} dirUri - the target directory 
+ * @returns - a String[] of names of folders
+ */
 async function getVisibleFoldersInDir(dirUri) {
 	const ls = await vscode.workspace.fs.readDirectory(dirUri);
 	return ls
@@ -101,18 +105,15 @@ async function getVisibleFoldersInDir(dirUri) {
 		.map(f => f[0]) // only the name
 }
 
-
-
 /**
 	 * Get the base name of a file, given 
 	 * @param {String} filepath - the path from which to extract the file name
-	 * @returns 
+	 * @returns - a String corresponding to the base name of a file
 	 */
 function pathToName(filepath) {
 	const filename = parse(filepath).base;
 	return filename;
 }
-
 
 /**
  * Assert whether a file is included in a list of files
@@ -126,10 +127,9 @@ function assertFileIsIncluded(filename, fileList) {
 	}
 }
 
-
 /**
  * Get a list of all the files stored on the Microbit
- * @returns list of files
+ * @returns - a String[] of files
  */
 async function listFilesOnMicrobit() {
 	const { stdout: filenames, stderr: err } = await ufs("ls");
@@ -176,7 +176,7 @@ async function getFileFromMicrobit(filename, destinationDirUri) {
 async function uflash(params = "") {
 	const tools = toolsPath();
 	const uflash = vscode.Uri.joinPath(tools, "uflash-master", "uflash.py");
-	const { stdout, stderr } = await python.run(`${uflash.fsPath} ${params}`)
+	const { stdout, stderr } = await python.run(`${uflash.fsPath} ${params}`);
 	return { stdout, stderr };
 }
 
@@ -207,9 +207,13 @@ async function ufs(params = "") {
 		return { stdout, stderr };
 }
 
-
-async function deleteFileFromDir(filename, destinationDirUri) {
-	const todelete = vscode.Uri.joinPath(destinationDirUri, filename);
+/**
+ * Delete a file from a specified directory location
+ * @param {String} filename - the name of the file to delete
+ * @param {vscode.Uri} dirUri - the Uri of the target directory
+ */
+async function deleteFileFromDir(filename, dirUri) {
+	const todelete = vscode.Uri.joinPath(dirUri, filename);
 	try {
 		await vscode.workspace.fs.delete(todelete, { recursive: true, useTrash: true });
 	} catch (e) {
@@ -247,16 +251,25 @@ async function cloneRepository(reponame, targetName, destinationDirUri) {
 	clone(reponame, dir);
 }
 
-
-
+/**
+ * Check whether a file exists in a folder
+ * @param {String} filename - the file name
+ * @param {vscode.Uri} dirUri - the target folder
+ * @returns 
+ */
 async function checkFileExist(filename, dirUri) {
 	const check = s => new Promise(r => fs.access(s, fs.constants.F_OK, e => r(!e)))
 	const loc = vscode.Uri.joinPath(dirUri, filename);
-	
+
 	const result = await check(loc.path)
 	return result;
 }
 
+/**
+ * Copy all files from folder to folder
+ * @param {vscode.Uri} sourceDirUri - the source folder
+ * @param {vscode.Uri} destDirUri - the target folder
+ */
 async function copyFiles(sourceDirUri, destDirUri) {
 	const files = await getFilesInDir(sourceDirUri);
 	files.forEach(file => {
@@ -265,7 +278,12 @@ async function copyFiles(sourceDirUri, destDirUri) {
 	});
 }
 
-
+/**
+ * Copy a single file from a folder to a folder (nested directories are ignored)
+ * @param {String} filename - the file name
+ * @param {vscode.Uri} sourceDirUri - the source folder
+ * @param {vscode.Uri} destDirUri - the target folder
+ */
 async function copyFile(filename, sourceDirUri, destDirUri) {
 	const src = vscode.Uri.joinPath(sourceDirUri, filename);
 	const dest = vscode.Uri.joinPath(destDirUri, filename);

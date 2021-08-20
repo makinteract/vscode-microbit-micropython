@@ -23,7 +23,8 @@ class Python {
         return { stdout, stderr };
       } catch (e) {
         // python not found
-        this.python3 = false;
+
+        // this.python3 = false;
       }
     }
 
@@ -33,7 +34,7 @@ class Python {
         const { stdout, stderr } = await exec(`python ${command}`)
         return { stdout, stderr };
       } catch (e) {
-        this.python2 = false;
+        // this.python2 = false;
         throw e;
       }
     }

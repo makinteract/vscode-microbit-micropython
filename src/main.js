@@ -165,9 +165,17 @@ function activate(context) {
     try {
       const workspace = await getCurrentWorkspace();
       const files = await listFilesOnMicrobit();
+      if (!files || files.length == 0) throw new Error("No files dound on micro:bit");
+
       const fileSelected = await ui.showQuickPick(files, '')
       if (!fileSelected) throw new Error("No input specified");
 
+      const fileExist = await checkFileExist(fileSelected, workspace.uri);
+      if (fileExist) {
+        const ans = await ui.confirmationMessage(`Are you sure you want to override ${fileSelected}?`, ["Yes", "No"]);
+        if (ans === "No" || ans === undefined) return; // bye bye 
+      }
+      // get the file
       getFileFromMicrobit(fileSelected, workspace.uri);
 
     } catch (e) {
@@ -175,9 +183,6 @@ function activate(context) {
       ui.outError(e);
     }
   });
-
-
-
 
 
   // COMMANDS
