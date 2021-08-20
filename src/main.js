@@ -64,8 +64,11 @@ function activate(context) {
 
       // 4. If the user selected one template
       // Ask user to confirm overriding of project
-      const ans = await ui.confirmationMessage("Are you sure you want to override your project?", ["Yes", "No"]);
-      if (ans === "No" || ans === undefined) return; // bye bye 
+      const mainExist = await checkFileExist("main.py", workspace.uri);
+      if (mainExist) {
+        const ans = await ui.confirmationMessage("Are you sure you want to override your project?", ["Yes", "No"]);
+        if (ans === "No" || ans === undefined) return; // bye bye 
+      }
 
       // copy files
       const src = vscode.Uri.joinPath(examples, pick);

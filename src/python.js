@@ -19,11 +19,13 @@ class Python {
     python3 = true;
   }
 
-  async run(command) {
+  async run(command, baseDirectoryPath) {
     // try with python 3
+    const workingDir = { cwd: baseDirectoryPath };
+
     if (python3) {
       try {
-        const { stdout, stderr } = await exec(`python3 ${command}`)
+        const { stdout, stderr } = await exec(`python3 ${command}`, workingDir);
         return { stdout, stderr };
       } catch (e) {
         // python not found
@@ -34,7 +36,7 @@ class Python {
     // try with python 2
     if (python2) {
       try {
-        const { stdout, stderr } = await exec(`python ${command}`)
+        const { stdout, stderr } = await exec(`python ${command}`, workingDir);
         return { stdout, stderr };
       } catch (e) {
         python2 = false;
@@ -43,6 +45,9 @@ class Python {
     }
 
     // none found
+    // reset the variables and throw an exception
+    python2 = true;
+    python3 = true;
     throw new PythonException("Could not exectute command");
   }
 }
