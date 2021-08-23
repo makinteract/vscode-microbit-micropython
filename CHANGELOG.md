@@ -4,6 +4,7 @@ All notable changes to the "vscode-microbit-micropython" extension will be docum
 
 ## [0.1.x]
 
+- Fixing python dependency (0.1.4)
 - Improved README and fixed critical dependency python code (0.1.3)
 - Fix dependency issue (0.1.2)
 - Preloaded examples (0.1.1)
