@@ -14,7 +14,7 @@ Each feature is explained in the sections below.
 
 ## Getting started
 
-For a video tutorial of how to use this extension, please refer to [this link](link).
+For a video tutorial of how to use this extension, please refer to [this link](https://youtu.be/eSGJLu1kqyg).
 
 1. [Download an install](https://www.python.org/downloads/) python on your system preferably python3.
 2. Open VSCode and install the [micro:bit python extension](https://marketplace.visualstudio.com/items?itemName=MAKinteract.micro-bit-python)

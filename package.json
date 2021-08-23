@@ -2,7 +2,7 @@
   "name": "micro-bit-python",
   "displayName": "micro:bit Python",
   "description": "Easy MicroPython for micro:bit with VScode",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "preview": true,
   "author": {
     "url": "https://github.com/makinteract",
@@ -90,9 +90,10 @@
   },
   "keywords": [
     "micro:bit",
-    "micropython",
+    "MicroPython",
     "python",
-    "MicroBit"
+    "MicroBit",
+    "Physical Computing"
   ],
   "scripts": {
     "lint": "eslint .",
