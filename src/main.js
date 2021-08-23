@@ -127,8 +127,8 @@ function activate(context) {
       // Flash files one by one
       for (let { fsPath: filename } of workspaceFiles) {
         // it might throw an error
-        await ufs(`put ${filename}`);
-        ui.outInfo(`File ${filename} copied on micro:bit`);
+        await ufs(`put "${filename}"`);
+        ui.outInfo(`File "${filename}" copied on micro:bit`);
       }
       ui.vsInfo("Files successfully uploaded");
 

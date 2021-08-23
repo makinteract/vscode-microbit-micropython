@@ -1,5 +1,6 @@
 // General utilities for the extension
 const vscode = require('vscode')
+const ui = require('./ui');
 const { parse } = require('path')
 const os = require('os')
 const fs = require('fs')
@@ -60,8 +61,16 @@ function getOpenWorkspace() {
 async function getCurrentWorkspace() {
 	// 1) a document is open
 	const openDocumnet = vscode.window.activeTextEditor?.document;
-	if (openDocumnet)
-		return getOpenWorkspace();
+	if (openDocumnet) {
+		const workspace = getOpenWorkspace();
+		// workspace could be undefined is the current file does not belong to a workspace
+		// ask user to pick a workspace!
+		if (!workspace) {
+			ui.vsInfo("After reloading, please run again the command");
+			await vscode.commands.executeCommand("vscode.openFolder");
+			return;
+		}
+	}
 
 	// else get all workspaces
 	const workspaces = vscode.workspace.workspaceFolders;
@@ -74,6 +83,7 @@ async function getCurrentWorkspace() {
 	if (selection) return selection;
 
 	// 4) else if no workspace is open, ask user to open one
+	ui.vsInfo("After reloading, please run again the command");
 	await vscode.commands.executeCommand("vscode.openFolder");
 	// this will refresh VScode
 }
