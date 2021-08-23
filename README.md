@@ -8,7 +8,20 @@ To see the commands for the extension, use the command palette (**Windows / Linu
 
 ![Commands](images/commands.png)
 
-Each feature is explained in the following section. For a video tutorial of how to use this extension, please refer to [this link](link).
+Each feature is explained in the sections below.
+
+---
+
+## Getting started
+
+For a video tutorial of how to use this extension, please refer to [this link](link).
+
+1. [Download an install](https://www.python.org/downloads/) python on your system preferably python3.
+2. Open VSCode and install the [micro:bit python extension](https://marketplace.visualstudio.com/items?itemName=MAKinteract.micro-bit-python)
+3. Connect the micro:bit via USB cable (make sure your cable allows for data transfer and it is not only a charging cable)
+4. The first time, run the command `micro:bit-python: Flash MicroPython environment on micro:bit`
+5. Open an empty workspace (aka folder) in VSCode and run the command `micro:bit-python: Initialize the workspace`. To start, choose the **hello-world** sample code.
+6. Upload your files to the micro:bit using the command `micro:bit-python: Flash sketch on micro:bit`.
 
 ---
 
@@ -40,7 +53,7 @@ For example, if the user were to pick `buttons` or `hello-world` from the list a
 
 The user can also select `Empty` - in such case, no changes to files occur.
 
-The templates are fetched from this [online repository](https://github.com/makinteract/micropython-examples).
+The templates are fetched from this [online repository](https://github.com/makinteract/micropython-examples). The _microbit_ folder is fetched from [this respository](https://github.com/PhonicCanine/microbit).
 
 ### `Fetch examples from online`
 
@@ -69,6 +82,14 @@ Under the hood, the command uses the `ufs rm` command.
 ## Requirments
 
 The only requirment is to have Python installed and in the _PATH_ variable. Other dependencies ([microfs](https://github.com/ntoll/microfs) and [uflash](https://github.com/ntoll/uflash)) are taken care of automatically.
+
+This extension also draws some inspiration from [another micro:bit python extension](https://github.com/PhonicCanine/vscode-microbit), which you might want to consider as an alternative.
+
+---
+
+## For developers
+
+If you want to modify this extension, fork then clone this repository on your machine. Run `npm install`, to install dependencies (need to have Node.js installed). From any javascript file, press `F5` to run the extension locally in debug mode.
 
 ---
 
