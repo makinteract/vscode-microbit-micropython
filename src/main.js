@@ -168,7 +168,7 @@ function activate(context) {
     try {
       const workspace = await getCurrentWorkspace();
       const files = await listFilesOnMicrobit();
-      if (!files || files.length == 0) throw new Error("No files dound on micro:bit");
+      if (!files || files.length == 0) throw new Error("No files found on micro:bit");
 
       const fileSelected = await ui.showQuickPick(files, '')
       if (!fileSelected) throw new Error("No input specified");
