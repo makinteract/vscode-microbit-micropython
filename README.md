@@ -77,6 +77,12 @@ This command prompts the user to choose a file to remove from the micro:bit file
 
 Under the hood, the command uses the `ufs rm` command.
 
+### `Show micro:bit pins image`
+
+It shows the image with the micro:bit pinout
+
+<img src="images/pinout.png" height="200" />
+
 ---
 
 ## Requirments
@@ -96,14 +102,6 @@ If you want to modify this extension, fork then clone this repository on your ma
 ## Known Issues
 
 Refer to the [issues page](https://github.com/makinteract/vscode-microbit-micropython/issues). Please file any issues there.
-
----
-
-## Releases Notes
-
-**0.1.0**
-
-Initial release
 
 ---
 

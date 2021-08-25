@@ -84,6 +84,30 @@ function outError(msg) {
   output.appendLine(`ERROR ${date}\n${msg}\n`);
 }
 
+/**
+ * Get image map (as in https://github.com/cpwood/Pico-Go)
+ * @param {vscode.Uri} imageUrl 
+ * @returns html cod eto render the image in a separte tab
+ */
+function getPinMap(imageUrl) {
+  return `<!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Pico Pin Map</title>
+        <style type="text/css">
+            body {
+                background-color: #191c2b;
+            }
+        </style>
+    </head>
+    <body>
+        <img src="${imageUrl}" />
+    </body>
+    </html>`;
+}
+
 
 
 module.exports = {
@@ -93,5 +117,6 @@ module.exports = {
   showInputBox,
   confirmationMessage,
   outInfo,
-  outError
+  outError,
+  getPinMap
 };

@@ -188,6 +188,26 @@ function activate(context) {
   });
 
 
+  const showPinMap = vscode.commands.registerCommand('extension.showPinMap', async function () {
+
+    const panel = vscode.window.createWebviewPanel(
+      'pins',
+      'micro:bit Pins',
+      vscode.ViewColumn.Active, {
+      // Only allow the webview to access resources in our extension's media directory
+      localResourceRoots: [vscode.Uri.joinPath(extensionUri(), "images")]
+    }
+    );
+
+    const onDiskPath = vscode.Uri.file(
+      vscode.Uri.joinPath(extensionUri(), "images", "pinout.png").fsPath
+    );
+    const imageUrl = panel.webview.asWebviewUri(onDiskPath);
+
+    panel.webview.html = ui.getPinMap(imageUrl);
+  });
+
+
   // COMMANDS
   context.subscriptions.push(init);
   context.subscriptions.push(fetchExamples);
@@ -196,6 +216,7 @@ function activate(context) {
   context.subscriptions.push(rmAll);
   context.subscriptions.push(rmFile);
   context.subscriptions.push(getFile);
+  context.subscriptions.push(showPinMap);
 
 }
 
