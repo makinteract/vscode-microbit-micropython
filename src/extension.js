@@ -188,7 +188,7 @@ async function uflash(params = "") {
 	const uflashDir = vscode.Uri.joinPath(tools, "uflash-master");
 	const uflash = vscode.Uri.joinPath(uflashDir, "uflash.py");
 
-	const { stdout, stderr } = await python.run(`${uflash.fsPath} ${params}`, uflashDir.fsPath);
+	const { stdout, stderr } = await python.run(`"${uflash.fsPath}" ${params}`, uflashDir.fsPath);
 	return { stdout, stderr };
 }
 
@@ -202,7 +202,7 @@ async function ufs(params = "") {
 	const ufsDir = vscode.Uri.joinPath(tools, "microfs-master");
 	const ufs = vscode.Uri.joinPath(ufsDir, "ufs.py");
 
-	const { stdout, stderr } = await python.run(`${ufs.fsPath} ${params}`, ufsDir.fsPath);
+	const { stdout, stderr } = await python.run(`"${ufs.fsPath}" ${params}`, ufsDir.fsPath);
 	// Handle errors
 	if (stdout.includes("Could not find micro:bit")) {
 		throw new Error("Could not find micro:bit");
