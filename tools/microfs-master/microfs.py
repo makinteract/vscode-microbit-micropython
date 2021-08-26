@@ -239,6 +239,12 @@ def put(filename, target=None, serial=None):
     out, err = execute(commands, serial)
     if err:
         raise IOError(clean_error(err))
+
+    # Forcing a reset to make it work with windows
+    time.sleep(.1)
+    serial = get_serial()
+    serial.write(b"\x04")
+    serial.close()
     return True
 
 
