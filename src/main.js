@@ -130,6 +130,7 @@ function activate(context) {
         await ufs(`put "${filename}"`);
         ui.outInfo(`File "${filename}" copied on micro:bit`);
       }
+      await ufs(`reset`);
       ui.vsInfo("Files successfully uploaded");
 
     } catch (e) {

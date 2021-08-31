@@ -182,7 +182,7 @@ def ls(serial=None):
     Returns a list of the files on the connected device or raises an IOError if
     there's a problem.
     """
-    out, err = execute(["import os", "print(os.listdir())",], serial)
+    out, err = execute(["import os", "print(os.listdir())", ], serial)
     if err:
         raise IOError(clean_error(err))
     return ast.literal_eval(out.decode("utf-8"))
@@ -239,13 +239,14 @@ def put(filename, target=None, serial=None):
     out, err = execute(commands, serial)
     if err:
         raise IOError(clean_error(err))
+    return True
 
-    # Forcing a reset to make it work with windows
+
+def forceReset():
     time.sleep(.1)
     serial = get_serial()
     serial.write(b"\x04")
     serial.close()
-    return True
 
 
 def get(filename, target=None, serial=None):
@@ -313,7 +314,7 @@ def version(serial=None):
     there was a problem parsing the output.
     """
     try:
-        out, err = execute(["import os", "print(os.uname())",], serial)
+        out, err = execute(["import os", "print(os.uname())", ], serial)
         if err:
             raise ValueError(clean_error(err))
     except ValueError:
@@ -387,6 +388,9 @@ def main(argv=None):
                 get(args.path, args.target)
             else:
                 print('get: missing filename. (e.g. "ufs get foo.txt")')
+        # added a forceful reset
+        elif args.command == "reset":
+            forceReset()
         else:
             # Display some help.
             parser.print_help()
