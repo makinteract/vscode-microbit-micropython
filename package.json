@@ -35,6 +35,7 @@
     "onCommand:extension.rmAll",
     "onCommand:extension.rmFile",
     "onCommand:extension.getFile",
+    "onCommand:extension.listFilesß",
     "onCommand:extension.fetch-examples",
     "onCommand:extension.load-example",
     "onCommand:extension.showPinMap",
@@ -58,6 +59,11 @@
         "command": "extension.flash",
         "category": "micro:bit-python",
         "title": "Flash sketch on micro:bit"
+      },
+      {
+        "command": "extension.listFiles",
+        "category": "micro:bit-python",
+        "title": "List all files on the micro:bit"
       },
       {
         "command": "extension.rmAll",

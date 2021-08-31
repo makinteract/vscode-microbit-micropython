@@ -148,7 +148,11 @@ async function listFilesOnMicrobit() {
 		throw new Error(err)
 	}
 
-	const files = filenames.split(" ").filter(name => name.length > 0);
+	const files = filenames.split(" ")
+		.filter(name => name.length > 0) // a valid name
+		.filter(name => name.includes('.')) // it has an extension
+		.filter(name => name.split('.').pop().length > 0); // whic is valid
+
 	return files;
 }
 

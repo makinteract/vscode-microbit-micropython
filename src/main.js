@@ -189,6 +189,19 @@ function activate(context) {
   });
 
 
+  const listFiles = vscode.commands.registerCommand('extension.listFiles', async function () {
+    try {
+      const files = await listFilesOnMicrobit();
+      if (!files || files.length == 0) throw new Error("No files found on micro:bit");
+
+      await ui.showQuickPick(files, '')
+    } catch (e) {
+      ui.vsError(`${e}`);
+      ui.outError(e);
+    }
+  });
+
+
   const showPinMap = vscode.commands.registerCommand('extension.showPinMap', async function () {
 
     const panel = vscode.window.createWebviewPanel(
@@ -217,6 +230,7 @@ function activate(context) {
   context.subscriptions.push(rmAll);
   context.subscriptions.push(rmFile);
   context.subscriptions.push(getFile);
+  context.subscriptions.push(listFiles);
   context.subscriptions.push(showPinMap);
 
 }
