@@ -59,6 +59,12 @@ The templates are fetched from this [online repository](https://github.com/makin
 
 This command manually fetches the latest example snippets from this [online repository](https://github.com/makinteract/micropython-examples). In order for this command to work, you must be connected to the Internet.
 
+### `List all files on the micro:bit`
+
+This command shows a list of all the files stored on the micro:bit.
+
+Under the hood, this command uses `ufs ls`.
+
 ### `Copy a file from micro:bit`
 
 This command shows the files stored on the micro:bit file system and prompts the user to pick one to be copied on the user's workspace.
