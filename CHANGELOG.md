@@ -4,6 +4,7 @@ All notable changes to the "vscode-microbit-micropython" extension will be docum
 
 ## [0.1.x]
 
+- Numerous bug fixes to work with moultiple and large files (0.1.9)
 - Solved reset problems in Python after upload. Added command to get a list of files (0.1.8)
 - Solved path with space and soft reset for Windows (0.1.7)
 - Added command to show image of micro:bit pinout (0.1.6)

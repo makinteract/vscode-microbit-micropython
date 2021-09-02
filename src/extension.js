@@ -253,6 +253,8 @@ async function ufs(params = "") {
 		if (counter >= 5) throw new Error('Cannot connect to REPL')
 	}
 
+	console.log(stdout);
+
 	// Handle errors
 	if (stdout.includes("Could not find micro:bit")) {
 		throw new Error("Could not find micro:bit");
@@ -263,7 +265,10 @@ async function ufs(params = "") {
 							 Try run "sudo chmod 666 /dev/ttyACM0"`);
 
 		else
-			throw new Error("Could not open serial port.");
+			throw new Error("Could not open serial port");
+	}
+	else if (stdout.includes("Errno 16")) {
+		throw new Error("Serial port busy");
 	}
 	else if (stdout.includes("Error"))
 		throw new Error(stdout);

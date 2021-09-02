@@ -2,7 +2,7 @@
   "name": "micro-bit-python",
   "displayName": "micro:bit Python",
   "description": "Easy MicroPython for micro:bit with VScode",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "preview": true,
   "author": {
     "url": "https://github.com/makinteract",
@@ -93,9 +93,9 @@
     ],
     "keybindings": [
       {
-        "command": "extension.flash-sketch",
-        "key": "ctrl+f5",
-        "mac": "cmd+f5",
+        "command": "extension.flash",
+        "key": "ctrl+f6",
+        "mac": "cmd+f6",
         "when": "editorTextFocus"
       }
     ]
