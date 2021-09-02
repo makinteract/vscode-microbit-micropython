@@ -15,7 +15,8 @@ const {
   cloneRepository,
   checkFileExist,
   isOnline,
-  copyFiles
+  copyFiles,
+  moveLast
 } = require('./extension');
 const { fstat } = require('fs');
 
@@ -123,12 +124,15 @@ function activate(context) {
       const workspaceFiles = await getFilesInDir(workspace.uri);
       // is main.py inclued?
       assertFileIsIncluded("main.py", workspaceFiles);
+      // main.py should be flashed last!
+      const wsFiles = moveLast("main.py", workspaceFiles)
 
       // Flash files one by one
-      for (let { fsPath: filename } of workspaceFiles) {
+      for (let { fsPath: filename } of wsFiles) {
         // it might throw an error
-        await ufs(`put "${filename}"`);
+        const { stdout } = await ufs(`put "${filename}"`);
         ui.outInfo(`File "${filename}" copied on micro:bit`);
+        ui.outInfo(`out ${stdout}`);
       }
       await ufs(`reset`);
       ui.vsInfo("Files successfully uploaded");
@@ -144,6 +148,7 @@ function activate(context) {
     try {
       const files = await listFilesOnMicrobit();
       await removeFilesFromMicrobit(files);
+      ui.outInfo(`Files "${files}" removed from micro:bit`);
     } catch (e) {
       ui.vsError(`${e}`);
       ui.outError(e);
@@ -158,6 +163,7 @@ function activate(context) {
 
       if (!fileToRemove) throw new Error("No input specified");
       await removeFilesFromMicrobit([fileToRemove]);
+      ui.outInfo(`File "${fileToRemove}" removed from micro:bit`);
     } catch (e) {
       ui.vsError(`${e}`);
       ui.outError(e);

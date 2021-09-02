@@ -6,9 +6,8 @@ const os = require('os')
 const fs = require('fs')
 const clone = require('git-clone')
 const internetAvailable = require("internet-available")
+const { python, PythonException } = require('./python');
 
-
-const { python, PythonException } = require('./python')
 
 
 // Globals
@@ -138,23 +137,49 @@ function assertFileIsIncluded(filename, fileList) {
 }
 
 /**
+ * Move filename at the end of the list
+ * @param {String} filename 
+ * @param {vscode.Uri[]]} fileList 
+ * @returns vscode.Uri[]
+ */
+function moveLast(filename, fileList) {
+	const other = fileList.filter(({ fsPath: path }) => pathToName(path) !== filename);
+	const item = fileList.find(({ fsPath: path }) => pathToName(path) === filename);
+	other.push(item);
+	return other;
+}
+
+
+/**
+ * Clean a string from \n \r or spaces
+ * @param {String} str 
+ * @returns a cleaned string
+ */
+function cleanString(str) {
+	return str.replace(/\n/g, '').replace(/\r/g, '').trim()
+}
+
+
+/**
  * Get a list of all the files stored on the Microbit
  * @returns - a String[] of files
  */
 async function listFilesOnMicrobit() {
-	const { stdout: filenames, stderr: err } = await ufs("ls");
+	let { stdout: filenames, stderr: err } = await ufs("ls");
 
 	if (err) {
 		throw new Error(err)
 	}
 
 	const files = filenames.split(" ")
+		.map(cleanString)
 		.filter(name => name.length > 0) // a valid name
 		.filter(name => name.includes('.')) // it has an extension
 		.filter(name => name.split('.').pop().length > 0); // whic is valid
 
 	return files;
 }
+
 
 /**
  * Remove a file from Microbit b yname
@@ -165,9 +190,17 @@ async function removeFilesFromMicrobit(filesToRemove) {
 		throw new Error("No files specified for deletion");
 	}
 
-	// remove the specified files
-	for (let file of filesToRemove) {
+	// Remove main.py first if it exists to prevent refresh
+	if (filesToRemove.includes('main.py')) {
+		await ufs(`rm main.py`);
+		console.log('remove main.py');
+	}
+
+	// remove the rest
+	const otherFiles = filesToRemove.filter(name => name !== "main.py");
+	for (let file of otherFiles) {
 		await ufs(`rm ${file}`);
+		console.log(`rm ${file}`);
 	}
 }
 
@@ -206,7 +239,20 @@ async function ufs(params = "") {
 	const ufsDir = vscode.Uri.joinPath(tools, "microfs-master");
 	const ufs = vscode.Uri.joinPath(ufsDir, "ufs.py");
 
-	const { stdout, stderr } = await python.run(`"${ufs.fsPath}" ${params}`, ufsDir.fsPath);
+	let stdout, stderr, counter = 0;
+	while (true) {
+		let out = await python.run(`"${ufs.fsPath}" ${params}`, ufsDir.fsPath);
+		if (!out.stdout.includes("Could not enter raw REPL")) {
+			stdout = out.stdout;
+			break;
+		}
+		// else retry after a short pause
+		const wait = (ms) => new Promise(res => setTimeout(res, ms));
+		await wait(500); // ls seems to need a short pause
+		counter += 1;
+		if (counter >= 5) throw new Error('Cannot connect to REPL')
+	}
+
 	// Handle errors
 	if (stdout.includes("Could not find micro:bit")) {
 		throw new Error("Could not find micro:bit");
@@ -328,5 +374,6 @@ module.exports = {
 	cloneRepository,
 	isOnline,
 	checkFileExist,
-	copyFiles
+	copyFiles,
+	moveLast
 };
