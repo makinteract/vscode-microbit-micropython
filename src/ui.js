@@ -98,7 +98,7 @@ function getPinMap(imageUrl) {
         <title>Pico Pin Map</title>
         <style type="text/css">
             body {
-                background-color: #191c2b;
+                background-color: var(--vscode-editor-background);
             }
         </style>
     </head>
