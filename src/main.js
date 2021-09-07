@@ -74,14 +74,13 @@ function activate(context) {
     }
   });
 
-
   const fetchExamples = vscode.commands.registerCommand('extension.fetch-examples', async function () {
     try {
       if (! await isOnline())
         throw new Error("No internet connection.")
 
-      if (! await isGitInstalled())
-        throw new Error("Git not installed. Install git first: https://git-scm.com")
+      if (!await isGitInstalled())
+        throw new Error('Git not installed. [Install git](https://git-scm.com) first.')
 
       // delete if already exists
       const examplesExist = await checkFileExist("examples", extensionUri());
