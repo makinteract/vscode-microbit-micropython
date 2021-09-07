@@ -327,7 +327,7 @@ async function checkFileExist(filename, dirUri) {
 	const check = s => new Promise(r => fs.access(s, fs.constants.F_OK, e => r(!e)))
 	const loc = vscode.Uri.joinPath(dirUri, filename);
 
-	const result = await check(loc.path)
+	const result = await check(loc.fsPath)
 	return result;
 }
 
