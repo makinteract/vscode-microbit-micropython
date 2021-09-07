@@ -4,6 +4,7 @@ All notable changes to the "vscode-microbit-micropython" extension will be docum
 
 ## [0.1.x]
 
+- Removing git requirments for workspace initialization (0.1.12)
 - Removing unnecessary VSCode dependency for python (ms-python). Added to Open VSX (0.1.11)
 - Updating pyserial dependency missing for Mac OS Big Sur (0.1.10)
 - Numerous bug fixes to work with moultiple and large files (0.1.9)

@@ -17,7 +17,8 @@ const {
   isOnline,
   copyFileOrFolder,
   copyFiles,
-  moveLast
+  moveLast,
+  isGitInstalled
 } = require('./extension');
 const { fstat } = require('fs');
 
@@ -43,21 +44,10 @@ function activate(context) {
       const libs = await checkFileExist("microbit", workspace.uri);
       if (!libs) {
         // https://github.com/makinteract/microbit.git
-        // cloneRepository(MICROBIT_LIBS_REPO, "microbit", workspace.uri);
         await copyFileOrFolder("microbit", extensionUri(), workspace.uri);
       }
 
-      // 2. Download examples if not there
-      // check whether examples are there
-      // download them if not
-      const examplesExist = await checkFileExist("examples", extensionUri());
-      if (!examplesExist && await isOnline()) {
-        cloneRepository(EXAMPLES_REPO, "examples", extensionUri());
-        ui.vsInfo("Downloading examples");
-        ui.outInfo("Downloading examples");
-      }
-
-      // 3. Show to the user the list of template files in examples and ask to pick one
+      // 2. Show to the user the list of template files in examples and ask to pick one
       const examples = vscode.Uri.joinPath(extensionUri(), "examples");
       const list = await getVisibleFoldersInDir(examples);
       list.unshift("Empty - do not modify the current directory"); // add an empy project to start
@@ -65,7 +55,7 @@ function activate(context) {
       if (!pick || pick.startsWith("Empty")) return; // done
 
 
-      // 4. If the user selected one template
+      // 3. If the user selected one template
       // Ask user to confirm overriding of project
       const mainExist = await checkFileExist("main.py", workspace.uri);
       if (mainExist) {
@@ -89,6 +79,9 @@ function activate(context) {
     try {
       if (! await isOnline())
         throw new Error("No internet connection.")
+
+      if (! await isGitInstalled())
+        throw new Error("Git not installed. Install git first: https://git-scm.com")
 
       // delete if already exists
       const examplesExist = await checkFileExist("examples", extensionUri());

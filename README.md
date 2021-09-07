@@ -57,7 +57,7 @@ The templates are fetched from this [online repository](https://github.com/makin
 
 ### `Fetch examples from online`
 
-This command manually fetches the latest example snippets from this [online repository](https://github.com/makinteract/micropython-examples). In order for this command to work, you must be connected to the Internet.
+This command manually fetches the latest example snippets from this [online repository](https://github.com/makinteract/micropython-examples). In order for this command to work, you must be connected to the Internet and you must have installed [git](https://git-scm.com) on your system.
 
 ### `List all files on the micro:bit`
 
@@ -93,7 +93,7 @@ It shows the image with the micro:bit pinout
 
 ## Requirments
 
-The only requirment is to have Python installed and in the _PATH_ variable. Other dependencies ([microfs](https://github.com/ntoll/microfs) and [uflash](https://github.com/ntoll/uflash)) are taken care of automatically.
+The extension requires Python installed and in the _PATH_ variable. Other dependencies ([microfs](https://github.com/ntoll/microfs) and [uflash](https://github.com/ntoll/uflash)) are taken care of automatically. For using the command `Fetch examples from online` and download the latest examples, you need to have [git](https://git-scm.com) installed on your machine.
 
 This extension also draws some inspiration from [another micro:bit python extension](https://github.com/PhonicCanine/vscode-microbit), which you might want to consider as an alternative.
 

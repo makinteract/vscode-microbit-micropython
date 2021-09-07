@@ -2,7 +2,7 @@
   "name": "micro-bit-python",
   "displayName": "micro:bit Python",
   "description": "Easy MicroPython for micro:bit with VScode",
-  "version": "0.1.11",
+  "version": "0.1.12",
   "preview": true,
   "author": {
     "url": "https://github.com/makinteract",
@@ -33,7 +33,7 @@
     "onCommand:extension.rmAll",
     "onCommand:extension.rmFile",
     "onCommand:extension.getFile",
-    "onCommand:extension.listFilesß",
+    "onCommand:extension.listFiles",
     "onCommand:extension.fetch-examples",
     "onCommand:extension.load-example",
     "onCommand:extension.showPinMap",
@@ -81,7 +81,7 @@
       {
         "command": "extension.fetch-examples",
         "category": "micro:bit-python",
-        "title": "Fetch examples from online"
+        "title": "Fetch examples from online (git must be installed)"
       },
       {
         "command": "extension.showPinMap",

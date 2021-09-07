@@ -5,6 +5,7 @@ const { parse } = require('path')
 const os = require('os')
 const fs = require('fs')
 const clone = require('git-clone')
+const { exec } = require('child_process');
 const internetAvailable = require("internet-available")
 const { python, PythonException } = require('./python');
 
@@ -193,14 +194,12 @@ async function removeFilesFromMicrobit(filesToRemove) {
 	// Remove main.py first if it exists to prevent refresh
 	if (filesToRemove.includes('main.py')) {
 		await ufs(`rm main.py`);
-		console.log('remove main.py');
 	}
 
 	// remove the rest
 	const otherFiles = filesToRemove.filter(name => name !== "main.py");
 	for (let file of otherFiles) {
 		await ufs(`rm ${file}`);
-		console.log(`rm ${file}`);
 	}
 }
 
@@ -253,8 +252,6 @@ async function ufs(params = "") {
 		if (counter >= 5) throw new Error('Cannot connect to REPL')
 	}
 
-	console.log(stdout);
-
 	// Handle errors
 	if (stdout.includes("Could not find micro:bit")) {
 		throw new Error("Could not find micro:bit");
@@ -286,7 +283,8 @@ async function deleteFileFromDir(filename, dirUri) {
 	try {
 		await vscode.workspace.fs.delete(todelete, { recursive: true, useTrash: true });
 	} catch (e) {
-		console.log(`File/folder ${todelete.toString()} not found`);
+		// console.log(`File/folder ${todelete.toString()} not found`);
+		throw e;
 	}
 }
 
@@ -359,6 +357,21 @@ async function copyFileOrFolder(filename, sourceDirUri, destDirUri) {
 }
 
 
+/**
+ * Check whether git is installed on the system and returns its version number
+ * @returns a String containing the version number of git, or null if not installed
+ */
+async function isGitInstalled() {
+	const executeCommand = (command, cwd) => new Promise(resolve =>
+		exec(command, { cwd }, (err, stdout) => {
+			resolve(err ? null : (stdout || '').trim());
+		}));
+	const installed = await executeCommand('git --version');
+	return installed;
+}
+
+
+
 
 module.exports = {
 	uflash,
@@ -380,5 +393,6 @@ module.exports = {
 	checkFileExist,
 	copyFiles,
 	copyFileOrFolder,
-	moveLast
+	moveLast,
+	isGitInstalled
 };
