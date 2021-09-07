@@ -63,12 +63,10 @@ async function getCurrentWorkspace() {
 	const openDocumnet = vscode.window.activeTextEditor?.document;
 	if (openDocumnet) {
 		const workspace = getOpenWorkspace();
-		// workspace could be undefined is the current file does not belong to a workspace
-		// ask user to pick a workspace!
-		if (!workspace) {
-			ui.vsInfo("After reloading, please run again the command");
-			await vscode.commands.executeCommand("vscode.openFolder");
-			return;
+		// if workspace is defined, return it
+		// the workspace could be undefined is the current file does not belong to a workspace
+		if (workspace) {
+			return workspace;
 		}
 	}
 

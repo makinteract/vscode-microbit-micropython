@@ -4,6 +4,7 @@ All notable changes to the "vscode-microbit-micropython" extension will be docum
 
 ## [0.1.x]
 
+- Fix bug for which an unsaved document was preventing to select the current workspace (0.1.15)
 - Fix bug in Windows for which initialization was overriding existing projects (0.1.14)
 - Improved docs. Removed unnecessary siles bundled together (0.1.13)
 - Removing git requirments for workspace initialization (0.1.12)
