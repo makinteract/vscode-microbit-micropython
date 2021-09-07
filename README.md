@@ -87,7 +87,7 @@ Under the hood, the command uses the `ufs rm` command.
 
 It shows the image with the micro:bit pinout
 
-<img src="images/pinout.png" height="200" />
+<img src="images/pinout.png" height="300" />
 
 ---
 
