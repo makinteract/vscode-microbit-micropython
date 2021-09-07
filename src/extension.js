@@ -315,7 +315,6 @@ function isOnline(retries = 2, timeout = 500) {
  * @param {*} destinationDirUri - destination base folder URI
  */
 async function cloneRepository(reponame, targetName, destinationDirUri) {
-	// check whether connected to internet, otherwise throw exception
 	const dir = vscode.Uri.joinPath(destinationDirUri, targetName).fsPath;
 	clone(reponame, dir);
 }
@@ -343,17 +342,17 @@ async function copyFiles(sourceDirUri, destDirUri) {
 	const files = await getFilesInDir(sourceDirUri);
 	files.forEach(file => {
 		const fname = pathToName(file.fsPath);
-		copyFile(fname, sourceDirUri, destDirUri);
+		copyFileOrFolder(fname, sourceDirUri, destDirUri);
 	});
 }
 
 /**
- * Copy a single file from a folder to a folder (nested directories are ignored)
+ * Copy a single file from a folder to a folder or a folder (nested directories are ignored)
  * @param {String} filename - the file name
  * @param {vscode.Uri} sourceDirUri - the source folder
  * @param {vscode.Uri} destDirUri - the target folder
  */
-async function copyFile(filename, sourceDirUri, destDirUri) {
+async function copyFileOrFolder(filename, sourceDirUri, destDirUri) {
 	const src = vscode.Uri.joinPath(sourceDirUri, filename);
 	const dest = vscode.Uri.joinPath(destDirUri, filename);
 	vscode.workspace.fs.copy(src, dest, { "overwrite": true });
@@ -380,5 +379,6 @@ module.exports = {
 	isOnline,
 	checkFileExist,
 	copyFiles,
+	copyFileOrFolder,
 	moveLast
 };

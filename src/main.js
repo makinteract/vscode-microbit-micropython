@@ -15,6 +15,7 @@ const {
   cloneRepository,
   checkFileExist,
   isOnline,
+  copyFileOrFolder,
   copyFiles,
   moveLast
 } = require('./extension');
@@ -23,7 +24,6 @@ const { fstat } = require('fs');
 
 // GLOBALS
 const EXAMPLES_REPO = "https://github.com/makinteract/micropython-examples";
-const MICROBIT_LIBS_REPO = "https://github.com/makinteract/microbit.git";
 
 
 
@@ -42,7 +42,9 @@ function activate(context) {
       // clone it if not there
       const libs = await checkFileExist("microbit", workspace.uri);
       if (!libs) {
-        cloneRepository(MICROBIT_LIBS_REPO, "microbit", workspace.uri);
+        // https://github.com/makinteract/microbit.git
+        // cloneRepository(MICROBIT_LIBS_REPO, "microbit", workspace.uri);
+        await copyFileOrFolder("microbit", extensionUri(), workspace.uri);
       }
 
       // 2. Download examples if not there
