@@ -372,7 +372,7 @@ def main(argv=None):
         if args.command == "ls":
             list_of_files = ls()
             if list_of_files:
-                print(" ".join(list_of_files))
+                print(";".join(list_of_files))
         elif args.command == "rm":
             if args.path:
                 rm(args.path)

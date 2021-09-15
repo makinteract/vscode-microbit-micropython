@@ -138,7 +138,7 @@ function assertFileIsIncluded(filename, fileList) {
 /**
  * Move filename at the end of the list
  * @param {String} filename 
- * @param {vscode.Uri[]]} fileList 
+ * @param {vscode.Uri[]} fileList 
  * @returns vscode.Uri[]
  */
 function moveLast(filename, fileList) {
@@ -170,7 +170,7 @@ async function listFilesOnMicrobit() {
 		throw new Error(err)
 	}
 
-	const files = filenames.split(" ")
+	const files = filenames.split(";")
 		.map(cleanString)
 		.filter(name => name.length > 0) // a valid name
 		.filter(name => name.includes('.')) // it has an extension
@@ -197,7 +197,7 @@ async function removeFilesFromMicrobit(filesToRemove) {
 	// remove the rest
 	const otherFiles = filesToRemove.filter(name => name !== "main.py");
 	for (let file of otherFiles) {
-		await ufs(`rm ${file}`);
+		await ufs(`rm "${file}"`);
 	}
 }
 
@@ -209,7 +209,7 @@ async function removeFilesFromMicrobit(filesToRemove) {
 async function getFileFromMicrobit(filename, destinationDirUri) {
 	// might throw an exception if the file does not exist
 	const dest = vscode.Uri.joinPath(destinationDirUri, filename).fsPath;
-	await ufs(`get ${filename} ${dest}`);
+	await ufs(`get "${filename}" "${dest}"`);
 }
 
 /**
