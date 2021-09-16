@@ -24,7 +24,7 @@ from serial import Serial
 PY2 = sys.version_info < (3,)
 
 
-__all__ = ["ls", "rm", "put", "get", "get_serial"]
+__all__ = ["ls", "rm", "put", "get", "reset", "get_serial"]
 
 
 #: The help text to be shown when requested.
@@ -36,6 +36,7 @@ You may use the following commands:
 'rm' - remove a named file on the device (based on the Unix command);
 'put' - copy a named local file onto the device just like the FTP command; and,
 'get' - copy a named file from the device to the local file system a la FTP.
+'reset' - soft reboot of micro:bit.
 
 For example, 'ufs ls' will list the files on a connected BBC micro:bit.
 """
@@ -349,30 +350,38 @@ def main(argv=None):
     try:
         global COMMAND_LINE_FLAG
         COMMAND_LINE_FLAG = True
+
         parser = argparse.ArgumentParser(description=_HELP_TEXT)
-        parser.add_argument(
-            "command",
-            nargs="?",
-            default=None,
-            help="One of 'ls', 'rm', 'put' or 'get'.",
-        )
-        parser.add_argument(
-            "path",
-            nargs="?",
-            default=None,
-            help="Use when a file needs referencing.",
-        )
-        parser.add_argument(
-            "target",
-            nargs="?",
-            default=None,
-            help="Use to specify a target filename.",
-        )
+        subparsers = parser.add_subparsers(
+            dest='command', help="One of 'ls', 'rm', 'put', 'get', or reset.")
+
+        ls_parser = subparsers.add_parser("ls")
+        ls_parser.add_argument("delimiter", nargs="?", default=' ',
+                               help="Specify a delimiter string (default is whitespace). Eg. \";\"")
+
+        rm_parser = subparsers.add_parser("rm")
+        rm_parser.add_argument(
+            "path", nargs="?", help="Specify a target filename.")
+
+        get_parser = subparsers.add_parser("get")
+        get_parser.add_argument(
+            "path", nargs="?", help="Use when a file needs referencing.")
+        get_parser.add_argument("target", nargs="?",
+                                help="Specify a target filename.")
+
+        put_parser = subparsers.add_parser("put")
+        put_parser.add_argument(
+            "path", nargs="?", help="Use when a file needs referencing.")
+        put_parser.add_argument("target", nargs="?",
+                                help="Specify a target filename.")
+
+        put_parser = subparsers.add_parser("reset")
         args = parser.parse_args(argv)
+
         if args.command == "ls":
             list_of_files = ls()
             if list_of_files:
-                print(";".join(list_of_files))
+                print(args.delimiter.join(list_of_files))
         elif args.command == "rm":
             if args.path:
                 rm(args.path)

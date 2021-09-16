@@ -1,8 +1,17 @@
-MicroFS
+MicroFS (modified)
 -------
 
 A simple command line tool and module for interacting with the limited
 file system provided by MicroPython on the BBC micro:bit.
+
+**NOTES**
+
+Modified version of the original MicroFS (see below)
+
+This version allows to pass a delimiter to the ls command, and it also allows to reset micro:bit with the reset command
+
+Finally, all dependencies are stored inside the .pip folder
+
 
 Installation
 ++++++++++++

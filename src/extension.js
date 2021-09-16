@@ -164,13 +164,14 @@ function cleanString(str) {
  * @returns - a String[] of files
  */
 async function listFilesOnMicrobit() {
-	let { stdout: filenames, stderr: err } = await ufs("ls");
+	const delimiter = ";;;"; // using as delimiter a triple ';;;'
+	let { stdout: filenames, stderr: err } = await ufs(`ls "${delimiter}"`);
 
 	if (err) {
 		throw new Error(err)
 	}
 
-	const files = filenames.split(";")
+	const files = filenames.split(delimiter)
 		.map(cleanString)
 		.filter(name => name.length > 0) // a valid name
 		.filter(name => name.includes('.')) // it has an extension
