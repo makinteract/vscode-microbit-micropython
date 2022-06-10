@@ -4,7 +4,8 @@ All notable changes to the "vscode-microbit-micropython" extension will be docum
 
 ## [0.1.x]
 
-- Minort cleanup of the microfs dependency (0.1.17)
+- No longer preview (0.1.18)
+- Minor cleanup of the microfs dependency (0.1.17)
 - Fix bug for which filenames containing a space would not be uploaded, listed, deleted (0.1.16)
 - Fix bug for which an unsaved document was preventing to select the current workspace (0.1.15)
 - Fix bug in Windows for which initialization was overriding existing projects (0.1.14)
