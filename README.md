@@ -1,4 +1,10 @@
-# VScode micro:bit-MicroPython Extension
+# micro:bit + MicroPython extension for VSCode
+
+![Version](https://img.shields.io/visual-studio-marketplace/v/MAKinteract.micro-bit-python)
+![Downloads](https://img.shields.io/visual-studio-marketplace/d/MAKinteract.micro-bit-python)
+
+![V1](https://img.shields.io/badge/micro:bit-V1-green)
+![V2](https://img.shields.io/badge/micro:bit-V2-blue)
 
 This extension provides a self-contained developing environment for developing with _MicroPython_ using the _micro:bit_ platform.
 
@@ -111,6 +117,11 @@ Refer to the [issues page](https://github.com/makinteract/vscode-microbit-microp
 
 ---
 
+## Credits
+
+Icon design by [Hye-Young Jo](https://www.hyeyoungjo.com).
+
+---
 ## License
 
 MIT
