@@ -3,6 +3,7 @@
 ![Version](https://img.shields.io/visual-studio-marketplace/v/MAKinteract.micro-bit-python)
 ![Downloads](https://img.shields.io/visual-studio-marketplace/d/MAKinteract.micro-bit-python)
 ![Installs](https://img.shields.io/visual-studio-marketplace/i/MAKinteract.micro-bit-python?color=pink)
+![GitHub license](https://img.shields.io/badge/license-MIT-red.svg?style=flat-square)
 
 ![V1](https://img.shields.io/badge/micro:bit-V1-green)
 ![V2](https://img.shields.io/badge/micro:bit-V2-blue)
@@ -123,6 +124,7 @@ Refer to the [issues page](https://github.com/makinteract/vscode-microbit-microp
 Icon design by [Hye-Young Jo](https://www.hyeyoungjo.com).
 
 ---
+
 ## License
 
 MIT
