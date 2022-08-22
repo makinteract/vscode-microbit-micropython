@@ -4,6 +4,7 @@ All notable changes to the "vscode-microbit-micropython" extension will be docum
 
 ## [0.1.x]
 
+- Typos (0.1.21)
 - Updated shields (0.1.20)
 - New icon (0.1.19)
 - No longer preview (0.1.18)

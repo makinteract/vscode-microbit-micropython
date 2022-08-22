@@ -2,7 +2,7 @@
   "name": "micro-bit-python",
   "displayName": "micro:bit Python",
   "description": "Easy MicroPython for micro:bit with VScode",
-  "version": "0.1.20",
+  "version": "0.1.21",
   "preview": false,
   "author": {
     "url": "https://github.com/makinteract",
@@ -51,12 +51,12 @@
       {
         "command": "extension.flash-micropython",
         "category": "micro:bit-python",
-        "title": "Flash MicroPython environment on micro:bit"
+        "title": "Flash MicroPython environment on the micro:bit"
       },
       {
         "command": "extension.flash",
         "category": "micro:bit-python",
-        "title": "Flash sketch on micro:bit"
+        "title": "Flash sketch on the micro:bit"
       },
       {
         "command": "extension.listFiles",
@@ -66,12 +66,12 @@
       {
         "command": "extension.rmAll",
         "category": "micro:bit-python",
-        "title": "Remove all files from micro:bit"
+        "title": "Remove all files from the micro:bit"
       },
       {
         "command": "extension.rmFile",
         "category": "micro:bit-python",
-        "title": "Remove a single file from micro:bit"
+        "title": "Remove a single file from the micro:bit"
       },
       {
         "command": "extension.getFile",
