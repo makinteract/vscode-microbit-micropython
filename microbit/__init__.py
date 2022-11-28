@@ -159,6 +159,8 @@ def temperature(self):
 button_a = _Button()
 button_b = _Button()
 
+pin_logo = _MicroBitTouchPin()
+
 pin0 = _MicroBitTouchPin()
 pin1 = _MicroBitTouchPin()
 pin2 = _MicroBitTouchPin()
