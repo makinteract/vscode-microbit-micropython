@@ -1,165 +1,351 @@
-"""Micro:Bit stubs for Visual Studio Code
+# -*- coding: utf-8 -*-
+from __future__ import absolute_import, unicode_literals
 
-Joseph Fergusson, 2019"""
+from typing import (
+    Any,
+    List,
+    NewType,
+    Optional,
+    Union,
+)
 
-class _display:
-    def get_pixel(self,x,y):
-        """get the brightness of the addressed pixel"""
-        return 9
+_UARTParity = NewType("_UARTParity", int)
 
-    def set_pixel(self,x,y,value):
-        """set the brightness of the addressed pixel"""
-        z = value
 
-    def clear(self):
-        """clears the display"""
-        z = 0
+def panic() -> None:
+    """
+    Put micro:bit in panic() mode and display an unhappy face.
+    Press the reset button to exit panic() mode.
+    """
+    pass
 
-    def show(self,*args):
-        """shows the image. Use either:
-        show(image)
-        shows the image on the display.
-        or
-        show(value, <>delay, <>*, <>wait, <>loop, <>clear), where fields marked with <> are optional
-        If value is a string, float or integer, display letters/digits in sequence. Otherwise, if value is an iterable sequence of images, display these images in sequence. Each letter, digit or image is shown with delay milliseconds between them.
-    If wait is True, this function will block until the animation is finished, otherwise the animation will happen in the background.
-    If loop is True, the animation will repeat forever.
-    If clear is True, the display will be cleared after the iterable has finished.
-    Note that the wait, loop and clear arguments must be specified using their keyword."""
-        z = 0
 
-    def scroll(self,value, delay=150, *, wait=True, loop=False, monospace=False):
-        """Scrolls value horizontally on the display. If value is an integer or float it is first converted to a string using str(). The delay parameter controls how fast the text is scrolling.
-    If wait is True, this function will block until the animation is finished, otherwise the animation will happen in the background.
-    If loop is True, the animation will repeat forever.
-    If monospace is True, the characters will all take up 5 pixel-columns in width, otherwise there will be exactly 1 blank pixel-column between each character as they scroll.
-    Note that the wait, loop and monospace arguments must be specified using their keyword."""
-        z = 0
+def sleep(time: int) -> None:
+    """
+    Put micro:bit to sleep for some milliseconds (1 second = 1000 ms) of time.
+    sleep(2000) gives micro:bit a 2 second nap.
+    """
+    pass
 
-    def on(self):
-        """turn on the display"""
-        z = 0
 
-    def off(self):
-        """turn off the display"""
-        z = 0
+def running_time() -> int:
+    """
+    Return running_time() in milliseconds since micro:bit's last reset.
+    """
+    pass
 
-    def is_on(self):
-        """returns true if the display is on"""
-        return True
 
-    def read_light_level(self):
-        """Use the display’s LEDs in reverse-bias mode to sense the amount of light falling on the display. Returns an integer between 0 and 255 representing the light level, with larger meaning more light."""
-        return 255
+def temperature() -> float:
+    """
+    Return micro:bit's temperature in degrees Celcius.
+    """
+    pass
 
-class _Button():
-    """Physical button on the Microbit board"""
 
-    def is_pressed(self):
-        """Returns True if the button is being pressed"""
-        return True
-    
-    def was_pressed(self):
-        """Returns True if the button has been pressed since this was last called"""
-        return True
-    
-    def get_presses(self):
-        """Returns the number of times the button has been pressed since this method was last called, then resets the count"""
-        return 10
+# Accelerometer 3D orientation
+class _Accelerometer(object):
+    def get_x(self) -> int:
+        """
+        Return micro:bit's tilt (X acceleration) in milli-g's.
+        """
+        pass
 
-    def __init__(self):
-        a = 0
+    def get_y(self) -> int:
+        """
+        Return micro:bit's tilt (Y acceleration) in milli-g's.
+        """
+        pass
 
-class _Buttons():
-    """Holder of the buttons"""
-    def __init__(self):
-        self.button_a = _Button()
-        self.button_b = _Button()
+    def get_z(self) -> int:
+        """
+        Return micro:bit's up-down motion (Z acceleration) in milli-g's.
+        Z is a positive number when moving up. Moving down, Z is a negative
+        number.
+        """
+        pass
 
-class _MicroBitDigitalPin:
-    """Digital pin on the Micro:Bit board"""
+    def is_gesture(self, name: str) -> bool:
+        """
+        Return True or False to indicate if the named gesture is currently
+        active.
+        MicroPython understands the following gestures: 'up', 'down', 'left',
+        'right', 'face up', 'face down', 'freefall', '3g', '6g', '8g' and
+        'shake'.
+        """
+        pass
 
-    def read_digital(self):
-        """Return 1 if the pin is high, and 0 if it's low"""
-        return 1
-    
-    
-    def write_digital(self,value):
-        """Set the pin to High if the value is 1, or else set it to 0"""
-        a = value
+    def was_gesture(self, name: str) -> bool:
+        """
+        Return True or False to indicate if the named gesture was active since
+        the last call.
+        MicroPython understands the following gestures: 'up', 'down', 'left',
+        'right', 'face up', 'face down', 'freefall', '3g', '6g', '8g' and
+        'shake'.
+        """
+        pass
 
-    def __init__(self):
-        a = 0
+    def get_gestures(self) -> List[str]:
+        """
+        Return a list indicating the gesture history. The most recent gesture
+        is last.
+        Calling this method also clears the gesture history.
+        MicroPython understands the following gestures: 'up', 'down', 'left',
+        'right', 'face up', 'face down', 'freefall', '3g', '6g', '8g' and
+        'shake'.
+        """
+        pass
 
-class _MicroBitAnalogDigitalPin(_MicroBitDigitalPin):
-    """Analog (PWM) pin on the Micro:Bit board"""
 
-    def read_analog(self):
-        """Reads the voltage applied to the pin, and return it as an integer between 0 (0V), and 1024 (3.3V)"""
-        return 1023
-    
-    
-    def write_analog(self,value):
-        """Output a PWM signal on the pin, with a duty cycle proportional to provided value, where 0 = 0%, and 1023 = 100%"""
-        a = value
-    
-    
-    def set_analog_period(self,period):
-        """Set the period of the PWM signal being output to period in ms. Minimum valid is 1ms"""
-        a = period
-    
-    
-    def set_analog_period_microseconds(self,period):
-        """Set the period of the PWM signal being output to period in microseconds. Minimum valid is 256"""
-        a = period
-    
-    def __init__(self):
-        a = 0
+accelerometer = _Accelerometer()
 
-class _MicroBitTouchPin(_MicroBitAnalogDigitalPin):
-    """Touch sensitive pin on the Micro:Bit board"""
 
-    def is_touched(self):
-        """Return True if the pin is being touched, otherwise False"""
-        return True
+# Pushbutton
+class _Button(object):
+    def is_pressed(self) -> bool:
+        """
+        If the button is pressed down, is_pressed() is True, else False.
+        """
+        pass
 
-    def __init__(self):
-        a = 0
+    def was_pressed(self) -> bool:
+        """
+        Use was_pressed() to learn if the button was pressed since the last
+        time was_pressed() was called. Returns True or False.
+        """
+        pass
 
-class _MicroBitAnalogDigitalPinReadOnly:
-    """Read only PWM pin"""
+    def get_presses(self) -> int:
+        """
+        Use get_presses() to get the running total of button presses, and also
+        reset this counter to zero.
+        """
+        pass
 
-    def read_analog(self):
-        """Reads the voltage applied to the pin, and return it as an integer between 0 (0V), and 1024 (3.3V)"""
-        return 1023
-    
-    def __init__(self):
-        a = 0
-
-def panic(self, error_code):
-    """Enter a panic mode. Requires restart. Pass in an arbitrary integer <= 255 to indicate a status"""
-    s = error_code
-
-def reset(self):
-    """Restart the board."""
-    a = 0
-
-def sleep(self,milliseconds):
-    """Wait for n milliseconds. One second is 1000 milliseconds, so:"""
-    a = milliseconds
-
-def running_time(self):
-    """Return the number of milliseconds since the board was switched on or restarted."""
-    return 10
-
-def temperature(self):
-    """Return the temperature of the micro:bit in degrees Celcius."""
-    return 26.2
 
 button_a = _Button()
 button_b = _Button()
 
+
+# Compass 3D direction heading
+class _Compass(object):
+    def is_calibrated(self) -> bool:
+        """
+        If micro:bit's compass is_calibrated() and adjusted for accuracy,
+        return True.
+        If compass hasn't been adjusted for accuracy, return False.
+        """
+        pass
+
+    def calibrate(self) -> None:
+        """
+        If micro:bit is confused, calibrate() the compass to adjust the its
+        accuracy.
+        Will ask you to rotate the device to draw a circle on the display.
+        Afterwards, micro:bit will know which way is north.
+        """
+        pass
+
+    def clear_calibration(self) -> None:
+        """
+        Reset micro:bit's compass using clear_calibration() command.
+        Run calibrate() to improve accuracy.
+        """
+        pass
+
+    def get_x(self) -> int:
+        """
+        Return magnetic field detected along micro:bit's X axis.
+        Usually, the compass returns the earth's magnetic field in micro-Tesla
+        units.
+        Unless...a strong magnet is nearby!
+        """
+        pass
+
+    def get_y(self) -> int:
+        """
+        Return magnetic field detected along micro:bit's Y axis.
+        Usually, the compass returns the earth's magnetic field in micro-Tesla
+        units.
+        Unless...a strong magnet is nearby!
+        """
+        pass
+
+    def get_z(self) -> int:
+        """
+        Return magnetic field detected along micro:bit's Z axis.
+        Usually, the compass returns the earth's magnetic field in micro-Tesla
+        units.
+        Unless...a strong magnet is nearby!
+        """
+        pass
+
+    def get_field_strength(self) -> int:
+        """
+        Return strength of magnetic field around micro:bit.
+        """
+        pass
+
+    def heading(self) -> int:
+        """
+        Return a number between 0-360 indicating the device's heading. 0 is
+        north.
+        """
+        pass
+
+
+compass = _Compass()
+
+
+# Display 5x5 LED grid
+class _Display(object):
+    def show(
+        self,
+        x: Union['Image', List['Image'], str],
+        delay: int = 400,
+        wait: bool = True,
+        loop: bool = False,
+        clear: bool = False,
+    ) -> None:
+        """
+        Use show(x) to print the string or image 'x' to the display. If 'x' is
+        a list of images they will be animated together.
+        Use 'delay' to specify the speed of frame changes in milliseconds.
+        If wait is False animation will happen in the background while the
+        program continues.
+        If loop is True the animation will repeat forever.
+        If clear is True the display will clear at the end of the animation.
+        """
+        pass
+
+    def scroll(
+        self,
+        string: str,
+        delay: int = 150,
+        wait: bool = True,
+        loop: bool = False,
+        monospace: bool = False,
+    ) -> None:
+        """
+        Use scroll(string) to scroll the string across the display.
+        Use delay to control how fast the text scrolls.
+        If wait is False the text will scroll in the background while the
+        program continues.
+        If loop is True the text will repeat forever.
+        If monospace is True the characters will always take up 5
+        pixel-columns.
+        """
+        pass
+
+    def clear(self) -> None:
+        """
+        Use clear() to clear micro:bit's display.
+        """
+        pass
+
+    def get_pixel(self, x: int, y: int) -> int:
+        """
+        Use get_pixel(x, y) to return the display's brightness at LED pixel
+        (x,y).
+        Brightness can be from 0 (LED is off) to 9 (maximum LED brightness).
+        """
+        pass
+
+    def set_pixel(self, x: int, y: int, b: int) -> None:
+        """
+        Use set_pixel(x, y, b) to set the display at LED pixel (x,y) to
+        brightness 'b'
+        which can be set between 0 (off) to 9 (full brightness).
+        """
+        pass
+
+    def on(self) -> None:
+        """
+        Use on() to turn on the display.
+        """
+        pass
+
+    def off(self) -> None:
+        """
+        Use off() to turn off the display.
+        """
+        pass
+
+    def is_on(self) -> bool:
+        """
+        Use is_on() to query if the micro:bit's display is on (True) or off
+        (False).
+        """
+        pass
+
+
+display = _Display()
+
+
+# Pins
+class _MicroBitDigitalPin:
+    """Digital pin on the Micro:Bit board"""
+
+    def read_digital(self) -> int:
+        """
+        Read the digital value of the pin. 0 for low, 1 for high
+        """
+        pass
+
+    def write_digital(self,value: int) -> None:
+        """
+        Set the pin to output high if value is 1, or to low, it it is 0.
+        """
+        pass
+
+    def __init__(self):
+        pass
+
+class _MicroBitAnalogDigitalPin(_MicroBitDigitalPin):
+    """Analog (PWM) pin on the Micro:Bit board"""
+
+    def read_analog(self) -> int:
+        """Reads the voltage applied to the pin, and return it as an integer between 0 (0V), and 1024 (3.3V)"""
+        pass
+    
+    def write_analog(self,value: int) -> None:
+        """Output a PWM signal on the pin, with a duty cycle proportional to provided value, where 0 = 0%, and 1023 = 100%"""
+        pass
+    
+    
+    def set_analog_period(self,period: int) -> None:
+        """Set the period of the PWM signal being output to period in ms. Minimum valid is 1ms"""
+        pass
+    
+    
+    def set_analog_period_microseconds(self,period: int) -> None:
+        """Set the period of the PWM signal being output to period in microseconds. Minimum valid is 256"""
+        pass
+    
+    def __init__(self):
+        pass
+
+class _MicroBitTouchPin(_MicroBitAnalogDigitalPin):
+    """Touch sensitive pin on the Micro:Bit board"""
+
+    def is_touched(self) -> bool:
+        """Return True if the pin is being touched, otherwise False"""
+        pass
+
+    def __init__(self):
+        pass
+
+class _MicroBitAnalogDigitalPinReadOnly:
+    """Read only PWM pin"""
+
+    def read_analog(self) -> int:
+        """Reads the voltage applied to the pin, and return it as an integer between 0 (0V), and 1024 (3.3V)"""
+        pass
+    
+    def __init__(self):
+        pass
+
 pin_logo = _MicroBitTouchPin()
+pin_speaker = _MicroBitAnalogDigitalPin()
 
 pin0 = _MicroBitTouchPin()
 pin1 = _MicroBitTouchPin()
@@ -181,289 +367,396 @@ pin13 = _MicroBitDigitalPin()
 pin14 = _MicroBitDigitalPin()
 pin15 = _MicroBitDigitalPin()
 pin16 = _MicroBitDigitalPin()
-
+# Pin17 = 3v3
+# Pin18 = 3v3
 pin19 = _MicroBitDigitalPin()
 pin20 = _MicroBitDigitalPin()
-
-display = _display()
-
-class _Image:
-        """Base image class"""
-
-        def width(self):
-            """gets the number of columns in an image"""
-            return 5
-
-        def height(self):
-            """gets the number of rows in an image"""
-            return 5
-
-        def set_pixel(self,x,y,value):
-            """sets the brightness of a pixel at the given position
-            Cannot be used on inbuilt images."""
-            a = 0
-
-        def get_pixel(self,x,y):
-            """returns the brightness of the pixel located at x,y"""
-            return 9
-
-        def shift_left(self,n):
-            """returns a new image created by shifting the image left by n columns"""
-            return self
-
-        def shift_right(self,n):
-            """returns a new image created by shifting the image right by n columns"""
-            return self
-
-        def shift_up(self,n):
-            """returns a new image created by shifting the image up by n rows"""
-            return self
-
-        def shift_down(self,n):
-            """returns a new image created by shifting the image down by n rows"""
-            return self
-
-        def crop(self,x,y,w,h):
-            """return a new image by cropping the picture to a width of w and a height of h, starting with the pixel at column x and row y."""
-            return self
-
-        def copy(self):
-            """return an exact copy of the image"""
-            return self
-
-        def invert(self):
-            """return a new image by inverting the brightness of the pixels in the source image."""
-            return self
-
-        def fill(self,value):
-            """Return a new image by inverting the brightness of the pixels in the source image.
-            Cannot be used on inbuilt images."""
-            return self
-
-        def blit(self,src, x, y, w, h, xdest=0, ydest=0):
-            """Copy the rectangle defined by x, y, w, h from the image src into this image at xdest, ydest. Areas in the source rectangle, but outside the source image are treated as having a value of 0."""
-            a = 0
-
-class _img(_Image):
-
-    HEART = _Image()
-    HEART_SMALL = _Image()
-
-    HAPPY = _Image()
-    SMILE = _Image()
-    SAD = _Image()
-    CONFUSED = _Image()
-    ANGRY = _Image()
-    ASLEEP = _Image()
-    SURPRISED = _Image()
-    SILLY = _Image()
-    FABULOUS = _Image()
-    MEH = _Image()
-
-    YES = _Image()
-    NO = _Image()
-
-    CLOCK12 = _Image()
-    CLOCK11 = _Image()
-    CLOCK10 = _Image()
-    CLOCK9 = _Image()
-    CLOCK8 = _Image()
-    CLOCK7 = _Image()
-    CLOCK6 = _Image()
-    CLOCK5 = _Image()
-    CLOCK4 = _Image()
-    CLOCK3 = _Image()
-    CLOCK2 = _Image()
-    CLOCK1 = _Image()
-
-    ARROW_N = _Image()
-    ARROW_NE = _Image()
-    ARROW_E = _Image()
-    ARROW_SE = _Image()
-    ARROW_S = _Image()
-    ARROW_SW = _Image()
-    ARROW_W = _Image()
-    ARROW_NW = _Image()
-
-    TRIANGLE = _Image()
-    TRIANGLE_LEFT = _Image()
-    CHESSBOARD = _Image()
-    DIAMOND = _Image()
-    DIAMOND_SMALL = _Image()
-    SQUARE = _Image()
-    SQUARE_SMALL = _Image()
-
-    RABBIT = _Image()
-    COW = _Image()
-
-    MUSIC_CROTCHET = _Image()
-    MUSIC_QUAVER = _Image()
-    MUSIC_QUAVERS = _Image()
-
-    PITCHFORK = _Image()
-
-    XMAS = _Image()
-
-    PACMAN = _Image()
-    TARGET = _Image()
-    TSHIRT = _Image()
-    ROLLERSKATE = _Image()
-    DUCK = _Image()
-    HOUSE = _Image()
-    TORTOISE = _Image()
-    BUTTERFLY = _Image()
-    STICKFIGURE = _Image()
-    GHOST = _Image()
-    SWORD = _Image()
-    GIRAFFE = _Image()
-    SKULL = _Image()
-    UMBRELLA = _Image()
-    SNAKE = _Image()
-
-    def __new__(self):
-        return self
-
-
-Image = _img()
-#def Image(string = None, width=None, height=None, buffer=None, fake=None):
-#    if (fake == True):
-#        return _img
-#    else:
-#        return _img._Image
-
-class _spi:
-    def init(self,baudrate=1000000, bits=8, mode=0, sclk=pin13, mosi=pin15, miso=pin14):
-        """see: https://microbit-micropython.readthedocs.io/en/latest/spi.html"""
-
-    def read(self,nbytes):
-        """Read at most nbytes. Returns what was read."""
-
-    def write(self,buffer):
-        """Write the buffer of bytes to the bus."""
-
-    def write_readinto(self,out, inBuffer):
-        """Write the out buffer to the bus and read any response into the in buffer. The length of the buffers should be the same. The buffers can be the same object."""
-
-spi = _spi()
-
-class _uart:
-    def init(self, baudrate=9600, bits=8, parity=None, stop=1, *, tx=None, rx=None):
-        """Initialize serial communication with the specified parameters on the specified tx and rx pins. Note that for correct communication, the parameters have to be the same on both communicating devices."""
-
-    def any(self):
-        """Return True if any data is waiting, else False."""
-        return True
-
-    def read(self,nBytes = None):
-        """Read at most n Bytes if the parameter is set, else read as much as can be read.
-        Returns a Byte array if data can be read, otherwise returns None."""
-        return None
-
-    def readInto(self,buf, nBytes = None):
-        """Read bytes into the buf. If nbytes is specified then read at most that many bytes. Otherwise, read at most len(buf) bytes.
-    Return value: number of bytes read and stored into buf or None on timeout."""
-        
-    def readline(self):
-        """Read a line, ending in a newline character.
-    Return value: the line read or None on timeout. The newline character is included in the returned bytes."""
-
-    def write(self,buf):
-        """Write the buffer to the bus, it can be a bytes object or a string.
-        Return value: number of bytes written or None on timeout."""
-
-uart = _uart()
-
-class _i2c:
-    def init(self,freq=100000, sda=pin20, scl=pin19):
-        """Re-initialize peripheral with the specified clock frequency freq on the specified sda and scl pins.
-    Warning
-    Changing the I²C pins from defaults will make the accelerometer and compass stop working, as they are connected internally to those pins."""
-
-    def scan(self):
-        """Scan the bus for devices. Returns a list of 7-bit addresses corresponding to those devices that responded to the scan."""
-        return []
-
-    def read(self,addr, n, repeat=False):
-        """Read n bytes from the device with 7-bit address addr. If repeat is True, no stop bit will be sent."""
-
-    def write(self,addr, buf, repeat=False):
-        """Write bytes from buf to the device with 7-bit address addr. If repeat is True, no stop bit will be sent."""
-
-i2c = _i2c()
-
-class _compass:
-    def calibrate(self):
-        """Starts the calibration process. An instructive message will be scrolled to the user after which they will need to rotate the device in order to draw a circle on the LED display."""
-
-    def is_calibrated(self):
-        """Returns True if the compass has been successfully calibrated, and returns False otherwise."""
-        return True
-
-    def clear_calibration(self):
-        """Undoes the calibration, making the compass uncalibrated again."""
-
-    def get_x(self):
-        """Gives the reading of the magnetic field strength on the x axis in nano tesla, as a positive or negative integer, depending on the direction of the field."""
-        return 0
-
-    def get_y(self):
-        """Gives the reading of the magnetic field strength on the y axis in nano tesla, as a positive or negative integer, depending on the direction of the field."""
-        return 0
-
-    def get_z(self):
-        """Gives the reading of the magnetic field strength on the z axis in nano tesla, as a positive or negative integer, depending on the direction of the field."""
-        return 0
-
-    def heading(self):
-        """Gives the compass heading, calculated from the above readings, as an integer in the range from 0 to 360, representing the angle in degrees, clockwise, with north as 0."""
-        return 0
-
-    def get_field_strength(self):
-        """Returns an integer indication of the magnitude of the magnetic field around the device in nano tesla."""
-        return 0
-
-compass = _compass()
-
-class _accelerometer:
-    def get_x(self):
-        """Get the acceleration measurement in the x axis, as a positive or negative integer, depending on the direction. The measurement is given in milli-g. By default the accelerometer is configured with a range of +/- 2g, and so this method will return within the range of +/- 2000mg."""
-        return 2
-
-    def get_y(self):
-        """Get the acceleration measurement in the y axis, as a positive or negative integer, depending on the direction. The measurement is given in milli-g. By default the accelerometer is configured with a range of +/- 2g, and so this method will return within the range of +/- 2000mg."""
-        return 2
-
-    def get_z(self):
-        """Get the acceleration measurement in the z axis, as a positive or negative integer, depending on the direction. The measurement is given in milli-g. By default the accelerometer is configured with a range of +/- 2g, and so this method will return within the range of +/- 2000mg."""
-        return 2
-
-    def get_values(self):
-        """Get the acceleration measurements in all axes at once, as a three-element tuple of integers ordered as X, Y, Z. By default the accelerometer is configured with a range of +/- 2g, and so X, Y, and Z will be within the range of +/-2000mg."""
-        return (2,2,2)
-
-    def current_gesture(self):
-        """Return the name of the current gesture."""
-        return "face up"
-
-    def is_gesture(self,name):
-        """Return True or False to indicate if the named gesture is currently active."""
-        return False
-
-    def was_gesture(self,name):
-        """Return True or False to indicate if the named gesture was active since the last call."""
-        return False
-
-    def get_gestures(self):
-        """Return a tuple of the gesture history. The most recent is listed last. Also clears the gesture history before returning."""
-        return ()
-
-accelerometer = _accelerometer()
-
-
-"""Image stuff"""
-#def Image(string = None, width=None, height=None, buffer=None):
-#"""Image() - Create a blank 5x5 image
-#Image(string) - Create an image by parsing the string, a single character returns that glyph
-#Image(width, height) - Create a blank image of given size
-#Image(width, height, buffer) - Create an image from the given buffer"""
-#    return Image._Image()
+# pin21 = gnd
+# pin22 = gnd
+
+# I2C
+class _I2C(object):
+    def read(self, address: int, n: int, repeat: bool = False) -> bytes:
+        """
+        Use read(address, n) to read 'n' bytes from the device with the 7-bit
+        address.
+        If repeat is True, no stop bit will be sent.
+        """
+        pass
+
+    def write(self, adress: int, buffer: bytes, repeat: bool = False) -> None:
+        """
+        Use write(address, buffer) to write to the 'buffer' of the device at
+        the 7-bit 'address'.
+        If repeat is True, no stop bit will be sent.
+        """
+        pass
+
+    def init(self, frequency: int, scl: _Pin, sda: _Pin) -> None:
+        """
+        Use init(frequency, scl, sda) to set the bus frequency and pins.
+        """
+        pass
+
+
+i2c = _I2C()
+
+
+# Image
+class Image(object):
+    def __init__(self, *args: Any) -> None:
+        """
+        There are three ways to construct an image
+        First, with a string:
+            Image(
+                '09090:'
+                '99999:'
+                '99999:'
+                '09990:'
+                '00900:'
+            )
+            This would create a 5x5 heart shaped image.
+            Numbers go from 0 (off) to 9 (brightest).
+            Note the colon ':' to set the end of a row. You can also use \\n
+        Second with a width/height:
+            Image(5, 5)
+            This creates a blank 5x5 image, which you can manipulate
+        Lastly you can pass a buffer with a width and a height
+            Image(5, 5, [
+                0, 9, 0, 9, 0,
+                9, 9, 9, 9, 9,
+                9, 9, 9, 9, 9,
+                0, 9, 9, 9, 0,
+                0, 0, 9, 0, 0,
+            ])
+            This would create the heart image from the first method.
+        """
+
+    def width(self) -> int:
+        """
+        Return the width of the image in pixels.
+        """
+        pass
+
+    def height(self) -> int:
+        """
+        Return the height of the image in pixels.
+        """
+        pass
+
+    def get_pixel(self, x: int, y: int) -> int:
+        """
+        Use get_pixel(x, y) to return the image's brightness at LED pixel
+        (x,y).
+        Brightness can be from 0 (LED is off) to 9 (maximum LED brightness).
+        """
+        pass
+
+    def set_pixel(self, x: int, y: int, b: int) -> None:
+        """
+        Use set_pixel(x, y, b) to set the LED pixel (x,y) in the image to
+        brightness 'b' which can be set between 0 (off) to 9 (full brightness).
+        """
+        pass
+
+    def shift_left(self, n: int) -> 'Image':
+        """
+        Use shift_left(n) to make a copy of the image but moved 'n' pixels to
+        the left.
+        """
+        pass
+
+    def shift_right(self, n: int) -> 'Image':
+        """
+        Use shift_right(n) to make a copy of the image but moved 'n' pixels to
+        the right.
+        """
+        pass
+
+    def shift_up(self, n: int) -> 'Image':
+        """
+        Use shift_up(n) to make a copy of the image but moved 'n' pixels up.
+        """
+        pass
+
+    def shift_down(self, n: int) -> 'Image':
+        """
+        Use shift_down(n) to make a copy of the image but moved 'n' pixels
+        down.
+        """
+        pass
+
+    def copy(self) -> 'Image':
+        """
+        Use copy() to make a new exact copy of the image.
+        """
+        pass
+
+    def crop(self, x1: int, y1: int, x2: int, y2: int) -> 'Image':
+        """
+        Use crop(x1, y1, x2, y2) to make a cut-out copy of the image where
+        coordinate (x1,y1) is the top left corner of the cut-out area and
+        coordinate (x2,y2) is the bottom right corner.
+        """
+        pass
+
+    def invert(self) -> 'Image':
+        """
+        Use invert() to make a negative copy of the image. Where a pixel was
+        bright or on in the original, it is dim or off in the negative copy.
+        """
+        pass
+
+    HEART = None  # type: Image
+    HEART_SMALL = None  # type: Image
+    HAPPY = None  # type: Image
+    SMILE = None  # type: Image
+    SAD = None  # type: Image
+    CONFUSED = None  # type: Image
+    ANGRY = None  # type: Image
+    ASLEEP = None  # type: Image
+    SURPRISED = None  # type: Image
+    SILLY = None  # type: Image
+    FABULOUS = None  # type: Image
+    MEH = None  # type: Image
+    YES = None  # type: Image
+    NO = None  # type: Image
+    CLOCK12 = None  # type: Image
+    CLOCK11 = None  # type: Image
+    CLOCK10 = None  # type: Image
+    CLOCK9 = None  # type: Image
+    CLOCK8 = None  # type: Image
+    CLOCK7 = None  # type: Image
+    CLOCK6 = None  # type: Image
+    CLOCK5 = None  # type: Image
+    CLOCK4 = None  # type: Image
+    CLOCK3 = None  # type: Image
+    CLOCK2 = None  # type: Image
+    CLOCK1 = None  # type: Image
+    ARROW_N = None  # type: Image
+    ARROW_NE = None  # type: Image
+    ARROW_E = None  # type: Image
+    ARROW_SE = None  # type: Image
+    ARROW_S = None  # type: Image
+    ARROW_SW = None  # type: Image
+    ARROW_W = None  # type: Image
+    ARROW_NW = None  # type: Image
+    TRIANGLE = None  # type: Image
+    TRIANGLE_LEFT = None  # type: Image
+    CHESSBOARD = None  # type: Image
+    DIAMOND = None  # type: Image
+    DIAMOND_SMALL = None  # type: Image
+    SQUARE = None  # type: Image
+    SQUARE_SMALL = None  # type: Image
+    RABBIT = None  # type: Image
+    COW = None  # type: Image
+    MUSIC_CROTCHET = None  # type: Image
+    MUSIC_QUAVER = None  # type: Image
+    MUSIC_QUAVERS = None  # type: Image
+    PITCHFORK = None  # type: Image
+    XMAS = None  # type: Image
+    PACMAN = None  # type: Image
+    TARGET = None  # type: Image
+    TSHIRT = None  # type: Image
+    ROLLERSKATE = None  # type: Image
+    DUCK = None  # type: Image
+    HOUSE = None  # type: Image
+    TORTOISE = None  # type: Image
+    BUTTERFLY = None  # type: Image
+    STICKFIGURE = None  # type: Image
+    GHOST = None  # type: Image
+    SWORD = None  # type: Image
+    GIRAFFE = None  # type: Image
+    SKULL = None  # type: Image
+    UMBRELLA = None  # type: Image
+    SNAKE = None  # type: Image
+    ALL_CLOCKS = None  # type: List[Image]
+    ALL_ARROWS = None  # type: List[Image]
+
+
+# uart
+class _UARTSerial(object):
+    ODD = _UARTParity(1)
+    EVEN = _UARTParity(0)
+
+    def init(
+        self,
+        baudrate: int = 9600,
+        bits: int = 8,
+        parity: Optional[_UARTParity] = None,
+        stop: int = 1,
+        tx: Optional[_Pin] = None,
+        rx: Optional[_Pin] = None,
+    ) -> None:
+        """
+        Use init() to set up communication using the default values.
+        Otherwise override the defaults as named arguments.
+        """
+        pass
+
+    def any(self) -> bool:
+        """
+        If there are incoming characters waiting to be read, any() will return
+        True.
+        Otherwise, returns False.
+        """
+        pass
+
+    def read(self, n: int) -> bytes:
+        """
+        Use read() to read characters.
+        Use read(n) to read, at most, 'n' bytes of data.
+        """
+        pass
+
+    def readall(self) -> bytes:
+        """
+        Use readall() to read as much data as possible.
+        """
+        pass
+
+    def readline(self) -> bytes:
+        """
+        Use readline() to read a line that ends with a newline character.
+        """
+        pass
+
+    def readinto(self, buf: bytes, n: int) -> int:
+        """
+        Use readinto(buf) to read bytes into the buffer 'buf'.
+        Use readinto(buff, n) to read, at most, 'n' number of bytes into 'buf'.
+        """
+        pass
+
+    def write(self, buf: bytes) -> int:
+        """
+        Use write(buf) to write the bytes in buffer 'buf' to the connected
+        device.
+        """
+        pass
+
+
+uart = _UARTSerial()
+
+
+# SPI
+class _SPISerial(object):
+    def init(
+        self,
+        baudrate: int = 1000000,
+        bits: int = 8,
+        mode: int = 0,
+        sclk: _Pin = pin13,
+        mosi: _Pin = pin15,
+        miso: _Pin = pin14,
+    ) -> None:
+        """
+        Set up communication. Override the defaults for baudrate, mode,
+        SCLK, MOSI and MISO. The default connections are pin13 for SCLK, pin15
+        for MOSI and pin14 for MISO.
+        """
+        pass
+
+    def write(self, buf: bytes) -> None:
+        """
+        Use write(buf) to write bytes in buffer 'buf' to the connected device.
+        """
+        pass
+
+    def read(self, n: int) -> bytes:
+        """
+        Use read(n) to read 'n' bytes of data.
+        """
+        pass
+
+    def write_readinto(self, outbuf: bytes, inbuf: bytes) -> None:
+        """
+        Use write_readinto(outbuf, inbuf) to write the 'outbuf' buffer to the
+        connected device and read any response into the 'inbuf' buffer. The
+        length of the buffers should be the same. The buffers can be the same
+        object.
+        """
+        pass
+
+
+spi = _SPISerial()
+
+
+# V2
+
+# Built-in speaker
+class _Speaker(object):
+    def off(self) -> bool:
+        """
+        Use off() to turn off the speaker. This does not disable sound output 
+        to an edge connector pin.
+        """
+        pass
+
+    def on(self) -> bool:
+        """
+        Use on() to turn on the speaker.
+        """
+        pass
+
+
+speaker = _Speaker()
+
+
+# Built-in microphone
+class _Microphone(object):
+    def current_event(self) -> str:
+        """
+        Returns the name of the last recorded sound event, SoundEvent('loud') 
+        or SoundEvent('quiet').
+        """
+        pass
+
+    def was_event(self, event: str) -> bool:
+        """
+        Event is a sound event such as SoundEvent.LOUD or SoundEvent.QUIET. 
+        Returns true if sound was heard at least once since the last call, 
+        otherwise false.
+        The function also clears the sound event history 
+        before returning.
+        """
+        pass
+
+    def is_event(self, event: str) -> bool:
+        """
+        Event is a sound event such as SoundEvent.LOUD or SoundEvent.QUIET. 
+        Returns true if sound event is the most recent since the last call, 
+        otherwise false.
+        The function does not clear the sound event history.
+        """
+        pass
+
+    def get_events(self) -> Tuple[str, str]:
+        """
+        Returns a tuple of the event history. The most recent is listed 
+        last.
+        The function also clears the sound event history before returning.
+        """
+        pass
+
+    def set_threshold(
+            self,
+            event: str,
+            value: int,
+        ) -> Tuple[str, str]:
+        """
+        An event is a sound event, such as SoundEvent.LOUD or SoundEvent.QUIET.
+        Value is the threshold level in the range 0-255. For example, 
+        set_threshold(SoundEvent.LOUD, 250) will only trigger if the sound is 
+        very loud (>= 250).
+        """
+        pass
+
+    def sound_level(self) -> int:
+        """
+        Returns a representation of the sound pressure level in the range 0 
+        to 255.
+        """
+        pass
+
+microphone = _Microphone()
