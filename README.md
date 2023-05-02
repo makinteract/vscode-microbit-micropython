@@ -107,6 +107,12 @@ This extension also draws some inspiration from [another micro:bit python extens
 
 ---
 
+## More stubs for micro:bit v2
+
+If you need better IntelliSense when using micro:bit v2, consider using [this stub library](https://github.com/ElTrasho3000/Microbit-Stubs-Python-Package) and follow the instructions to manually add the stubs to your project.
+
+---
+
 ## For developers
 
 If you want to modify this extension, fork and then clone this repository on your machine. Run `npm install`, to install dependencies (need to have Node.js installed). From any javascript file, press `F5` to run the extension locally in debug mode.
@@ -121,9 +127,9 @@ Refer to the [issues page](https://github.com/makinteract/vscode-microbit-microp
 
 ## Credits
 
-Developed by [MAKinteract](https://makinteract.kaist.ac.kr).
+Extension developed by [MAKinteract](https://makinteract.kaist.ac.kr). Icon design by [Hye-Young Jo](https://www.hyeyoungjo.com).
 
-Icon design by [Hye-Young Jo](https://www.hyeyoungjo.com).
+The [micro:bit stub library](https://github.com/PhonicCanine/microbit) is written by Joseph Fergusson (PhonicCanine). The stubs are property of their original author not part of this project, but are copied here to allow end-users easy access to them.
 
 ---
 
