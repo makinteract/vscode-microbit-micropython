@@ -28,35 +28,30 @@ the play() function:
 
 #Functions
 
-class Audio():
+def play(source, wait=True, pin=pin0, return_pin=None):
+    """ Play the audio source to completion.
+    Parameters:	
+        source – There are three types of data that can be used as a source:
+            Sound:  The microbit module contains a list of built-in sounds, e.g. 
+                    play(Sound.TWINKLE).
+            SoundEffect: A sound effect, or an iterable of sound effects, created 
+                        via the SoundEffect() class
+            AudioFrame: An iterable of AudioFrame instances as described in the 
+                        AudioFrame Technical Details section
+        wait – If wait is True, this function will block until the source is exhausted.
+        pin – An optional argument to specify the output pin can be used to override the 
+                default of pin0. If we do not want any sound to play we can use pin=None.
+        return_pin – specifies a differential edge connector pin to connect to an external 
+                    speaker instead of ground. This is ignored for the V2 revision. """
+    pass
 
-    def __init__(self) -> None:
-        pass
+def is_playing():
+    """ Returns:	True if audio is playing, otherwise returns False. """
+    pass
 
-    def play(source, wait=True, pin=pin0, return_pin=None):
-        """ Play the audio source to completion.
-        Parameters:	
-            source – There are three types of data that can be used as a source:
-                Sound:  The microbit module contains a list of built-in sounds, e.g. 
-                        play(Sound.TWINKLE).
-                SoundEffect: A sound effect, or an iterable of sound effects, created 
-                            via the SoundEffect() class
-                AudioFrame: An iterable of AudioFrame instances as described in the 
-                            AudioFrame Technical Details section
-            wait – If wait is True, this function will block until the source is exhausted.
-            pin – An optional argument to specify the output pin can be used to override the 
-                    default of pin0. If we do not want any sound to play we can use pin=None.
-            return_pin – specifies a differential edge connector pin to connect to an external 
-                        speaker instead of ground. This is ignored for the V2 revision. """
-        pass
-
-    def is_playing():
-        """ Returns:	True if audio is playing, otherwise returns False. """
-        pass
-
-    def stop():
-        """ Stops all audio playback. """
-        pass
+def stop():
+    """ Stops all audio playback. """
+    pass
 
 #Sound Effects V2
 
@@ -103,7 +98,7 @@ class SoundEffect(freq_start=500, freq_end=2500, duration=500, vol_start=255, vo
     def __init__(self) -> None:
         pass
 
-    def copy():
+    def copy(self):
         """ Returns:	A copy of the SoundEffect. """
         pass
 
@@ -122,7 +117,7 @@ class AudioFrame():
     def __init__(self) -> None:
         pass
 
-    def copyfrom(other):
+    def copyfrom(self, other):
         """ Overwrite the data in this AudioFrame with the data from another AudioFrame instance.
         Parameters:	other – AudioFrame instance from which to copy the data. """
         pass

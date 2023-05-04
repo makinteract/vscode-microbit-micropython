@@ -12,8 +12,7 @@ Warning
 
 #Functions
 
-class uart():
-    def init(baudrate=9600, bits=8, parity=None, stop=1, *, tx=None, rx=None):
-        """ Initialize serial communication with the specified parameters on the specified 
-        tx and rx pins. Note that for correct communication, the parameters have to be 
-        the same on both communicating devices. """
+def init(baudrate=9600, bits=8, parity=None, stop=1, *, tx=None, rx=None):
+    """ Initialize serial communication with the specified parameters on the specified 
+    tx and rx pins. Note that for correct communication, the parameters have to be 
+    the same on both communicating devices. """

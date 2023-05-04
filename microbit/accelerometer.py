@@ -15,59 +15,56 @@ accelerometer method to do the gesture detection. Usually gestures can be detect
 loop with a small sleep() delay.
 Functions """
 
-class accelerometer():
-    
-    def __init__(self) -> None:
-        pass
+#Functions
 
-    def get_x():
-        """ Returns:	The acceleration measurement in the x axis in milli-g, as a positive or 
-        negative integer. """
-        pass
+def get_x():
+    """ Returns:	The acceleration measurement in the x axis in milli-g, as a positive or 
+    negative integer. """
+    pass
 
-    def get_y():
-        """ Returns:	The acceleration measurement in the y axis in milli-g, as a positive or 
-        negative integer. """
-        pass
+def get_y():
+    """ Returns:	The acceleration measurement in the y axis in milli-g, as a positive or 
+    negative integer. """
+    pass
 
-    def get_z():
-        """ Returns:	The acceleration measurement in the z axis in milli-g, as a positive or 
-        negative integer. """
-        pass
+def get_z():
+    """ Returns:	The acceleration measurement in the z axis in milli-g, as a positive or 
+    negative integer. """
+    pass
 
-    def get_values():
-        """ Returns:	The acceleration measurements in all axes at once, as a three-element tuple 
-        of integers ordered as X, Y, Z. """
-        pass
+def get_values():
+    """ Returns:	The acceleration measurements in all axes at once, as a three-element tuple 
+    of integers ordered as X, Y, Z. """
+    pass
 
-    def get_strength():
-        """ Get the acceleration measurement of all axes combined, as a positive integer. This is the 
-        Pythagorean sum of the X, Y and Z axes.
-        Returns:	The combined acceleration strength of all the axes, in milli-g. """
-        pass
+def get_strength():
+    """ Get the acceleration measurement of all axes combined, as a positive integer. This is the 
+    Pythagorean sum of the X, Y and Z axes.
+    Returns:	The combined acceleration strength of all the axes, in milli-g. """
+    pass
 
-    def current_gesture():
-        """ Returns:	String with the name of the current gesture. """
-        pass
+def current_gesture():
+    """ Returns:	String with the name of the current gesture. """
+    pass
 
-    def is_gesture(name):
-        """ Parameters:	name – String with the name of the gesture to check.
-        Returns:	Boolean indicating if the named gesture is currently active. """
-        pass
+def is_gesture(name):
+    """ Parameters:	name – String with the name of the gesture to check.
+    Returns:	Boolean indicating if the named gesture is currently active. """
+    pass
 
-    def was_gesture(name):
-        """ Parameters:	name – String with the name of the gesture to check.
-        Returns:	Boolean indicating if the named gesture was active since the last call. """
-        pass
+def was_gesture(name):
+    """ Parameters:	name – String with the name of the gesture to check.
+    Returns:	Boolean indicating if the named gesture was active since the last call. """
+    pass
 
-    def get_gestures():
-        """ Get a historical list of the registered gestures.
-        Calling this function clears the gesture history before returning.
-        Returns:	A tuple of the gesture history, most recent is listed last. """
-        pass
+def get_gestures():
+    """ Get a historical list of the registered gestures.
+    Calling this function clears the gesture history before returning.
+    Returns:	A tuple of the gesture history, most recent is listed last. """
+    pass
 
-    def set_range(value):
-        """ Set the accelerometer sensitivity range, in g (standard gravity), to the closest values 
-        supported by the hardware, so it rounds to either 2, 4, or 8 g.
-        Parameters:	value – New range for the accelerometer, an integer in g. """
-        pass
+def set_range(value):
+    """ Set the accelerometer sensitivity range, in g (standard gravity), to the closest values 
+    supported by the hardware, so it rounds to either 2, 4, or 8 g.
+    Parameters:	value – New range for the accelerometer, an integer in g. """
+    pass

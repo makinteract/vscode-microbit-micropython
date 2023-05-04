@@ -8,16 +8,12 @@ The speaker can be turned off or on using the functions listed here. """
 
 #Functions
 
-class speaker():
-    def __init__(self) -> None:
-        pass
+def off():
+    """ Use off() to turn off the speaker. This does not disable sound output to an 
+    edge connector pin. """
+    pass
 
-    def off():
-        """ Use off() to turn off the speaker. This does not disable sound output to an 
-        edge connector pin. """
-        pass
-
-    def on():
-        """ Use on() to turn on the speaker. """
-        pass
+def on():
+    """ Use on() to turn on the speaker. """
+    pass
 

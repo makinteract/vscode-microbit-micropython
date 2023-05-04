@@ -1,3 +1,16 @@
+import accelerometer
+import audio
+import compass
+import display
+import i2c
+import microphone
+import neopixel
+import radio
+import speaker
+import speech
+import spi
+import uart
+
 #Functions
 
 def panic():
@@ -195,7 +208,7 @@ class _MicroBitAnalogDigitalPin(_MicroBitDigitalPin):
         between 0 (meaning 0V) and 1023 (meaning 3.3V). """
         pass
     
-class _MicroBitTouchPin():
+class _MicroBitTouchPin(_MicroBitAnalogDigitalPin):
 
     def __init__(self) -> None:
         pass
