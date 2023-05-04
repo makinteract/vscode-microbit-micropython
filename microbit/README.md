@@ -1,5 +1,10 @@
-# microbitstubs
-Stubs for all the methods and classes within the Micro:Bit module, so that intellisense can be used with them in Visual Studio Code
+# micro:bit V2 stubs for VS Code
 
-Should make it more easy to teach Python programming with Visual Studio Code.
-Used with: https://github.com/PhonicCanine/vscode-microbit
+## About this package
+micro:bit stubs as a python package based on official [micro:bit documentation](https://microbit-micropython.readthedocs.io/en/v2-docs/).
+
+## Usage
+Copy the microbit package into your working directory. Use the import function to make it accessible in your code (e.g. `from microbit import *`)
+
+## Git Repository
+https://github.com/ElTrasho3000/Microbit-Stubs-Python-Package
