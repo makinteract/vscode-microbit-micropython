@@ -61,7 +61,7 @@ For example, if the user were to pick `buttons` or `hello-world` from the list a
 
 The user can also select `Empty` - in such case, no changes to files occur.
 
-The templates are fetched from this [online repository](https://github.com/makinteract/micropython-examples). The _microbit_ folder is fetched from [this respository](https://github.com/PhonicCanine/microbit).
+The templates are fetched from this [online repository](https://github.com/makinteract/micropython-examples). The _microbit_ folder is fetched from [this respository](https://github.com/ElTrasho3000/Microbit-Stubs-Python-Package). The stubs in the micro:bit folder are based on the [official micro:bit documentation](https://microbit-micropython.readthedocs.io/en/v2-docs/).
 
 ### `Fetch examples from online`
 
@@ -105,11 +105,6 @@ The extension requires Python installed and in the _PATH_ variable. Other depend
 
 This extension also draws some inspiration from [another micro:bit python extension](https://github.com/PhonicCanine/vscode-microbit), which you might want to consider as an alternative.
 
----
-
-## More stubs for micro:bit v2
-
-If you need better IntelliSense when using micro:bit v2, consider using [this stub library](https://github.com/ElTrasho3000/Microbit-Stubs-Python-Package) and follow the instructions to manually add the stubs to your project.
 
 ---
 
@@ -127,9 +122,8 @@ Refer to the [issues page](https://github.com/makinteract/vscode-microbit-microp
 
 ## Credits
 
-Extension developed by [MAKinteract](https://makinteract.kaist.ac.kr). Icon design by [Hye-Young Jo](https://www.hyeyoungjo.com).
+Extension developed by [MAKinteract](https://makinteract.kaist.ac.kr). microbit stubs library developed by [ElTrasho3000](https://github.com/ElTrasho3000). Icon design by [Hye-Young Jo](https://www.hyeyoungjo.com).
 
-The [micro:bit stub library](https://github.com/PhonicCanine/microbit) is written by Joseph Fergusson (PhonicCanine). The stubs are property of their original author not part of this project, but are copied here to allow end-users easy access to them.
 
 ---
 
