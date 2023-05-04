@@ -6,5 +6,5 @@ micro:bit stubs as a python package based on official [micro:bit documentation](
 ## Usage
 Copy the microbit package into your working directory. Use the import function to make it accessible in your code (e.g. `from microbit import *`)
 
-##Git Repository
+## Git Repository
 https://github.com/ElTrasho3000/Microbit-Stubs-Python-Package
