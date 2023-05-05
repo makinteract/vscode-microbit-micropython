@@ -4,6 +4,7 @@ All notable changes to the "vscode-microbit-micropython" extension will be docum
 
 ## [0.1.x]
 
+- Fixed imports for the microbit stubs (0.1.24)
 - Added new stubs to support intellisense for mcor:bit v2 (0.1.23)
 - Added support for logo button for V2 (0.1.22)
 - Typos (0.1.21)
