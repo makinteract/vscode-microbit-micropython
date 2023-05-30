@@ -18,7 +18,8 @@ const {
   copyFileOrFolder,
   copyFiles,
   moveLast,
-  isGitInstalled
+  isGitInstalled,
+  pickLibraries
 } = require('./extension');
 const { fstat } = require('fs');
 
@@ -43,9 +44,13 @@ function activate(context) {
       // clone it if not there
       const libs = await checkFileExist("microbit", workspace.uri);
       if (!libs) {
-        // https://github.com/makinteract/microbit.git
-        await copyFileOrFolder("microbit", extensionUri(), workspace.uri);
+        const basicStubsFolder = vscode.Uri.joinPath(extensionUri(), "Microbit-Basic-Stubs");
+        await copyFileOrFolder("microbit", basicStubsFolder, workspace.uri);
       }
+
+      // test
+
+      await pickLibraries();
 
       // 2. Show to the user the list of template files in examples and ask to pick one
       const examples = vscode.Uri.joinPath(extensionUri(), "examples");

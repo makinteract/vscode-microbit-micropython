@@ -369,6 +369,37 @@ async function isGitInstalled() {
 	return installed;
 }
 
+/**
+ * Import optional libraries for Intellisense (copy the folders in the workspace)
+ */
+async function pickLibraries() {
+	const libs =
+		["Audio",
+			"Machine",
+			"Music",
+			"Neopixel",
+			"Radio",
+			"Speech"].map(e => { return { label: e } })
+
+	const choices = await vscode.window.showQuickPick(libs, {
+		title: 'Choose libraries for IntelliSense',
+		placeHolder: 'Choose libraries for IntelliSense',
+		canPickMany: true
+	});
+
+	const workspace = await getCurrentWorkspace();
+	const extendStubsFolder = vscode.Uri.joinPath(extensionUri(), "Microbit-Extended-Stubs");
+
+	choices.forEach(async ({ label }) => {
+		const libName = label.toLowerCase()
+		const lib = await checkFileExist(libName, workspace.uri);
+		if (!lib) {
+			await copyFileOrFolder(libName, extendStubsFolder, workspace.uri);
+		}
+	})
+}
+
+
 
 
 
@@ -393,5 +424,6 @@ module.exports = {
 	copyFiles,
 	copyFileOrFolder,
 	moveLast,
-	isGitInstalled
+	isGitInstalled,
+	pickLibraries
 };
