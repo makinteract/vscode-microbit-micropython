@@ -48,19 +48,17 @@ function activate(context) {
         await copyFileOrFolder("microbit", basicStubsFolder, workspace.uri);
       }
 
-      // test
-
+      // 2. Add additional libraries
       await pickLibraries();
 
-      // 2. Show to the user the list of template files in examples and ask to pick one
+      // 3. Show to the user the list of template files in examples and ask to pick one
       const examples = vscode.Uri.joinPath(extensionUri(), "examples");
       const list = await getVisibleFoldersInDir(examples);
       list.unshift("Empty - do not modify the current directory"); // add an empy project to start
       const pick = await ui.showQuickPick(list, "Select a template for the project");
       if (!pick || pick.startsWith("Empty")) return; // done
 
-
-      // 3. If the user selected one template
+      // 4. If the user selected one template
       // Ask user to confirm overriding of project
       const mainExist = await checkFileExist("main.py", workspace.uri);
       if (mainExist) {
