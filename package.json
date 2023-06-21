@@ -2,7 +2,7 @@
   "name": "micro-bit-python",
   "displayName": "micro:bit Python",
   "description": "Easy MicroPython for micro:bit with VScode",
-  "version": "0.1.24",
+  "version": "0.1.25",
   "preview": false,
   "author": {
     "url": "https://github.com/makinteract",
@@ -10,6 +10,9 @@
     "name": "MAKinteract"
   },
   "publisher": "MAKinteract",
+  "sponsor": {
+    "url": "https://www.buymeacoffee.com/andreaHCI"
+  },
   "icon": "images/icon.png",
   "galleryBanner": {
     "color": "#C80000",
@@ -108,6 +111,8 @@
   "scripts": {
     "lint": "eslint .",
     "build": "vsce package",
+    "init_submodules": "git submodule update --init --recursive",
+    "update_submodules": "git submodule update --init --recursive",
     "publish": "vsce publish"
   },
   "devDependencies": {
