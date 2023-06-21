@@ -33,7 +33,7 @@ For a video tutorial on how to use this extension, please refer to [this link](h
 
 ---
 
-## Features in details
+## Features in detail
 
 ### `Flash MicroPython environment on the micro:bit`
 
@@ -45,7 +45,7 @@ Under the hood, this command uses [uflash](https://github.com/ntoll/uflash) to f
 
 This command copies all the files from the current workspace on the micro:bit. For the command to work, there **must exist** a `main.py` file (the starting point of your program). Furthermore, _folders and files nested in folders will be ignored_ - only files at the root of the workspace will be copied. You can also use the shortcut `CTRL + F6` (Windows / Linux) or `⌘ + F6` (Mac).
 
-For example, in the image below, `main.py` and `anotherfile.py` will be flashed onto the micro:bit, while the folder microbit and all its content will be ignored.
+For example, in the image below, `main.py` and `anotherfile.py` will be flashed onto the micro:bit, while the folder _microbit_ and all its content will be ignored.
 
 ![Flash](images/flash.png)
 
