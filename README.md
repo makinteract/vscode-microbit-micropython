@@ -53,7 +53,7 @@ Under the hood, flashing is achieved using the [microfs](https://github.com/ntol
 
 ### `Initialize the workspace`
 
-This command initializes the current workspace by copying a _microbit_ folder in the workspace (used to enable VScode IntelliSense), and by prompting the user to select a template file.
+This command initializes the current workspace by copying a _microbit_ folder in the workspace (used to enable VScode IntelliSense), and by prompting the user to select a template file. The user can also optionally select additional libraries for extended IntelliSense support.
 
 ![Initialization](images/initialization.png)
 
@@ -61,7 +61,7 @@ For example, if the user were to pick `buttons` or `hello-world` from the list a
 
 The user can also select `Empty` - in such case, no changes to files occur.
 
-The templates are fetched from this [online repository](https://github.com/makinteract/micropython-examples). The _microbit_ folder is fetched from [this respository](https://github.com/ElTrasho3000/Microbit-Stubs-Python-Package). The stubs in the micro:bit folder are based on the [official micro:bit documentation](https://microbit-micropython.readthedocs.io/en/v2-docs/).
+The templates are fetched from this [online repository](https://github.com/makinteract/micropython-examples). The _microbit_ folder is fetched from [this respository](https://github.com/ElTrasho3000/Microbit-Basic-Stubs), while stubs for additional libraries are fetched from [here](https://github.com/ElTrasho3000/Microbit-Extended-Stubs). All these stubs are based on the [official micro:bit documentation](https://microbit-micropython.readthedocs.io/en/v2-docs/).
 
 ### `Fetch examples from online`
 
@@ -105,7 +105,6 @@ The extension requires Python installed and in the _PATH_ variable. Other depend
 
 This extension also draws some inspiration from [another micro:bit python extension](https://github.com/PhonicCanine/vscode-microbit), which you might want to consider as an alternative.
 
-
 ---
 
 ## For developers
@@ -124,6 +123,13 @@ Refer to the [issues page](https://github.com/makinteract/vscode-microbit-microp
 
 Extension developed by [MAKinteract](https://makinteract.kaist.ac.kr). microbit stubs library developed by [ElTrasho3000](https://github.com/ElTrasho3000). Icon design by [Hye-Young Jo](https://www.hyeyoungjo.com).
 
+---
+
+## Support
+
+Support this project with:
+
+<a href="https://www.buymeacoffee.com/andreaHCI" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
 
 ---
 
