@@ -10,7 +10,9 @@
 
 This extension provides a self-contained developing environment for developing with **MicroPython** using the **micro:bit** platform.
 
-It allows to initialize a project with an optional template example, to upload a python _sketch_ (terminology borrowed from [Processing](<https://en.wikipedia.org/wiki/Processing_(programming_language)>)) on the micro:bit, or to remove/get files from the micro:bit file system.
+![](images/overview.png)
+
+It allows to initialize a project with an optional template example, to upload a python _sketch_ (terminology borrowed from [Processing](<https://en.wikipedia.org/wiki/Processing_(programming_language)>)) on the micro:bit, or to remove/get files from the micro:bit file system. IntelliSense for function name completion is available for both the default micro:bit functionalities and for user-specified libraries.
 
 To see the commands for the extension, use the command palette (**Windows / Linux**: `CTRL + Shift + P`, **Mac**: `⌘ + Shift + P`) and search for `micro:bit-python`. You will see the following list.
 
