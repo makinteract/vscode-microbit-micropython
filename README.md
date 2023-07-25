@@ -123,7 +123,7 @@ Refer to the [issues page](https://github.com/makinteract/vscode-microbit-microp
 
 ## Credits
 
-Extension developed by [MAKinteract](https://makinteract.kaist.ac.kr). microbit stubs library developed by [ElTrasho3000](https://github.com/ElTrasho3000). Icon design by [Hye-Young Jo](https://www.hyeyoungjo.com).
+Extension developed by [MAKinteract](https://makinteract.kaist.ac.kr). Stubs library for IntelliSense developed by [ElTrasho3000](https://github.com/ElTrasho3000). Icon design by [Hye-Young Jo](https://www.hyeyoungjo.com).
 
 ---
 
@@ -131,7 +131,7 @@ Extension developed by [MAKinteract](https://makinteract.kaist.ac.kr). microbit 
 
 Support this project with:
 
-<a href="https://www.buymeacoffee.com/andreaHCI" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 40px !important" ></a>
+<a href="https://www.buymeacoffee.com/andreaHCI" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 35px !important" ></a>
 
 ---
 
