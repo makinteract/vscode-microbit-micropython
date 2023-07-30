@@ -127,7 +127,9 @@ Extension developed by [MAKinteract](https://makinteract.kaist.ac.kr). Stubs lib
 
 ---
 
-## Support
+## Donation
+
+If you like this extension, please consider buying me a coffee via the link below. Any amount is welcome. It will encourage me to improve this extension and make it better!
 
 Support this project with:
 
