@@ -117,7 +117,9 @@ If you want to modify this extension, fork and then clone this repository on you
 
 ## Known Issues
 
-Refer to the [issues page](https://github.com/makinteract/vscode-microbit-micropython/issues). Please file any issues there.
+The `SoundEffect` feature for micro:bit v2 is currently not supported. Please refer to this [issue](https://github.com/makinteract/vscode-microbit-micropython/issues/7) for a workaround.
+
+For other issues, refer to the [issues page](https://github.com/makinteract/vscode-microbit-micropython/issues). Please file any issues there.
 
 ---
 
