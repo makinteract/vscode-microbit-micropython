@@ -362,11 +362,17 @@ async function isGitInstalled() {
  * Import optional libraries for Intellisense (copy the folders in the workspace)
  */
 async function pickLibraries() {
-  const libs = ['Audio', 'Machine', 'Music', 'Neopixel', 'Radio', 'Speech'].map(
-    (e) => {
-      return { label: e };
-    }
-  );
+  const libs = [
+    'Audio',
+    'Log',
+    'Machine',
+    'Music',
+    'Neopixel',
+    'Radio',
+    'Speech',
+  ].map((e) => {
+    return { label: e };
+  });
 
   const choices = await vscode.window.showQuickPick(libs, {
     title: 'Import additional libraries for IntelliSense',
