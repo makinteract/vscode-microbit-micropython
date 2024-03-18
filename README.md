@@ -41,6 +41,8 @@ For a video tutorial on how to use this extension, please refer to [this link](h
 
 Use this command the first time you use MicroPython. It will erase the micro:bit and install the MicroPython interpreter.
 
+The uploaded firmware is a universal firmware composed of the latest MicroPython firmware for micro:bit [V1](https://github.com/bbcmicrobit/micropython/releases/tag/v1.1.1) and [V2](https://github.com/microbit-foundation/micropython-microbit-v2/releases/tag/v2.1.2): `micropython-microbit-v1.1.1.hex` and `micropython-microbit-v2.1.2.hex`.
+
 ### `Flash sketch on the micro:bit`
 
 This command copies all the files from the current workspace on the micro:bit. For the command to work, there **must exist** a `main.py` file (the starting point of your program). Furthermore, _folders and files nested in folders will be ignored_ - only files at the root of the workspace will be copied. You can also use the shortcut `CTRL + F6` (Windows / Linux) or `⌘ + F6` (Mac).
