@@ -4,6 +4,7 @@ All notable changes to the "vscode-microbit-micropython" extension will be docum
 
 ## [0.1.x]
 
+- Removed `uflash` dependency and updated to the latest firmware (0.1.28)
 - Updated README with better example image (0.1.27)
 - Updated submodules with basic stubs (0.1.26)
 - Allow importing basic and extended stubs (0.1.25)

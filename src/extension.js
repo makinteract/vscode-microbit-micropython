@@ -8,6 +8,7 @@ const clone = require('git-clone');
 const { exec } = require('child_process');
 const internetAvailable = require('internet-available');
 const { python, PythonException } = require('./python');
+const drivelist = require('drivelist');
 
 // Globals
 const EXTENSION_ID = 'MAKinteract.micro-bit-python';
@@ -213,23 +214,6 @@ async function getFileFromMicrobit(filename, destinationDirUri) {
 }
 
 /**
- * Run the uflash python script (may throw an exception)
- * @param {String} params - string with parameters passed to "python uflash.py"
- * @returns - stdout and sterr from python command
- */
-async function uflash(params = '') {
-  const tools = toolsPath();
-  const uflashDir = vscode.Uri.joinPath(tools, 'uflash-master');
-  const uflash = vscode.Uri.joinPath(uflashDir, 'uflash.py');
-
-  const { stdout, stderr } = await python.run(
-    `"${uflash.fsPath}" ${params}`,
-    uflashDir.fsPath
-  );
-  return { stdout, stderr };
-}
-
-/**
  * Run the ufs python script (may throw an exception)
  * @param {String} params - string with parameters pased to "pyton ufs.py"
  * @returns - stdout and sterr from python command
@@ -405,8 +389,26 @@ async function pickLibraries() {
   });
 }
 
+/**
+ * Uploading the firmware to the microbit
+ * @returns void
+ */
+async function uploadFirmware() {
+  const drives = await drivelist.list();
+  const paths = [
+    ...drives.map(({ mountpoints }) => mountpoints.map(({ path }) => path)),
+  ].flat();
+  const microbit = paths.find((path) => path.includes('MICROBIT'));
+  if (!microbit) {
+    vscode.window.showErrorMessage('Microbit not found');
+    return;
+  }
+  const firmware = vscode.Uri.joinPath(extensionUri(), 'firmware.hex');
+  fs.copyFileSync(firmware.fsPath, `${microbit}/firmware.hex`);
+  vscode.window.showInformationMessage('Firmware uploaded');
+}
+
 module.exports = {
-  uflash,
   ufs,
   extensionUri,
   toolsPath,
@@ -428,4 +430,5 @@ module.exports = {
   moveLast,
   isGitInstalled,
   pickLibraries,
+  uploadFirmware,
 };

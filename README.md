@@ -41,8 +41,6 @@ For a video tutorial on how to use this extension, please refer to [this link](h
 
 Use this command the first time you use MicroPython. It will erase the micro:bit and install the MicroPython interpreter.
 
-Under the hood, this command uses [uflash](https://github.com/ntoll/uflash) to flash the MicroPython firmware.
-
 ### `Flash sketch on the micro:bit`
 
 This command copies all the files from the current workspace on the micro:bit. For the command to work, there **must exist** a `main.py` file (the starting point of your program). Furthermore, _folders and files nested in folders will be ignored_ - only files at the root of the workspace will be copied. You can also use the shortcut `CTRL + F6` (Windows / Linux) or `⌘ + F6` (Mac).
@@ -103,7 +101,7 @@ It shows the image with the micro:bit pinout
 
 ## Requirments
 
-The extension requires Python installed and in the _PATH_ variable. Other dependencies ([microfs](https://github.com/ntoll/microfs) and [uflash](https://github.com/ntoll/uflash)) are taken care of automatically. For using the command `Fetch examples from online` and download the latest examples, you need to have [git](https://git-scm.com) installed on your machine.
+The extension requires Python installed and in the _PATH_ variable. Other dependencies ([microfs](https://github.com/ntoll/microfs)) are taken care of automatically. For using the command `Fetch examples from online` and download the latest examples, you need to have [git](https://git-scm.com) installed on your machine.
 
 This extension also draws some inspiration from [another micro:bit python extension](https://github.com/PhonicCanine/vscode-microbit), which you might want to consider as an alternative.
 
