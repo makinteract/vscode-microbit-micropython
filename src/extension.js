@@ -406,6 +406,7 @@ async function uploadFirmware() {
   ].flat();
   const microbit = paths.find((path) => path.includes('MICROBIT'));
   if (!microbit) {
+    console.log(paths);
     vscode.window.showErrorMessage('Microbit not found');
     return;
   }

@@ -12,30 +12,30 @@ jobs:
             platform: win32
             arch: x64
             npm_config_arch: x64
-          - os: ubuntu-latest
-            platform: linux
-            arch: x64
-            npm_config_arch: x64
-          - os: ubuntu-latest
-            platform: linux
-            arch: arm64
-            npm_config_arch: arm64
-          - os: ubuntu-latest
-            platform: linux
-            arch: armhf
-            npm_config_arch: arm
-          - os: ubuntu-latest
-            platform: alpine
-            arch: x64
-            npm_config_arch: x64
-          - os: macos-latest
-            platform: darwin
-            arch: x64
-            npm_config_arch: x64
-          - os: macos-latest
-            platform: darwin
-            arch: arm64
-            npm_config_arch: arm64
+          # - os: ubuntu-latest
+          #   platform: linux
+          #   arch: x64
+          #   npm_config_arch: x64
+          # - os: ubuntu-latest
+          #   platform: linux
+          #   arch: arm64
+          #   npm_config_arch: arm64
+          # - os: ubuntu-latest
+          #   platform: linux
+          #   arch: armhf
+          #   npm_config_arch: arm
+          # - os: ubuntu-latest
+          #   platform: alpine
+          #   arch: x64
+          #   npm_config_arch: x64
+          # - os: macos-latest
+          #   platform: darwin
+          #   arch: x64
+          #   npm_config_arch: x64
+          # - os: macos-latest
+          #   platform: darwin
+          #   arch: arm64
+          #   npm_config_arch: arm64
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v2
@@ -53,3 +53,6 @@ jobs:
         with:
           name: ${{ env.target }}
           path: '*.vsix'
+      - uses: ncipollo/release-action@v1
+          with:
+            artifacts: "build.zip"
