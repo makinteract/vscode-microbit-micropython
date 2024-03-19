@@ -1,6 +1,0 @@
-[submodule "Microbit-Basic-Stubs"]
-	path = Microbit-Basic-Stubs
-	url = https://github.com/ElTrasho3000/Microbit-Basic-Stubs.git
-[submodule "Microbit-Extended-Stubs"]
-	path = Microbit-Extended-Stubs
-	url = https://github.com/ElTrasho3000/Microbit-Extended-Stubs.git
