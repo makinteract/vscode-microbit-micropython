@@ -1,4 +1,4 @@
-# micro:bit + MicroPython extension for VSCode
+# micro:bit + MicroPython for VSCode
 
 ![Version](https://img.shields.io/visual-studio-marketplace/v/MAKinteract.micro-bit-python)
 ![Downloads](https://img.shields.io/visual-studio-marketplace/d/MAKinteract.micro-bit-python)
