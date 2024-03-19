@@ -35,8 +35,8 @@ jobs:
     if: success()
     steps:
       - uses: actions/download-artifact@v2
-      - name: Publish extension
-        id: MAKinteract
-        uses: sigma/vsce-publish-action@v0.0.2
+      - uses: lannonbr/vsce-action@3.0.0
         with:
-          vsce_token: ${{ secrets.VSCE_PAT }}
+          args: publish -p $VSCE_TOKEN  --packagePath $(find . -iname *.vsix)
+        env:
+          VSCE_TOKEN: ${{ secrets.VSCE_PAT }}
