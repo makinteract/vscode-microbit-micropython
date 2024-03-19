@@ -409,8 +409,12 @@ async function uploadFirmware() {
     vscode.window.showErrorMessage('Microbit not found');
     return;
   }
+  const microbitUri = vscode.Uri.file(microbit);
   const firmware = vscode.Uri.joinPath(extensionUri(), 'firmware.hex');
-  fs.copyFileSync(firmware.fsPath, `${microbit}/firmware.hex`);
+  fs.copyFileSync(
+    firmware.fsPath,
+    vscode.Uri.joinPath(microbitUri, 'firmware.hex').fsPath
+  );
   vscode.window.showInformationMessage('Firmware uploaded');
 }
 
