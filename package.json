@@ -100,8 +100,6 @@
   ],
   "scripts": {
     "lint": "eslint .",
-    "init_submodules": "git submodule update --init --recursive",
-    "update_submodules": "git submodule update --init --recursive",
     "build": "npx vsce package",
     "publish": "npx vsce publish"
   },
