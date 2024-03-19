@@ -34,7 +34,10 @@ jobs:
     needs: build
     if: success()
     steps:
-      - uses: actions/download-artifact@v2
-      - run: npx vsce publish -p ${{ secrets.VSCE_PAT }} --packagePath $(find . -iname *.vsix)
+      - uses: actions/checkout@v2
+      - run: npm ci
+      - uses: lannonbr/vsce-action@3.0.0
+        with:
+          args: 'publish -p $VSCE_TOKEN'
         env:
-          VSCE_PAT: ${{ secrets.VSCE_PAT }}
+          VSCE_TOKEN: ${{ secrets.VSCE_TOKEN }}
