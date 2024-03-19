@@ -401,16 +401,15 @@ async function pickLibraries() {
  */
 async function uploadFirmware() {
   const drives = await drivelist.list();
-  const paths = [
-    ...drives.map(({ mountpoints }) => mountpoints.map(({ path }) => path)),
-  ].flat();
-  const microbit = paths.find((path) => path.includes('MICROBIT'));
-  if (!microbit) {
-    console.log(paths);
+  const mbit = drives.find(
+    ({ busType, description }) =>
+      busType === 'USB' && description.includes('MBED VFS')
+  );
+  if (!mbit) {
     vscode.window.showErrorMessage('Microbit not found');
     return;
   }
-  const microbitUri = vscode.Uri.file(microbit);
+  const microbitUri = vscode.Uri.file(mbit.mountpoints[0].path);
   const firmware = vscode.Uri.joinPath(extensionUri(), 'firmware.hex');
   fs.copyFileSync(
     firmware.fsPath,

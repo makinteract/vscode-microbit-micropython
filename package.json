@@ -100,12 +100,10 @@
   ],
   "scripts": {
     "lint": "eslint .",
-    "build": "npx vsce package",
     "init_submodules": "git submodule update --init --recursive",
     "update_submodules": "git submodule update --init --recursive",
-    "publish": "npx vsce publish",
-    "build-mac-arm64": "npx vsce package --target darwin-arm64",
-    "build-mac-arm64": "npx vsce package --target darwin-x64"
+    "build": "npx vsce package",
+    "publish": "npx vsce publish"
   },
   "devDependencies": {
     "@types/glob": "^7.1.3",
