@@ -8,14 +8,16 @@
 ![V1](https://img.shields.io/badge/micro:bit-V1-green)
 ![V2](https://img.shields.io/badge/micro:bit-V2-blue)
 
-> ⚠️ Possible breaking changes in version 0.1.28
-> Version 0.1.28 might result in breaking changes as we removed our dependency on the `uflash` project. Please report problems using the [issues page](https://github.com/makinteract/vscode-microbit-micropython/issues).
-
 This extension provides a self-contained developing environment for developing with **MicroPython** using the **micro:bit** platform.
 
 ![](images/overview.png)
 
 It allows to initialize a project with an optional template example, to upload a python _sketch_ (terminology borrowed from [Processing](<https://en.wikipedia.org/wiki/Processing_(programming_language)>)) on the micro:bit, or to remove/get files from the micro:bit file system. IntelliSense for function name completion is available for both the default micro:bit functionalities and for user-specified libraries.
+
+> ⚠️ Possible breaking changes in version 0.1.28
+> Version 0.1.28 might result in breaking changes as we removed our dependency on the `uflash` project and updgraded to the latest micro:bit firmware. Please report problems using the [issues page](https://github.com/makinteract/vscode-microbit-micropython/issues).
+
+## Commands
 
 To see the commands for the extension, use the command palette (**Windows / Linux**: `CTRL + Shift + P`, **Mac**: `⌘ + Shift + P`) and search for `micro:bit-python`. You will see the following list.
 
