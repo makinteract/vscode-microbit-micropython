@@ -30,16 +30,6 @@
     "Programming Languages"
   ],
   "activationEvents": [
-    "onCommand:extension.init",
-    "onCommand:extension.flash-micropython",
-    "onCommand:extension.flash",
-    "onCommand:extension.rmAll",
-    "onCommand:extension.rmFile",
-    "onCommand:extension.getFile",
-    "onCommand:extension.listFiles",
-    "onCommand:extension.fetch-examples",
-    "onCommand:extension.load-example",
-    "onCommand:extension.showPinMap",
     "onLanguage:python",
     "onDebug"
   ],
