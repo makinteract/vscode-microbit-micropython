@@ -14,8 +14,8 @@ This extension provides a self-contained developing environment for developing w
 
 It allows to initialize a project with an optional template example, to upload a python _sketch_ (terminology borrowed from [Processing](<https://en.wikipedia.org/wiki/Processing_(programming_language)>)) on the micro:bit, or to remove/get files from the micro:bit file system. IntelliSense for function name completion is available for both the default micro:bit functionalities and for user-specified libraries.
 
-> ⚠️ Possible breaking changes in version 0.1.28
-> Version 0.1.28 might result in breaking changes as we removed our dependency on the `uflash` project and updgraded to the latest micro:bit firmware. Please report problems using the [issues page](https://github.com/makinteract/vscode-microbit-micropython/issues).
+> ⚠️ **Possible breaking changes in version 0.1.28+**:
+> This version might result in breaking changes as we removed our dependency on the `uflash` project and updgraded to the latest micro:bit firmware. Please report problems using the [issues page](https://github.com/makinteract/vscode-microbit-micropython/issues).
 
 ## Commands
 
