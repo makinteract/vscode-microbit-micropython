@@ -24,7 +24,7 @@
   },
   "extensionDependencies": [],
   "engines": {
-    "vscode": "^1.46.0"
+    "vscode": "^1.61.0"
   },
   "categories": [
     "Programming Languages"
@@ -103,7 +103,9 @@
     "build": "npx vsce package",
     "init_submodules": "git submodule update --init --recursive",
     "update_submodules": "git submodule update --init --recursive",
-    "publish": "npx vsce publish"
+    "publish": "npx vsce publish",
+    "build-mac-arm64": "npx vsce package --target darwin-arm64",
+    "build-mac-arm64": "npx vsce package --target darwin-x64"
   },
   "devDependencies": {
     "@types/glob": "^7.1.3",

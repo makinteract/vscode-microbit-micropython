@@ -138,7 +138,7 @@ If you like this extension, please consider buying me a coffee via the link belo
 
 Support this project with:
 
-<a href="https://www.buymeacoffee.com/andreaHCI" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 35px !important" ></a>
+<a href="https://www.buymeacoffee.com/andreaHCI" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="width: 125px !important" ></a>
 
 ---
 
