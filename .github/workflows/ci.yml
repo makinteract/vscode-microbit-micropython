@@ -35,4 +35,4 @@ jobs:
     if: success()
     steps:
       - uses: actions/download-artifact@v2
-      - run: npx vsce publish p ${{ secrets.VSCE_PAT }} --packagePath $(find . -iname *.vsix)
+      - run: npx @vscode/vsce publish -p ${{ secrets.VSCE_PAT }} --packagePath $(find . -iname *.vsix)
