@@ -8,6 +8,9 @@
 ![V1](https://img.shields.io/badge/micro:bit-V1-green)
 ![V2](https://img.shields.io/badge/micro:bit-V2-blue)
 
+> ⚠️ Possible breaking changes in version 0.1.28
+> Version 0.1.28 might result in breaking changes as we removed our dependency on the `uflash` project. Please report problems using the [issues page](https://github.com/makinteract/vscode-microbit-micropython/issues).
+
 This extension provides a self-contained developing environment for developing with **MicroPython** using the **micro:bit** platform.
 
 ![](images/overview.png)

@@ -1,7 +1,7 @@
 {
   "name": "micro-bit-python",
   "displayName": "micro:bit Python",
-  "description": "Easy MicroPython for micro:bit with VScode",
+  "description": "MicroPython for micro:bit with VScode",
   "version": "0.1.28",
   "preview": false,
   "author": {
@@ -110,10 +110,10 @@
   ],
   "scripts": {
     "lint": "eslint .",
-    "build": "vsce package",
+    "build": "npx vsce package",
     "init_submodules": "git submodule update --init --recursive",
     "update_submodules": "git submodule update --init --recursive",
-    "publish": "vsce publish"
+    "publish": "npx vsce publish"
   },
   "devDependencies": {
     "@types/glob": "^7.1.3",
@@ -124,6 +124,7 @@
     "glob": "^7.1.6",
     "mocha": "^8.2.1",
     "typescript": "^4.1.3",
+    "vsce": "^2.15.0",
     "vscode-test": "^1.5.0"
   },
   "dependencies": {
