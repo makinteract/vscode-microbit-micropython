@@ -49,7 +49,7 @@ jobs:
       - shell: pwsh
         run: echo "target=${{ matrix.platform }}-${{ matrix.arch }}" >> $env:GITHUB_ENV
       - run: npx vsce package --target ${{ env.target }}
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v4
         with:
           name: ${{ env.target }}
           path: '*.vsix'
@@ -58,7 +58,7 @@ jobs:
     needs: build
     if: success()
     steps:
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v4
       - run: npx vsce publish -p $VSCE_TOKEN --packagePath $(find . -iname *.vsix)
         env:
           VSCE_TOKEN: ${{ secrets.VSCE_TOKEN }}
