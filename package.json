@@ -2,7 +2,7 @@
   "name": "micro-bit-python",
   "displayName": "micro:bit Python",
   "description": "MicroPython for micro:bit with VScode",
-  "version": "0.1.31",
+  "version": "0.1.32",
   "preview": false,
   "author": {
     "url": "https://github.com/makinteract",
