@@ -4,6 +4,7 @@ All notable changes to the "vscode-microbit-micropython" extension will be docum
 
 ## [0.1.x]
 
+- Back to [uflash](https://raw.githubusercontent.com/ntoll/uflash/refs/heads/master/firmware.hex) firmware (0.1.31)
 - Fixing stubs (0.1.30)
 - Multi-platforms support (0.1.29)
 - Removed `uflash` dependency and updated to the latest firmware. Added Log for V2 (0.1.28)
