@@ -19,7 +19,7 @@ const {
   moveLast,
   isGitInstalled,
   pickLibraries,
-  uploadFirmware,
+  uflash,
 } = require('./extension');
 const { fstat } = require('fs');
 
@@ -112,7 +112,16 @@ function activate(context) {
 
   const flashMicropython = vscode.commands.registerCommand(
     'extension.flash-micropython',
-    uploadFirmware
+    async function () {
+      try {
+        await uflash();
+        ui.vsInfo('MicroPython successfully installed');
+        ui.outInfo('MicroPython successfully installed');
+      } catch (e) {
+        ui.vsError(`${e}`);
+        ui.outError(e);
+      }
+    }
   );
 
   const flash = vscode.commands.registerCommand(

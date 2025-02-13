@@ -2,17 +2,13 @@
   "name": "micro-bit-python",
   "displayName": "micro:bit Python",
   "description": "MicroPython for micro:bit with VScode",
-  "version": "0.1.32",
-  "preview": false,
+  "version": "0.1.33",
   "author": {
     "url": "https://github.com/makinteract",
-    "email": "andrea@kaist.id",
+    "email": "make@kaist.id",
     "name": "MAKinteract"
   },
   "publisher": "MAKinteract",
-  "sponsor": {
-    "url": "https://www.buymeacoffee.com/andreaHCI"
-  },
   "icon": "images/icon.png",
   "galleryBanner": {
     "color": "#F82D82",

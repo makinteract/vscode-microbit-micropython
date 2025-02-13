@@ -8,7 +8,6 @@ const clone = require('git-clone');
 const { exec } = require('child_process');
 const internetAvailable = require('internet-available');
 const { python, PythonException } = require('./python');
-const drivelist = require('drivelist');
 
 // Globals
 const EXTENSION_ID = 'MAKinteract.micro-bit-python';
@@ -214,6 +213,23 @@ async function getFileFromMicrobit(filename, destinationDirUri) {
 }
 
 /**
+ * Run the uflash python script (may throw an exception)
+ * @param {String} params - string with parameters passed to "python uflash.py"
+ * @returns - stdout and sterr from python command
+ */
+async function uflash(params = '') {
+  const tools = toolsPath();
+  const uflashDir = vscode.Uri.joinPath(tools, 'uflash-master');
+  const uflash = vscode.Uri.joinPath(uflashDir, 'uflash.py');
+
+  const { stdout, stderr } = await python.run(
+    `"${uflash.fsPath}" ${params}`,
+    uflashDir.fsPath
+  );
+  return { stdout, stderr };
+}
+
+/**
  * Run the ufs python script (may throw an exception)
  * @param {String} params - string with parameters pased to "pyton ufs.py"
  * @returns - stdout and sterr from python command
@@ -362,17 +378,11 @@ async function isGitInstalled() {
  * Import optional libraries for Intellisense (copy the folders in the workspace)
  */
 async function pickLibraries() {
-  const libs = [
-    'Audio',
-    'Log',
-    'Machine',
-    'Music',
-    'Neopixel',
-    'Radio',
-    'Speech',
-  ].map((e) => {
-    return { label: e };
-  });
+  const libs = ['Audio', 'Machine', 'Music', 'Neopixel', 'Radio', 'Speech'].map(
+    (e) => {
+      return { label: e };
+    }
+  );
 
   const choices = await vscode.window.showQuickPick(libs, {
     title: 'Import additional libraries for IntelliSense',
@@ -395,30 +405,8 @@ async function pickLibraries() {
   });
 }
 
-/**
- * Uploading the firmware to the microbit
- * @returns void
- */
-async function uploadFirmware() {
-  const drives = await drivelist.list();
-  const mbit = drives.find(
-    ({ busType, description }) =>
-      busType === 'USB' && description.includes('MBED VFS')
-  );
-  if (!mbit) {
-    vscode.window.showErrorMessage('Microbit not found');
-    return;
-  }
-  const microbitUri = vscode.Uri.file(mbit.mountpoints[0].path);
-  const firmware = vscode.Uri.joinPath(extensionUri(), 'firmware.hex');
-  fs.copyFileSync(
-    firmware.fsPath,
-    vscode.Uri.joinPath(microbitUri, 'firmware.hex').fsPath
-  );
-  vscode.window.showInformationMessage('Firmware uploaded');
-}
-
 module.exports = {
+  uflash,
   ufs,
   extensionUri,
   toolsPath,
@@ -440,5 +428,4 @@ module.exports = {
   moveLast,
   isGitInstalled,
   pickLibraries,
-  uploadFirmware,
 };

@@ -132,18 +132,6 @@ For other issues, refer to the [issues page](https://github.com/makinteract/vsco
 
 Extension developed by [MAKinteract](https://makinteract.kaist.ac.kr). Stubs library for IntelliSense developed by [ElTrasho3000](https://github.com/ElTrasho3000). Icon design by [Hye-Young Jo](https://www.hyeyoungjo.com).
 
----
-
-## Donation
-
-If you like this extension, please consider buying me a coffee via the link below. Any amount is welcome. It will encourage me to improve this extension and make it better!
-
-Support this project with:
-
-<a href="https://www.buymeacoffee.com/andreaHCI" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="width: 125px !important" ></a>
-
----
-
 ## License
 
 MIT

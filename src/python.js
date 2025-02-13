@@ -3,7 +3,6 @@
 const util = require('util');
 const exec = util.promisify(require('child_process').exec);
 
-
 function PythonException(message) {
   this.message = message;
   this.name = 'PythonException';
@@ -11,7 +10,7 @@ function PythonException(message) {
 
 let python2 = true;
 let python3 = true;
-
+let error = false;
 
 class Python {
   constructor() {
@@ -30,6 +29,7 @@ class Python {
       } catch (e) {
         // python not found
         python3 = false;
+        error = e;
       }
     }
 
@@ -40,6 +40,7 @@ class Python {
         return { stdout, stderr };
       } catch (e) {
         python2 = false;
+        if (error) throw error;
         throw e;
       }
     }
@@ -48,7 +49,7 @@ class Python {
     // reset the variables and throw an exception
     python2 = true;
     python3 = true;
-    throw new PythonException("Could not exectute command");
+    throw new PythonException('Could not exectute command');
   }
 }
 
@@ -56,8 +57,7 @@ class Python {
 const python = new Python();
 Object.freeze(python);
 
-
 module.exports = {
   PythonException,
-  python
+  python,
 };
