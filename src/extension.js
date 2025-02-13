@@ -7,7 +7,14 @@ const fs = require('fs');
 const clone = require('git-clone');
 const { exec } = require('child_process');
 const internetAvailable = require('internet-available');
-const { python, PythonException } = require('./python');
+const { python } = require('./python');
+const {
+  Version,
+  getSerialMonitorApi,
+  LineEnding,
+  Parity,
+  StopBits,
+} = require('@microsoft/vscode-serial-monitor-api');
 
 // Globals
 const EXTENSION_ID = 'MAKinteract.micro-bit-python';
@@ -405,6 +412,30 @@ async function pickLibraries() {
   });
 }
 
+async function openREPL(extensionContext) {
+  let api = await getSerialMonitorApi(Version.latest, extensionContext);
+  if (api) {
+    // open a serial port
+
+    const ports = await api.listAvailablePorts();
+    const port = await ui.showQuickPick(
+      ports.map((e) => e.portName),
+      'Select a port to open'
+    );
+    if (!port) return;
+
+    const serport = await api.startMonitoringPort({
+      port,
+      baudRate: 115200,
+      lineEnding: LineEnding.None,
+      dataBits: 8,
+      stopBits: StopBits.One,
+      parity: Parity.None,
+    });
+    serport.onClosed(() => console.log('Serial port was closed'));
+  }
+}
+
 module.exports = {
   uflash,
   ufs,
@@ -428,4 +459,5 @@ module.exports = {
   moveLast,
   isGitInstalled,
   pickLibraries,
+  openREPL,
 };

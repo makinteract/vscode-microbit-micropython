@@ -14,9 +14,6 @@ This extension provides a self-contained developing environment for developing w
 
 It allows to initialize a project with an optional template example, to upload a python _sketch_ (terminology borrowed from [Processing](<https://en.wikipedia.org/wiki/Processing_(programming_language)>)) on the micro:bit, or to remove/get files from the micro:bit file system. IntelliSense for function name completion is available for both the default micro:bit functionalities and for user-specified libraries.
 
-> ⚠️ **Possible breaking changes in version 0.1.28+**:
-> This version might result in breaking changes as we removed our dependency on the `uflash` project and updgraded to the latest micro:bit firmware. Please report problems using the [issues page](https://github.com/makinteract/vscode-microbit-micropython/issues).
-
 ## Commands
 
 To see the commands for the extension, use the command palette (**Windows / Linux**: `CTRL + Shift + P`, **Mac**: `⌘ + Shift + P`) and search for `micro:bit-python`. You will see the following list.
@@ -103,6 +100,10 @@ Under the hood, the command uses the `ufs rm` command.
 It shows the image with the micro:bit pinout
 
 <img src="images/pinout.png" height="300" />
+
+### `Show micro:bit open the REPL`
+
+Open the REPL through the [Serial Monitor](https://marketplace.visualstudio.com/items?itemName=ms-vscode.vscode-serial-monitor) extension (dependency).
 
 ---
 

@@ -4,6 +4,7 @@ All notable changes to the "vscode-microbit-micropython" extension will be docum
 
 ## [0.1.x]
 
+- Added support for the REPL (0.1.34)
 - Rewinded to use uflash (0.1.33)
 - Minor fixes (0.1.32)
 - Back to [uflash](https://raw.githubusercontent.com/ntoll/uflash/refs/heads/master/firmware.hex) firmware (0.1.31)

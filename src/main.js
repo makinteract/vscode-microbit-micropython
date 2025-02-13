@@ -20,6 +20,7 @@ const {
   isGitInstalled,
   pickLibraries,
   uflash,
+  openREPL,
 } = require('./extension');
 const { fstat } = require('fs');
 
@@ -250,6 +251,10 @@ function activate(context) {
     }
   );
 
+  const repl = vscode.commands.registerCommand('extension.openREPL', () =>
+    openREPL(context)
+  );
+
   // COMMANDS
   context.subscriptions.push(init);
   context.subscriptions.push(fetchExamples);
@@ -260,6 +265,7 @@ function activate(context) {
   context.subscriptions.push(getFile);
   context.subscriptions.push(listFiles);
   context.subscriptions.push(showPinMap);
+  context.subscriptions.push(repl);
 }
 
 // this method is called when your extension is deactivated
