@@ -101,7 +101,7 @@ It shows the image with the micro:bit pinout
 
 <img src="images/pinout.png" height="300" />
 
-### `Show micro:bit open the REPL`
+### `Open the REPL`
 
 Open the REPL through the [Serial Monitor](https://marketplace.visualstudio.com/items?itemName=ms-vscode.vscode-serial-monitor) extension (dependency).
 
