@@ -4,7 +4,7 @@
 
 
 > [!WARNING]
-> This extension is no longer supported (as of June 2026).
+> This extension is no longer supported (as of June 2025). 
 
 ---
 
